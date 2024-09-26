@@ -11,21 +11,22 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import ca.furguardian.it.petwellness.databinding.FragmentDashboardBinding;
+import ca.furguardian.it.petwellness.databinding.FragmentPetedBinding;
 
 public class PetEd extends Fragment {
 
-    private FragmentDashboardBinding binding;
+    private FragmentPetedBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        AnotherViewModel dashboardViewModel =
-                new ViewModelProvider(this).get(AnotherViewModel.class);
+        PetEdViewModel PetEdViewModel =
+                new ViewModelProvider(this).get(PetEdViewModel.class);
 
-        binding = FragmentDashboardBinding.inflate(inflater, container, false);
+        binding = FragmentPetedBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textDashboard;
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        final TextView textView = binding.textPeted;
+        PetEdViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
