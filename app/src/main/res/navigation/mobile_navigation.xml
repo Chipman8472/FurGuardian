@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/navigation_another"
-        android:name="ca.furguardian.it.petwellness.ui.another.AnotherFragment"
+        android:name="ca.furguardian.it.petwellness.ui.PetEd.PetEd"
         android:label="@string/title_another"
         tools:layout="@layout/fragment_notifications" />
 </navigation>

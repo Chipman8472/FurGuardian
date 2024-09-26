@@ -17,8 +17,8 @@
         android:title="@string/title_notifications" />
 
     <item
-        android:id="@+id/navigation_another"
+        android:id="@+id/navigation_peted"
         android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/another" />
+        android:title="@string/peted" />
 
 </menu>

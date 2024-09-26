@@ -1,4 +1,4 @@
-package ca.furguardian.it.petwellness.ui.another;
+package ca.furguardian.it.petwellness.ui.PetEd;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import ca.furguardian.it.petwellness.databinding.FragmentDashboardBinding;
 
-public class AnotherFragment extends Fragment {
+public class PetEd extends Fragment {
 
     private FragmentDashboardBinding binding;
 
