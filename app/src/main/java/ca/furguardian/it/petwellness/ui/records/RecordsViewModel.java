@@ -1,16 +1,16 @@
-package ca.furguardian.it.petwellness.ui.notifications;
+package ca.furguardian.it.petwellness.ui.records;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class NotificationsViewModel extends ViewModel {
+public class RecordsViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public NotificationsViewModel() {
+    public RecordsViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fragment");
+        mText.setValue(" ");
     }
 
     public LiveData<String> getText() {

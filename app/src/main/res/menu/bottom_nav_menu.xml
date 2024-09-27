@@ -12,9 +12,9 @@
         android:title="@string/title_dashboard" />
 
     <item
-        android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/title_notifications" />
+        android:id="@+id/navigation_records"
+        android:icon="@drawable/ic_records_foreground"
+        android:title="@string/Records" />
 
     <item
         android:id="@+id/navigation_another"
