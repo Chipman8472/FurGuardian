@@ -18,14 +18,14 @@
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="ca.furguardian.it.petwellness.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_records"
+        android:name="ca.furguardian.it.petwellness.ui.records.RecordsFragment"
+        android:label="@string/Records"
+        tools:layout="@layout/fragment_records" />
 
     <fragment
         android:id="@+id/navigation_another"
         android:name="ca.furguardian.it.petwellness.ui.another.AnotherFragment"
         android:label="@string/title_another"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_records" />
 </navigation>

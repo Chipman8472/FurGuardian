@@ -2,7 +2,7 @@
     <string name="app_name">FurGuardian</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="Records">Records</string>
     <string name="another">Another</string>
     <string name="title_another">Another</string>
 </resources>
