@@ -4,11 +4,12 @@
 	     Tevadi Brookes - N01582563
 -->
 <resources>
-    <string name="app_name">FurGuardian</string>
+    <string name="app_name" translatable="false">FurGuardian</string>
     <string name="title_home">Home</string>
     <string name="title_health">Health</string>
     <string name="title_notifications">Notifications</string>
     <string name="another">Another</string>
     <string name="title_another">Another</string>
     <string name="hello">Hello</string>
+    <string name="healthfragtext">This is the Health fragment</string>
 </resources>

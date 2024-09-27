@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
+import ca.furguardian.it.petwellness.R;
 import ca.furguardian.it.petwellness.databinding.FragmentHealthBinding;
 
 public class HealthFragment extends Fragment {
@@ -23,14 +23,13 @@ public class HealthFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        HealthViewModel healthViewModel =
-                new ViewModelProvider(this).get(HealthViewModel.class);
 
         binding = FragmentHealthBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textHealth;
-        healthViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        textView.setText(R.string.healthfragtext);
+
         return root;
     }
 
