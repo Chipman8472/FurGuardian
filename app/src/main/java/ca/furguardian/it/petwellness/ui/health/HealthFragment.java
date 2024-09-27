@@ -1,4 +1,4 @@
-package ca.furguardian.it.petwellness.ui.Health;
+package ca.furguardian.it.petwellness.ui.health;
 
 //       Justin Chipman – N01598472
 //	     Imran Zafurallah - N01585098
