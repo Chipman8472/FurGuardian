@@ -10,21 +10,21 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import ca.furguardian.it.petwellness.databinding.FragmentDashboardBinding;
+import ca.furguardian.it.petwellness.databinding.FragmentAnotherBinding;
 
 public class AnotherFragment extends Fragment {
 
-    private FragmentDashboardBinding binding;
+    private FragmentAnotherBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         AnotherViewModel dashboardViewModel =
                 new ViewModelProvider(this).get(AnotherViewModel.class);
 
-        binding = FragmentDashboardBinding.inflate(inflater, container, false);
+        binding = FragmentAnotherBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textHealth;
+        final TextView textView = binding.textAnother;
         dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }

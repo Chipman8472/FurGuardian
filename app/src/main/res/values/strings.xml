@@ -1,3 +1,8 @@
+<!--     Justin Chipman – N01598472
+	     Imran Zafurallah - N01585098
+	     Zane Aransevia - N01351168
+	     Tevadi Brookes - N01582563
+-->
 <resources>
     <string name="app_name">FurGuardian</string>
     <string name="title_home">Home</string>
@@ -5,4 +10,5 @@
     <string name="title_notifications">Notifications</string>
     <string name="another">Another</string>
     <string name="title_another">Another</string>
+    <string name="hello">Hello</string>
 </resources>
