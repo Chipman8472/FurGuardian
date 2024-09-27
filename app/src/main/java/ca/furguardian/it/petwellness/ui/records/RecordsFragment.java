@@ -26,8 +26,8 @@ public class RecordsFragment extends Fragment {
         binding = FragmentRecordsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textRecords;
-        recordsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+//        final TextView textView = binding.textRecords;
+//        recordsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
