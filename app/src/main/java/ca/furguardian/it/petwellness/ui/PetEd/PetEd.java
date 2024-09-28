@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import ca.furguardian.it.petwellness.databinding.FragmentDashboardBinding;
+
 import ca.furguardian.it.petwellness.databinding.FragmentPetedBinding;
 
 public class PetEd extends Fragment {
