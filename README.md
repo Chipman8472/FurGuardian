@@ -20,7 +20,7 @@ and remote food dispensing, making it easier for pet owners to care for their pe
 **Insights:** Educational content about pet care and nutrition.
 
 ### Project Image
-![FurGuardian Logo](https://github.com/johncodeos-blog/CheckInternetAndroidExample/raw/master/screenshots/project_image.png)
+![FurGuardian Logo](images/Furguardian.jpg)
 
 ### Project Link
 [GitHub Repository](https://github.com/Chipman8472/FurGuardian.git)
