@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--Justin Chipman - RCB - N01598472-->
+<!--Imran Zafurallah - RCB - N01585098-->
+<!--Zane Aransevia - RCB - N01351168-->
+<!--Tevadi Brookes - RCC - N01582563-->
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -14,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="22dp"
         android:layout_marginTop="60dp"
-        android:text="Add Feeding Schedule"
+        android:text="@string/add_feeding_schedule"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,7 +33,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
-        android:hint="Time (e.g., 8:00 AM)"
+        android:hint="@string/time"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +44,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:hint="Meal Type (e.g., Dry Food)"
+        android:hint="@string/meal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editTextTime" />
@@ -50,7 +56,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:hint="Notes (optional)"
+        android:hint="@string/notes_optional"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -62,7 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="384dp"
-        android:text="Add Schedule"
+        android:text="@string/add_schedule"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -88,7 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Morning: 8:00 AM\nAfternoon: 1:00 PM\nEvening: 7:00 PM"
+            android:text="@string/schedule"
             android:textColor="#555555"
             android:textSize="18sp" />
 
@@ -104,7 +110,7 @@
         android:backgroundTint="#6200EE"
         android:elevation="4dp"
         android:padding="12dp"
-        android:text="Show Past Records"
+        android:text="@string/show_past_records"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"

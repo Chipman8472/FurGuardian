@@ -13,4 +13,11 @@
     <string name="title_another">Autre</string>
     <string name="hello">Bonjour</string>
     <string name="healthfragtext">Ceci est le fragment Sante\\</string>
+    <string name="add_feeding_schedule">Add Feeding Schedule</string>
+    <string name="time">Time (e.g., 8:00 AM)</string>
+    <string name="meal">Meal Type (e.g., Dry Food)</string>
+    <string name="notes_optional">Notes (optional)</string>
+    <string name="add_schedule">Add Schedule</string>
+    <string name="schedule">Morning: 8:00 AM\nAfternoon: 1:00 PM\nEvening: 7:00 PM</string>
+    <string name="show_past_records">Show Past Records</string>
 </resources>
