@@ -24,8 +24,8 @@
         tools:layout="@layout/fragment_records" />
 
     <fragment
-        android:id="@+id/navigation_another"
-        android:name="ca.furguardian.it.petwellness.ui.another.AnotherFragment"
-        android:label="@string/title_another"
-        tools:layout="@layout/fragment_records" />
+        android:id="@+id/navigation_peted"
+        android:name="ca.furguardian.it.petwellness.ui.PetEd.PetEd"
+        android:label="@string/title_peted"
+        tools:layout="@layout/fragment_peted" />
 </navigation>
