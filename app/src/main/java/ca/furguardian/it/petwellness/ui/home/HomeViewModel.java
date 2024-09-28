@@ -1,3 +1,7 @@
+//       Justin Chipman - RCB – N01598472
+//	     Imran Zafurallah - RCB - N01585098
+//	     Zane Aransevia - RCB- N01351168
+//	     Tevadi Brookes - RCC - N01582563
 package ca.furguardian.it.petwellness.ui.home;
 
 import androidx.lifecycle.LiveData;
@@ -10,7 +14,7 @@ public class HomeViewModel extends ViewModel {
 
     public HomeViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+
     }
 
     public LiveData<String> getText() {
