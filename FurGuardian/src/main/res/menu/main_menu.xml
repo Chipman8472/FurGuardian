@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/action_temp1"
-        android:title="Temp"
-        android:icon="@drawable/ic_action_name"
-        app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_temp2"
-        android:title="Temp"
-        android:icon="@drawable/ic_action_name"
-        app:showAsAction="always" />
+        android:id="@+id/action_profile"
+        android:icon="@drawable/dog_silhouette"
+        android:title="Pet Profile"
+        app:showAsAction="always|withText" />
+    <item
+        android:id="@+id/action_reminders"
+        android:title="Reminders"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        app:showAsAction="collapseActionView" />
 
     <item
-        android:id="@+id/action_temp3"
-        android:title="Temp"
-        android:icon="@drawable/ic_action_name"
-        app:showAsAction="always" />
+        android:id="@+id/action_emergency"
+        android:title="Emergency Contacts"
+        android:icon="@drawable/emergency_icon"
+        app:showAsAction="collapseActionView" />
 
     <item
-        android:id="@+id/action_temp4"
-        android:title="Temp"
-        android:icon="@drawable/ic_action_name"
-        app:showAsAction="always" />
+        android:id="@+id/action_settings"
+        android:title="Settings"
+        android:icon="@drawable/settings_icon"
+        app:showAsAction="collapseActionView" />
 </menu>

@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.splashscreen.SplashScreen;
@@ -21,11 +23,15 @@ import ca.furguardian.it.petwellness.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private MenuFunction menufunction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Initialize the SplashScreen using the system's SplashScreen API
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
+
+        // Initialize the menu handler
+        menufunction = new MenuFunction();
 
         // Customize the splash screen duration to last for 3 seconds
         splashScreen.setKeepOnScreenCondition(() -> {
@@ -82,5 +88,14 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // Delegate the menu item selection to the menu handler
+        if (menufunction.handleMenuItemSelection(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
