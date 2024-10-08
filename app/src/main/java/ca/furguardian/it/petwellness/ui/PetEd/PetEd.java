@@ -48,8 +48,17 @@ public class PetEd extends Fragment {
                 "Exercise Needs"
         );
 
+        // Corresponding URLs for each topic
+        List<String> petEducationUrls = Arrays.asList(
+                "https://www.chewy.com/ca/s?query=pet%20food&utm_source=google&utm_medium=cpc&utm_campaign=20526903563&utm_content=154065940540&gad_source=1&gclid=EAIaIQobChMI3PKMzMD_iAMVby7UAR2qwBgkEAAYASAAEgJcuvD_BwE",
+                "https://hastingsvet.com/six-helpful-grooming-tips-for-your-dog-or-cat/",
+                "https://example.com/vaccination-schedule",
+                "https://www.youtube.com/playlist?list=PL1wCnaQRu4BG_RhOZaT4UNspBbRnf4IvJ",
+                "https://www.youtube.com/watch?v=PzsrsRRWZYU"
+        );
+
         // Set the adapter
-        adapter = new PetEdAdapter(petEducationTopics);
+        adapter = new PetEdAdapter(petEducationTopics,  petEducationUrls, getContext());
         recyclerView.setAdapter(adapter);
 
         return root;
