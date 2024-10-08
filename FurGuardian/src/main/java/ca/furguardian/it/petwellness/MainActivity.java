@@ -1,6 +1,7 @@
 package ca.furguardian.it.petwellness;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -19,19 +20,16 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import ca.furguardian.it.petwellness.databinding.ActivityMainBinding;
+import ca.furguardian.it.petwellness.ui.menu.RemindersFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-    private MenuFunction menufunction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Initialize the SplashScreen using the system's SplashScreen API
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
-
-        // Initialize the menu handler
-        menufunction = new MenuFunction();
 
         // Customize the splash screen duration to last for 3 seconds
         splashScreen.setKeepOnScreenCondition(() -> {
@@ -92,10 +90,23 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        // Delegate the menu item selection to the menu handler
-        if (menufunction.handleMenuItemSelection(item)) {
+        if (item.getItemId() == R.id.action_profile) {
+            // Handle profile action
             return true;
+        } else if (item.getItemId() == R.id.action_reminders) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.nav_host_fragment_activity_main, new RemindersFragment())
+                    .addToBackStack(null)  // Optional for back navigation
+                    .commit();
+            return true;
+        } else if (item.getItemId() == R.id.action_emergency) {
+            // Handle emergency action
+            return true;
+        } else if (item.getItemId() == R.id.action_settings) {
+            // Handle settings action
+            return true;
+        } else {
+            return false;
         }
-        return super.onOptionsItemSelected(item);
     }
 }
