@@ -28,4 +28,6 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="welcome_message">Welcome to our home page. We are currently under construction.</string>
+    <string name="health_message">This is our health page that will be dedicated to tacking health markers. currently under construction</string>
 </resources>

@@ -29,8 +29,8 @@ public class HealthFragment extends Fragment {
         binding = FragmentHealthBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textHealth;
-        textView.setText(R.string.healthfragtext);
+
+
 
         return root;
     }
