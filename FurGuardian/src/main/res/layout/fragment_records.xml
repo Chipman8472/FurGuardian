@@ -1,123 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!--Justin Chipman - RCB - N01598472-->
-<!--Imran Zafurallah - RCB - N01585098-->
-<!--Zane Aransevia - RCB - N01351168-->
-<!--Tevadi Brookes - RCC - N01582563-->
-
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey"
+    android:background="#F5E2C4"
     android:padding="16dp"
     tools:context=".ui.records.RecordsFragment">
 
+    <!-- Top Guideline -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <!-- Bottom Guideline -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <!-- Text for Feeding Schedule -->
     <TextView
         android:id="@+id/textRecords"
-        android:layout_width="379dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
-        android:layout_marginTop="60dp"
         android:text="@string/add_feeding_schedule"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guidelineTop"
+    android:layout_marginTop="16dp" />
 
+    <!-- ImageView Section -->
+    <ImageView
+        android:id="@+id/image_header"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/record"
+        app:layout_constraintTop_toBottomOf="@id/textRecords"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Time Input Field -->
     <EditText
         android:id="@+id/editTextTime"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
         android:hint="@string/time"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:background="@drawable/rounded_edittext_background"
+        android:padding="16dp"
+        android:backgroundTint="#FFFFFF"
+        android:textColor="#000000"
+        android:textColorHint="#888888"
+        android:elevation="4dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textRecords" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image_header"
+        android:layout_marginTop="16dp" />
 
+    <!-- Meal Type Input Field -->
     <EditText
         android:id="@+id/editTextMealType"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:hint="@string/meal"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/rounded_edittext_background"
+        android:padding="16dp"
+        android:backgroundTint="#FFFFFF"
+        android:textColor="#000000"
+        android:textColorHint="#888888"
+        android:elevation="4dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextTime" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextTime"
+        android:layout_marginTop="16dp" />
 
-    <!-- Feeding Schedule CardView for better visual grouping -->
-
+    <!-- Notes Input Field -->
     <EditText
         android:id="@+id/editTextNotes"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:hint="@string/notes_optional"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:background="@drawable/rounded_edittext_background"
+        android:padding="16dp"
+        android:backgroundTint="#FFFFFF"
+        android:textColor="#000000"
+        android:textColorHint="#888888"
+        android:elevation="4dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextMealType" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextMealType"
+        android:layout_marginTop="16dp" />
 
+    <!-- Add Schedule Button -->
     <Button
         android:id="@+id/buttonAddSchedule"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="384dp"
         android:text="@string/add_schedule"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:background="@drawable/rounded_button_background"
+        android:backgroundTint="#A67C55"
+        android:textColor="#FFFFFF"
+        android:padding="16dp"
+        android:elevation="6dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextNotes"
+        android:layout_marginTop="24dp" />
 
-    <!-- Button to Show Past Records -->
-
+    <!-- Feeding Schedule Card -->
     <androidx.cardview.widget.CardView
-        android:layout_width="380dp"
-        android:layout_height="87dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:elevation="4dp"
-        app:cardCornerRadius="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:cardCornerRadius="16dp"
+        android:backgroundTint="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonAddSchedule">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonAddSchedule"
+        android:layout_marginTop="24dp">
 
-        <!-- Feeding Schedule Information -->
+        <!-- Feeding Schedule Text -->
         <TextView
             android:id="@+id/textFeedingSchedule"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:padding="16dp"
             android:text="@string/schedule"
             android:textColor="#555555"
-            android:textSize="18sp" />
-
+            android:textSize="18sp"
+            android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 
+    <!-- Show Past Records Button -->
     <Button
         android:id="@+id/buttonShowLogs"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="622dp"
-        android:layout_marginBottom="40dp"
-        android:backgroundTint="#6200EE"
-        android:elevation="4dp"
-        android:padding="12dp"
         android:text="@string/show_past_records"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:background="@drawable/rounded_button_background"
+        android:backgroundTint="#A67C55"
+        android:padding="16dp"
+        android:elevation="6dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guidelineBottom"
+    android:layout_marginTop="24dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
