@@ -1,22 +1,18 @@
 package ca.furguardian.it.petwellness;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.splashscreen.SplashScreen;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import ca.furguardian.it.petwellness.databinding.ActivityMainBinding;
-import ca.furguardian.it.petwellness.ui.ui.login.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,21 +20,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Initialize the SplashScreen using the system's SplashScreen API
-        SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
-
-        // Customize the splash screen duration to last for 3 seconds
-        splashScreen.setKeepOnScreenCondition(() -> {
-            // Delay splash screen for 3 seconds using Handler
-            new Handler().postDelayed(() -> {
-                // After splash screen, redirect to LoginActivity
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish(); // Close MainActivity so it doesn't remain in the back stack
-            }, 3000); // 3000 ms = 3 seconds
-            return true;  // Keep the splash screen until the handler completes the delay
-        });
-
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
