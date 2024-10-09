@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!--Justin Chipman - N01598472-->
+<!--Imran Zafurallah - N01585098-->
+<!--Zane Aransevia - N01351168-->
+<!--Tevadi Brookes - N01582563-->
+
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,12 +14,6 @@
     android:padding="16dp">
 
     <!-- Toggle Button for Dark Mode -->
-
-    <!-- Toggle Button for Lock Screen Orientation -->
-
-    <!-- Toggle Button for Allow Notifications -->
-
-    <!-- Toggle Button for French/English Translation -->
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/toggleDarkMode"
@@ -29,6 +28,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Toggle Button for Lock Screen Orientation -->
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/toggleLockOrientation"
         android:layout_width="wrap_content"
@@ -43,6 +43,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toggleDarkMode" />
 
+    <!-- Toggle Button for Allow Notifications -->
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/toggleNotifications"
         android:layout_width="wrap_content"
@@ -56,6 +57,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toggleLockOrientation" />
 
+    <!-- Toggle Button for French/English Translation -->
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/toggleTranslation"
         android:layout_width="wrap_content"
