@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#FFFFFF">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/peted_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pet Details"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:textColor="#333333"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Pet Image or Icon -->
+    <ImageView
+        android:id="@+id/peted_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/edu"
+    app:layout_constraintTop_toBottomOf="@id/peted_title"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginBottom="24dp" />
+
+    <!-- Pet Details Section -->
+    <TextView
+        android:id="@+id/peted_detail_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Breed: Golden Retriever"
+        android:textSize="18sp"
+        android:textColor="#333333"
+        app:layout_constraintTop_toBottomOf="@id/peted_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp" />
+
+    <TextView
+        android:id="@+id/peted_detail_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Age: 5 years"
+        android:textSize="18sp"
+        android:textColor="#333333"
+        app:layout_constraintTop_toBottomOf="@id/peted_detail_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/peted_detail_3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Weight: 30 kg"
+        android:textSize="18sp"
+        android:textColor="#333333"
+        app:layout_constraintTop_toBottomOf="@id/peted_detail_2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <!-- Additional Info or Action Button -->
+    <Button
+        android:id="@+id/peted_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="View More Details"
+        app:layout_constraintTop_toBottomOf="@id/peted_detail_3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"
+        android:padding="16dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

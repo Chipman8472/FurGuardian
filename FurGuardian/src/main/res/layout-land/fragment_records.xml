@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#FFFFFF">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/records_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Medical Records"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:textColor="#333333"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Record Icon or Image -->
+    <ImageView
+        android:id="@+id/records_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/record"
+    app:layout_constraintTop_toBottomOf="@id/records_title"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginBottom="24dp" />
+
+    <!-- Medical Records Info Section -->
+    <TextView
+        android:id="@+id/records_detail_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Vaccinations: Up to date"
+        android:textSize="18sp"
+        android:textColor="#333333"
+        app:layout_constraintTop_toBottomOf="@id/records_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp" />
+
+    <TextView
+        android:id="@+id/records_detail_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Recent Vet Visit: 1 month ago"
+        android:textSize="18sp"
+        android:textColor="#333333"
+        app:layout_constraintTop_toBottomOf="@id/records_detail_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/records_detail_3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Allergies: None"
+        android:textSize="18sp"
+        android:textColor="#333333"
+        app:layout_constraintTop_toBottomOf="@id/records_detail_2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <!-- Action Button for More Details -->
+    <Button
+        android:id="@+id/records_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="View Full Medical History"
+        app:layout_constraintTop_toBottomOf="@id/records_detail_3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"
+        android:padding="16dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

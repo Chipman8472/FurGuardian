@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#FFFFFF">
+
+    <!-- Title or Header -->
+    <TextView
+        android:id="@+id/health_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Health Overview"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:textColor="#333333"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Image or Icon (if applicable) -->
+    <ImageView
+        android:id="@+id/health_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/healthguardian"
+    app:layout_constraintTop_toBottomOf="@id/health_title"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginBottom="24dp" />
+
+    <!-- Health Details Section -->
+    <TextView
+        android:id="@+id/health_detail_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Heart Rate: 75 BPM"
+        android:textSize="18sp"
+        android:textColor="#333333"
+        app:layout_constraintTop_toBottomOf="@id/health_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp" />
+
+    <TextView
+        android:id="@+id/health_detail_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Blood Pressure: 120/80"
+        android:textSize="18sp"
+        android:textColor="#333333"
+        app:layout_constraintTop_toBottomOf="@id/health_detail_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/health_detail_3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Hydration Level: 60%"
+        android:textSize="18sp"
+        android:textColor="#333333"
+        app:layout_constraintTop_toBottomOf="@id/health_detail_2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <!-- Additional Details or Buttons if Necessary -->
+    <Button
+        android:id="@+id/health_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="View More"
+        app:layout_constraintTop_toBottomOf="@id/health_detail_3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"
+        android:padding="16dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
