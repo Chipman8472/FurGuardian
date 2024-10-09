@@ -50,14 +50,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of IDs because each
-        // menu should be considered as top-level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_health, R.id.navigation_records, R.id.navigation_peted)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(binding.navView, navController);
+        NavigationUI.setupWithNavController(navView, navController);
+
     }
 
     @Override
@@ -93,14 +92,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         if (item.getItemId() == R.id.action_profile) {
             // Handle profile action
             return true;
         } else if (item.getItemId() == R.id.action_reminders) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.nav_host_fragment_activity_main, new RemindersFragment())
-                    .addToBackStack(null)  // Optional for back navigation
-                    .commit();
+            navController.navigate(R.id.remindersFragment);  // Use NavController for fragment navigation
             return true;
         } else if (item.getItemId() == R.id.action_emergency) {
             // Handle emergency action
@@ -112,4 +109,5 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
+
 }

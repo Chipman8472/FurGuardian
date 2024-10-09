@@ -28,4 +28,10 @@
         android:name="ca.furguardian.it.petwellness.ui.peted.PetEd"
         android:label="@string/title_peted"
         tools:layout="@layout/fragment_peted" />
+
+    <fragment
+        android:id="@+id/remindersFragment"
+        android:name="ca.furguardian.it.petwellness.ui.menu.RemindersFragment"
+        android:label="Reminders" />
+
 </navigation>
