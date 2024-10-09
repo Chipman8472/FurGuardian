@@ -1,18 +1,30 @@
 package ca.furguardian.it.petwellness;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.splashscreen.SplashScreen;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import ca.furguardian.it.petwellness.databinding.ActivityMainBinding;
+import ca.furguardian.it.petwellness.ui.menu.RemindersFragment;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +36,18 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    "reminder_channel",
+                    "Reminder Notifications",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+            channel.setDescription("Channel for reminder notifications");
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of IDs because each
@@ -58,5 +82,34 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_profile) {
+            // Handle profile action
+            return true;
+        } else if (item.getItemId() == R.id.action_reminders) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.nav_host_fragment_activity_main, new RemindersFragment())
+                    .addToBackStack(null)  // Optional for back navigation
+                    .commit();
+            return true;
+        } else if (item.getItemId() == R.id.action_emergency) {
+            // Handle emergency action
+            return true;
+        } else if (item.getItemId() == R.id.action_settings) {
+            // Handle settings action
+            return true;
+        } else {
+            return false;
+        }
     }
 }
