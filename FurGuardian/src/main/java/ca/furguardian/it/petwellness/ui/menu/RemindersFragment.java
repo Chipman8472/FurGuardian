@@ -1,106 +1,159 @@
 package ca.furguardian.it.petwellness.ui.menu;
 
-import android.content.Context;
+import android.Manifest;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
+import android.widget.TimePicker;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.widget.Toast;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.content.ContextCompat;
+
+import java.util.Calendar;
+
+import ca.furguardian.it.petwellness.MainActivity;
+import ca.furguardian.it.petwellness.R;
 
 public class RemindersFragment extends Fragment {
 
-    private List<String> reminders;
-    private RecyclerView recyclerView;
-    private RemindersAdapter adapter;
+    private EditText reminderNameEditText;
+    private Button pickDateTimeButton, saveReminderButton;
+    private TextView selectedDateTimeTextView;
+
+    private int selectedYear, selectedMonth, selectedDay, selectedHour, selectedMinute;
+    private Calendar selectedDateTime;
+
+    private NotificationManagerCompat notificationManager;
+
+    private final ActivityResultLauncher<String> requestNotificationPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    saveReminder();
+                } else {
+                    Toast.makeText(getContext(), "Notification permission is required to set reminders", Toast.LENGTH_SHORT).show();
+                }
+            });
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Create a simple layout programmatically
-        LinearLayout layout = new LinearLayout(getContext());
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(16, 16, 16, 16);
+        View view = inflater.inflate(R.layout.fragment_reminders, container, false);
 
-        Button addReminderButton = new Button(getContext());
-        addReminderButton.setText("Add Reminder");
-        layout.addView(addReminderButton);
+        reminderNameEditText = view.findViewById(R.id.reminder_name);
+        pickDateTimeButton = view.findViewById(R.id.pick_datetime_button);
+        saveReminderButton = view.findViewById(R.id.save_reminder_button);
+        selectedDateTimeTextView = view.findViewById(R.id.selected_datetime);
 
-        // Set up RecyclerView
-        recyclerView = new RecyclerView(getContext());
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        layout.addView(recyclerView);
+        notificationManager = NotificationManagerCompat.from(requireContext());
 
-        // Initialize reminders list
-        reminders = new ArrayList<>();
-        reminders.add("Feed the dog");
-        reminders.add("Give cat medicine");
-
-        // Set up the adapter
-        adapter = new RemindersAdapter(reminders);
-        recyclerView.setAdapter(adapter);
-
-        // Handle button click to add a new reminder
-        addReminderButton.setOnClickListener(v -> {
-            addNewReminder("New Reminder");  // Simulate adding a new reminder
+        pickDateTimeButton.setOnClickListener(v -> openDateTimePicker());
+        saveReminderButton.setOnClickListener(v -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                    requestNotificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS);
+                } else {
+                    saveReminder();
+                }
+            } else {
+                saveReminder();
+            }
         });
 
-        return layout;
+        return view;
     }
 
-    // Method to handle adding a new reminder
-    private void addNewReminder(String reminder) {
-        reminders.add(reminder);
-        adapter.notifyDataSetChanged();  // Refresh the RecyclerView
-        Toast.makeText(getContext(), "New reminder added", Toast.LENGTH_SHORT).show();
+    private void openDateTimePicker() {
+        final Calendar calendar = Calendar.getInstance();
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                getContext(),
+                (view, year, month, dayOfMonth) -> {
+                    selectedYear = year;
+                    selectedMonth = month;
+                    selectedDay = dayOfMonth;
+
+                    TimePickerDialog timePickerDialog = new TimePickerDialog(
+                            getContext(),
+                            (timeView, hourOfDay, minute) -> {
+                                selectedHour = hourOfDay;
+                                selectedMinute = minute;
+
+                                selectedDateTime = Calendar.getInstance();
+                                selectedDateTime.set(selectedYear, selectedMonth, selectedDay, selectedHour, selectedMinute);
+
+                                selectedDateTimeTextView.setText("Selected: " + selectedDateTime.getTime().toString());
+                            },
+                            calendar.get(Calendar.HOUR_OF_DAY),
+                            calendar.get(Calendar.MINUTE),
+                            true
+                    );
+                    timePickerDialog.show();
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+        );
+        datePickerDialog.show();
     }
 
-    // Adapter class defined within the same file
-    private static class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.ReminderViewHolder> {
-
-        private final List<String> reminders;
-
-        public RemindersAdapter(List<String> reminders) {
-            this.reminders = reminders;
+    private void saveReminder() {
+        String reminderName = reminderNameEditText.getText().toString();
+        if (reminderName.isEmpty() || selectedDateTime == null) {
+            Toast.makeText(getContext(), "Please enter a reminder name and select a date/time", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        @NonNull
-        @Override
-        public ReminderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            TextView reminderText = new TextView(parent.getContext());
-            reminderText.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            reminderText.setPadding(16, 16, 16, 16);
-            return new ReminderViewHolder(reminderText);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ReminderViewHolder holder, int position) {
-            holder.reminderText.setText(reminders.get(position));
-        }
-
-        @Override
-        public int getItemCount() {
-            return reminders.size();
-        }
-
-        static class ReminderViewHolder extends RecyclerView.ViewHolder {
-            TextView reminderText;
-
-            public ReminderViewHolder(@NonNull TextView itemView) {
-                super(itemView);
-                reminderText = itemView;
+        // Check notification permission for Android 13+ (TIRAMISU)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                // Request notification permission
+                requestNotificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS);
+                return;  // Exit here; we'll handle the permission result in the ActivityResultLauncher
             }
         }
+
+        // If permission is already granted or running on older Android versions
+        // Schedule notification using AlarmManager, WorkManager, or other timing solutions (not shown here).
+        sendNotification(reminderName);
+    }
+
+
+    private void sendNotification(String reminderName) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(requireContext(), "reminder_channel")
+                .setSmallIcon(R.drawable.cat_silhouette)
+                .setContentTitle("Reminder")
+                .setContentText(reminderName)
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        notificationManager.notify(1, builder.build());
+
+        Toast.makeText(getContext(), "Reminder saved!", Toast.LENGTH_SHORT).show();
     }
 }

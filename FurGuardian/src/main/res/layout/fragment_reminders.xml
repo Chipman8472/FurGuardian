@@ -1,20 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- Reminder Name -->
+    <EditText
+        android:id="@+id/reminder_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter reminder name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="16dp"
+        android:layout_marginTop="16dp" />
+
+    <!-- Date/Time Picker Button -->
     <Button
-        android:id="@+id/add_reminder_button"
+        android:id="@+id/pick_datetime_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Pick Date and Time"
+        app:layout_constraintTop_toBottomOf="@id/reminder_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp" />
+
+    <!-- Selected Date/Time Display -->
+    <TextView
+        android:id="@+id/selected_datetime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Reminder"
-        android:layout_marginBottom="16dp" />
+        android:text="No date selected"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/pick_datetime_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/reminder_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-</LinearLayout>
+    <!-- Save Reminder Button -->
+    <Button
+        android:id="@+id/save_reminder_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Save Reminder"
+        app:layout_constraintTop_toBottomOf="@id/selected_datetime"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"
+        android:padding="16dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,10 @@
 package ca.furguardian.it.petwellness;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -22,6 +25,7 @@ import androidx.navigation.ui.NavigationUI;
 import ca.furguardian.it.petwellness.databinding.ActivityMainBinding;
 import ca.furguardian.it.petwellness.ui.menu.RemindersFragment;
 
+
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
@@ -40,6 +44,19 @@ public class MainActivity extends AppCompatActivity {
             }, 3000); // 3000 ms = 3 seconds
             return true;  // Keep the splash screen until the handler completes the delay
         });
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    "reminder_channel",
+                    "Reminder Notifications",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+            channel.setDescription("Channel for reminder notifications");
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
 
         super.onCreate(savedInstanceState);
 
