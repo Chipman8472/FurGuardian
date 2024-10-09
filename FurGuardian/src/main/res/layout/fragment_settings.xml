@@ -9,52 +9,64 @@
     android:padding="16dp">
 
     <!-- Toggle Button for Dark Mode -->
-    <Switch
-        android:id="@+id/toggleDarkMode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dark Mode"
-        android:checked="false"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
 
     <!-- Toggle Button for Lock Screen Orientation -->
-    <Switch
-        android:id="@+id/toggleLockOrientation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Lock Screen Orientation"
-        android:checked="false"
-        app:layout_constraintTop_toBottomOf="@id/toggleDarkMode"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
 
     <!-- Toggle Button for Allow Notifications -->
 
     <!-- Toggle Button for French/English Translation -->
-    <Switch
-        android:id="@+id/toggleNotifications"
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/toggleDarkMode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="124dp"
         android:checked="false"
-        android:text="Allow Notifications"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:text="Dark Mode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/toggleLockOrientation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="108dp"
+        android:checked="false"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:text="Lockscreen Orientation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toggleDarkMode" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/toggleNotifications"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
+        android:checked="false"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:text="Allow Notifications"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toggleLockOrientation" />
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/toggleTranslation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="92dp"
         android:checked="false"
-        android:text="French/English Translation"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:text="Translation"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toggleNotifications" />
 
