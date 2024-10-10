@@ -4,16 +4,22 @@
 //	     Tevadi Brookes - RCC - N01582563
 package ca.furguardian.it.petwellness.ui.home;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
+import ca.furguardian.it.petwellness.R;
 import ca.furguardian.it.petwellness.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment {
@@ -22,15 +28,40 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        return root;
+
+
+        // Override back button functionality for RemindersFragment
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // This will show the "Exit App" dialog unless overridden in a fragment
+                new AlertDialog.Builder(requireContext())
+                        .setIcon(R.mipmap.logo)
+                        .setTitle("Exit App")
+                        .setMessage("Are you sure you want to exit?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                requireActivity().finish();
+
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();  // Navigate directly to the home page
+            }
+        });
+
+        return view;
     }
 
     @Override

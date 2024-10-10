@@ -1,12 +1,15 @@
 package ca.furguardian.it.petwellness.ui.peted;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.Arrays;
 import java.util.List;
 
+import ca.furguardian.it.petwellness.R;
 import ca.furguardian.it.petwellness.databinding.FragmentPetedBinding;
 
 public class PetEd extends Fragment {
@@ -34,6 +38,32 @@ public class PetEd extends Fragment {
         // Set the text from ViewModel
         final TextView textView = binding.textPeted;
         petEdViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
+        // Override back button functionality for RemindersFragment
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // This will show the "Exit App" dialog unless overridden in a fragment
+                new AlertDialog.Builder(requireContext())
+                        .setIcon(R.mipmap.logo)
+                        .setTitle("Exit App")
+                        .setMessage("Are you sure you want to exit?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                requireActivity().finish();
+
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();  // Navigate directly to the home page
+            }
+        });
 
         // Initialize RecyclerView
         recyclerView = binding.recyclerView;
@@ -69,4 +99,6 @@ public class PetEd extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
+
 }
