@@ -6,9 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import ca.furguardian.it.petwellness.R;
 
@@ -48,6 +51,16 @@ public class SettingsFragment extends Fragment {
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
+
+        // Override back button functionality for RemindersFragment
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Navigate back to the home page instead of exiting the app
+                NavController navController = Navigation.findNavController(view);
+                navController.navigate(R.id.navigation_home);  // Navigate directly to the home page
+            }
+        });
 
         // Add listener for toggle switch
         toggleDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
