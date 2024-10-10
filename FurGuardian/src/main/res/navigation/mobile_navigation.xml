@@ -34,4 +34,9 @@
         android:name="ca.furguardian.it.petwellness.ui.menu.RemindersFragment"
         android:label="Reminders" />
 
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="ca.furguardian.it.petwellness.ui.menu.SettingsFragment"
+        android:label="Settings" />
+
 </navigation>

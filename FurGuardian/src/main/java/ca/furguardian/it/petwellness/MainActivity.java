@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
             // Handle emergency action
             return true;
         } else if (item.getItemId() == R.id.action_settings) {
-            // Handle settings action
+            navController.navigate(R.id.settingsFragment);
             return true;
         } else {
             return super.onOptionsItemSelected(item);

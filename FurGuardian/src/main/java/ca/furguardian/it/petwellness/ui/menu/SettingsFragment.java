@@ -1,8 +1,3 @@
-//Justin Chipman - N01598472
-//Imran Zafurallah - N01585098
-//Zane Aransevia - N01351168
-//Tevadi Brookes - N01582563
-
 package ca.furguardian.it.petwellness.ui.menu;
 
 import android.content.SharedPreferences;
@@ -10,16 +5,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
 import ca.furguardian.it.petwellness.R;
 
 public class SettingsFragment extends Fragment {
 
-    private Switch toggleDarkMode;
+    private SwitchCompat toggleDarkMode;  // Use SwitchCompat instead of Switch
 
     public SettingsFragment() {
         // Required empty public constructor
