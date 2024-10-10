@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--Justin Chipman - N01598472-->
+<!--Imran Zafurallah - N01585098-->
+<!--Zane Aransevia - N01351168-->
+<!--Tevadi Brookes - N01582563-->
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5E2C4"
+    android:padding="16dp">
+
+    <!-- Toggle Button for Dark Mode -->
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/toggleDarkMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="124dp"
+        android:checked="false"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:text="Dark Mode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Toggle Button for Lock Screen Orientation -->
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/toggleLockOrientation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="108dp"
+        android:checked="false"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:text="Lockscreen Orientation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toggleDarkMode" />
+
+    <!-- Toggle Button for Allow Notifications -->
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/toggleNotifications"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
+        android:checked="false"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:text="Allow Notifications"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toggleLockOrientation" />
+
+    <!-- Toggle Button for French/English Translation -->
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/toggleTranslation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="92dp"
+        android:checked="false"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:text="Translation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toggleNotifications" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,4 +30,6 @@
     <string name="login_failed">"Login failed"</string>
     <string name="welcome_message">Welcome to our home page. We are currently under construction.</string>
     <string name="health_message">This is our health page that will be dedicated to tacking health markers. currently under construction</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
