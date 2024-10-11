@@ -64,7 +64,7 @@
         android:hint="@string/time"
         android:background="@drawable/rounded_edittext_background"
         android:padding="16dp"
-        android:backgroundTint="#FFFFFF"
+
         android:textColor="@color/black"
         android:textColorHint="#888888"
         android:elevation="4dp"
@@ -81,7 +81,7 @@
         android:hint="@string/meal"
         android:background="@drawable/rounded_edittext_background"
         android:padding="16dp"
-        android:backgroundTint="#FFFFFF"
+
         android:textColor="@color/black"
         android:textColorHint="#888888"
         android:elevation="4dp"
@@ -98,7 +98,7 @@
         android:hint="@string/notes_optional"
         android:background="@drawable/rounded_edittext_background"
         android:padding="16dp"
-        android:backgroundTint="#FFFFFF"
+
         android:textColor="@color/black"
         android:textColorHint="#888888"
         android:elevation="4dp"
