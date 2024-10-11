@@ -1,5 +1,8 @@
 # FurGuardian App
 
+### Loggin in
+Enter an username and password that is not already in the data base and you will be logged in. Alternatively if you have already signed up enter your username and password that you registered with.
+
 ### Team Members
 Justin Chipman – N01598472
 Imran Zafurallah - N01585098
