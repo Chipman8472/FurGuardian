@@ -1,75 +1,83 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<!--Justin Chipman - N01598472-->
-<!--Imran Zafurallah - N01585098-->
-<!--Zane Aransevia - N01351168-->
-<!--Tevadi Brookes - N01582563-->
-
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5E2C4"
+    android:background="@color/fragment_background"
     android:padding="16dp">
 
-    <!-- Toggle Button for Dark Mode -->
+    <!-- ImageView for the settings header -->
+    <ImageView
+        android:id="@+id/image_header"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/settings"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toTopOf="@id/toggleDarkMode"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHeight_percent="0.3"
+    app:layout_constraintWidth_percent="0.7"
+    android:layout_marginBottom="16dp"/>
 
+    <!-- Toggle Button for Dark Mode -->
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/toggleDarkMode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="124dp"
         android:checked="false"
         android:minWidth="48dp"
         android:minHeight="48dp"
         android:text="@string/dark_mode"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/text_color"
+        app:layout_constraintTop_toBottomOf="@id/image_header"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
 
     <!-- Toggle Button for Lock Screen Orientation -->
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/toggleLockOrientation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="108dp"
         android:checked="false"
         android:minWidth="48dp"
         android:minHeight="48dp"
+        android:textColor="@color/text_color"
         android:text="@string/lockscreen_orientation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintTop_toBottomOf="@id/toggleDarkMode"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toggleDarkMode" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
 
     <!-- Toggle Button for Allow Notifications -->
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/toggleNotifications"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
         android:checked="false"
         android:minWidth="48dp"
         android:minHeight="48dp"
+        android:textColor="@color/text_color"
         android:text="@string/allow_notifications"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toggleLockOrientation"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toggleLockOrientation" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
 
-    <!-- Toggle Button for French/English Translation -->
+    <!-- Toggle Button for Location -->
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/toggleLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
         android:checked="false"
         android:minWidth="48dp"
         android:minHeight="48dp"
         android:text="@string/location"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        android:textColor="@color/text_color"
+        app:layout_constraintTop_toBottomOf="@id/toggleNotifications"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toggleNotifications" />
-
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

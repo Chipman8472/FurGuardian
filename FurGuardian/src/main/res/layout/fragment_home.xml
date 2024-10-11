@@ -9,7 +9,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5E2C4"
+    android:background="@color/fragment_background"
     tools:context=".ui.home.HomeFragment">
 
     <!-- ImageView Section -->
@@ -32,7 +32,7 @@ android:layout_height="wrap_content"
 android:text="@string/welcome_message"
     android:textSize="20sp"
     android:textStyle="bold"
-    android:textColor="#000000"
+    android:textColor="@color/text_color"
     android:textAlignment="center"
     app:layout_constraintTop_toBottomOf="@id/image_home"
     app:layout_constraintStart_toStartOf="parent"

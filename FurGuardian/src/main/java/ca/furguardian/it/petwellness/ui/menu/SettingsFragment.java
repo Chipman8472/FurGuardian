@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -22,7 +23,7 @@ import ca.furguardian.it.petwellness.R;
 public class SettingsFragment extends Fragment {
 
     private SwitchCompat toggleDarkMode;  // Use SwitchCompat instead of Switch
-
+    private ImageView settingImage;
     public SettingsFragment() {
         // Required empty public constructor
     }
@@ -43,6 +44,9 @@ public class SettingsFragment extends Fragment {
 
         // Initialize the toggle switch
         toggleDarkMode = view.findViewById(R.id.toggleDarkMode);
+        settingImage = view.findViewById(R.id.image_header);
+
+
 
         // Load the saved preference for dark mode
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("userPrefs", getContext().MODE_PRIVATE);

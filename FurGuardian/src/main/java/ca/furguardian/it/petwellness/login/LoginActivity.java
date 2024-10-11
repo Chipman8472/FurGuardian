@@ -1,6 +1,10 @@
 package ca.furguardian.it.petwellness.login;
 
+import static java.security.AccessController.getContext;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Button;
@@ -8,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.splashscreen.SplashScreen;
 
 import com.google.firebase.database.DataSnapshot;
@@ -38,6 +43,18 @@ public class LoginActivity extends AppCompatActivity {
             }, 3000); // 3000 ms = 3 seconds
             return false;  // Keep splash screen until the handler completes the delay
         });
+
+        // Load the saved preference for dark mode
+        SharedPreferences sharedPreferences = this.getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        boolean isDarkModeOn = sharedPreferences.getBoolean("darkMode", false);
+
+
+        // Set the theme based on the preference
+        if (isDarkModeOn) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);

@@ -7,7 +7,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/fragment_background">
 
     <!-- Reminder Name -->
     <EditText
@@ -15,6 +16,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/enter_reminder_name"
+        android:textColor="@color/black"
+        android:background="@drawable/rounded_edittext_background"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,6 +30,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/pick_date_and_time"
+        android:textColor="@color/text_color"
+        android:background="@drawable/rounded_button_background"
         app:layout_constraintTop_toBottomOf="@id/reminder_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,6 +44,7 @@
         android:layout_height="wrap_content"
         android:text="@string/no_date_selected"
         android:textSize="16sp"
+        android:textColor="@color/text_color"
         app:layout_constraintTop_toBottomOf="@id/pick_datetime_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,6 +56,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/save_reminder"
+        android:background="@drawable/rounded_button_background"
+        android:textColor="@color/text_color"
         app:layout_constraintTop_toBottomOf="@id/selected_datetime"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

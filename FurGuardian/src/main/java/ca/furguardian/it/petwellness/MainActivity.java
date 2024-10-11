@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         ca.furguardian.it.petwellness.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+
+
         NotificationChannel channel = new NotificationChannel(
                 getString(R.string.reminder_channel),
                 getString(R.string.reminder_notifications),
