@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--Justin Chipman - N01598472-->
+<!--Imran Zafurallah - N01585098-->
+<!--Zane Aransevia - N01351168-->
+<!--Tevadi Brookes - N01582563-->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container"
@@ -24,7 +28,8 @@ android:src="@mipmap/logo_round"
 android:id="@+id/username"
 android:layout_width="0dp"
 android:layout_height="wrap_content"
-android:hint="Username"
+    android:autofillHints="Email"
+    android:hint="@string/username"
 android:backgroundTint="#FFFFFF"
     android:textColor="#000000"
     android:textColorHint="#888888"
@@ -43,7 +48,8 @@ android:backgroundTint="#FFFFFF"
 android:id="@+id/password"
 android:layout_width="0dp"
 android:layout_height="wrap_content"
-android:hint="Password"
+    android:autofillHints="Password"
+    android:hint="@string/password"
 android:backgroundTint="#FFFFFF"
 android:textColor="#000000"
 android:textColorHint="#888888"
@@ -62,7 +68,7 @@ app:layout_constraintEnd_toEndOf="parent" />
 android:id="@+id/loginButton"
 android:layout_width="0dp"
 android:layout_height="wrap_content"
-android:text="Login"
+android:text="@string/login"
 android:textColor="#FFFFFF"
 android:backgroundTint="#A67C55"
     android:padding="16dp"
@@ -88,7 +94,7 @@ android:backgroundTint="#A67C55"
         app:layout_constraintTop_toBottomOf="@id/loginButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="Register" />
+        android:text="@string/register" />
 
     <!-- Loading ProgressBar -->
     <ProgressBar

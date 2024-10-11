@@ -1,5 +1,8 @@
 package ca.furguardian.it.petwellness;
-
+//       Justin Chipman - RCB – N01598472
+//	     Imran Zafurallah - RCB - N01585098
+//	     Zane Aransevia - RCB- N01351168
+//	     Tevadi Brookes - RCC - N01582563
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.DialogInterface;
@@ -23,26 +26,22 @@ import ca.furguardian.it.petwellness.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ActivityMainBinding binding;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        ca.furguardian.it.petwellness.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(
-                    "reminder_channel",
-                    "Reminder Notifications",
-                    NotificationManager.IMPORTANCE_HIGH
-            );
-            channel.setDescription("Channel for reminder notifications");
+        NotificationChannel channel = new NotificationChannel(
+                getString(R.string.reminder_channel),
+                getString(R.string.reminder_notifications),
+                NotificationManager.IMPORTANCE_HIGH
+        );
+        channel.setDescription(getString(R.string.channel_for_reminder_notifications));
 
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(

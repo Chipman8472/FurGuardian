@@ -1,6 +1,13 @@
 package ca.furguardian.it.petwellness.ui.menu;
-
+//       Justin Chipman - RCB – N01598472
+//	     Imran Zafurallah - RCB - N01585098
+//	     Zane Aransevia - RCB- N01351168
+//	     Tevadi Brookes - RCC - N01582563
+import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +20,7 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
@@ -29,6 +37,9 @@ public class RemindersFragment extends Fragment {
     private Button pickDateTimeButton, saveReminderButton;
     private TextView selectedDateTimeTextView;
     private NotificationManagerCompat notificationManager;
+    private Calendar reminderCalendar;
+
+    private static final int REQUEST_NOTIFICATION_PERMISSION = 1;
 
     @Nullable
     @Override
@@ -41,6 +52,7 @@ public class RemindersFragment extends Fragment {
         selectedDateTimeTextView = view.findViewById(R.id.selected_datetime);
 
         notificationManager = NotificationManagerCompat.from(requireContext());
+        reminderCalendar = Calendar.getInstance();
 
         pickDateTimeButton.setOnClickListener(v -> openDateTimePicker());
         saveReminderButton.setOnClickListener(v -> saveReminder());
@@ -64,7 +76,8 @@ public class RemindersFragment extends Fragment {
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 getContext(),
                 (view, year, month, dayOfMonth) -> {
-                    selectedDateTimeTextView.setText("Selected: " + dayOfMonth + "/" + (month + 1) + "/" + year);
+                    reminderCalendar.set(year, month, dayOfMonth);
+                    openTimePicker();
                 },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
@@ -73,21 +86,63 @@ public class RemindersFragment extends Fragment {
         datePickerDialog.show();
     }
 
+    private void openTimePicker() {
+        TimePickerDialog timePickerDialog = new TimePickerDialog(
+                getContext(),
+                (view, hourOfDay, minute) -> {
+                    reminderCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                    reminderCalendar.set(Calendar.MINUTE, minute);
+                    selectedDateTimeTextView.setText(getString(R.string.selected) + reminderCalendar.getTime().toString());
+                },
+                reminderCalendar.get(Calendar.HOUR_OF_DAY),
+                reminderCalendar.get(Calendar.MINUTE),
+                true
+        );
+        timePickerDialog.show();
+    }
+
     private void saveReminder() {
         String reminderName = reminderNameEditText.getText().toString();
         if (reminderName.isEmpty()) {
-            Toast.makeText(getContext(), "Please enter a reminder name", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.please_enter_a_reminder_name), Toast.LENGTH_SHORT).show();
             return;
         }
 
+        // Check notification permission
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                requestNotificationPermission();
+                return;
+            }
+        }
+
+        // Save reminder and trigger notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(requireContext(), "reminder_channel")
                 .setSmallIcon(R.drawable.cat_silhouette)
-                .setContentTitle("Reminder")
-                .setContentText(reminderName)
+                .setContentTitle(getString(R.string.reminder))
+                .setContentText(reminderName + getString(R.string.at) + reminderCalendar.getTime().toString())
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 
         notificationManager.notify(1, builder.build());
 
-        Toast.makeText(getContext(), "Reminder saved!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), getString(R.string.reminder_saved), Toast.LENGTH_SHORT).show();
+    }
+
+    private void requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, REQUEST_NOTIFICATION_PERMISSION);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_NOTIFICATION_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                saveReminder();
+            } else {
+                Toast.makeText(getContext(), getString(R.string.notification_permission_denied), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

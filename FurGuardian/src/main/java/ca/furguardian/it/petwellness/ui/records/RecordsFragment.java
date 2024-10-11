@@ -42,16 +42,16 @@ public class RecordsFragment extends Fragment {
                 // This will show the "Exit App" dialog unless overridden in a fragment
                 new AlertDialog.Builder(requireContext())
                         .setIcon(R.mipmap.logo)
-                        .setTitle("Exit App")
-                        .setMessage("Are you sure you want to exit?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        .setTitle(R.string.exit_app)
+                        .setMessage(R.string.are_you_sure_you_want_to_exit)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 requireActivity().finish();
 
                             }
                         })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();

@@ -1,5 +1,8 @@
 package ca.furguardian.it.petwellness.ui.peted;
-
+//       Justin Chipman - RCB – N01598472
+//	     Imran Zafurallah - RCB - N01585098
+//	     Zane Aransevia - RCB- N01351168
+//	     Tevadi Brookes - RCC - N01582563
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -40,7 +43,7 @@ public class PetEdAdapter extends RecyclerView.Adapter<PetEdAdapter.ViewHolder> 
         // Handle item click for adding to calendar
         holder.itemView.setOnClickListener(v -> {
             if (item.equals("Vaccination Schedule")) {
-                addEventToCalendar("Pet Vaccination", "Pet Vaccination Schedule", System.currentTimeMillis() + 86400000);  // Example: 1 day from now
+                addEventToCalendar("Pet Vaccination", "Pet Vaccination Schedule", System.currentTimeMillis() + 86400000);  //  1 day from now
             } else {
                 String url = mUrls.get(position); // Get the URL for the clicked item
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));

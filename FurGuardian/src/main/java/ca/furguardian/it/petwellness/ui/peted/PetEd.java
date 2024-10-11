@@ -1,5 +1,8 @@
 package ca.furguardian.it.petwellness.ui.peted;
-
+//       Justin Chipman - RCB – N01598472
+//	     Imran Zafurallah - RCB - N01585098
+//	     Zane Aransevia - RCB- N01351168
+//	     Tevadi Brookes - RCC - N01582563
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -46,16 +49,16 @@ public class PetEd extends Fragment {
                 // This will show the "Exit App" dialog unless overridden in a fragment
                 new AlertDialog.Builder(requireContext())
                         .setIcon(R.mipmap.logo)
-                        .setTitle("Exit App")
-                        .setMessage("Are you sure you want to exit?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        .setTitle(R.string.exit_app)
+                        .setMessage(R.string.are_you_sure_you_want_to_exit)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 requireActivity().finish();
 
                             }
                         })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
@@ -71,20 +74,20 @@ public class PetEd extends Fragment {
 
         // Sample data for the RecyclerView
         List<String> petEducationTopics = Arrays.asList(
-                "Pet Nutrition",
-                "Grooming Tips",
-                "Vaccination Schedule",
-                "Training and Obedience",
-                "Exercise Needs"
+                getString(R.string.pet_nutrition),
+                getString(R.string.grooming_tips),
+                getString(R.string.vaccination_schedule),
+                getString(R.string.training_and_obedience),
+                getString(R.string.exercise_needs)
         );
 
         // Corresponding URLs for each topic
         List<String> petEducationUrls = Arrays.asList(
-                "https://www.chewy.com/ca/s?query=pet%20food&utm_source=google&utm_medium=cpc&utm_campaign=20526903563&utm_content=154065940540&gad_source=1&gclid=EAIaIQobChMI3PKMzMD_iAMVby7UAR2qwBgkEAAYASAAEgJcuvD_BwE",
-                "https://hastingsvet.com/six-helpful-grooming-tips-for-your-dog-or-cat/",
-                "https://example.com/vaccination-schedule",
-                "https://www.youtube.com/playlist?list=PL1wCnaQRu4BG_RhOZaT4UNspBbRnf4IvJ",
-                "https://www.youtube.com/watch?v=PzsrsRRWZYU"
+                getString(R.string.https_www_chewy_com_ca_s_query_pet_20food_utm_source_google_utm_medium_cpc_utm_campaign_20526903563_utm_content_154065940540_gad_source_1_gclid_eaiaiqobchmi3pkmzmd_iamvby7uar2qwbgkeaayasaaegjcuvd_bwe),
+                getString(R.string.https_hastingsvet_com_six_helpful_grooming_tips_for_your_dog_or_cat),
+                getString(R.string.https_example_com_vaccination_schedule),
+                getString(R.string.https_www_youtube_com_playlist_list_pl1wcnaqru4bg_rhozat4unspbbrnf4ivj),
+                getString(R.string.https_www_youtube_com_watch_v_pzsrsrrwzyu)
         );
 
         // Set the adapter

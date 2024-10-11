@@ -17,9 +17,9 @@
     <string name="meal">Meal Type (e.g., Dry Food)</string>
     <string name="notes_optional">Notes (optional)</string>
     <string name="add_schedule">Add Schedule</string>
-    <string name="schedule">Morning: 8:00 AM\nAfternoon: 1:00 PM\nEvening: 7:00 PM</string>
+    <string name="schedule">Morning: 8:00 AM Afternoon: 1:00 PM Evening: 7:00 PM</string>
     <string name="show_past_records">Show Past Records</string>
-    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_login" translatable="false">LoginActivity</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
@@ -30,6 +30,51 @@
     <string name="login_failed">"Login failed"</string>
     <string name="welcome_message">Welcome to our home page. We are currently under construction.</string>
     <string name="health_message">This is our health page that will be dedicated to tacking health markers. currently under construction</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="lockscreen_orientation">Lockscreen Orientation</string>
+    <string name="allow_notifications">Allow Notifications</string>
+    <string name="location">Location</string>
+    <string name="reminder_channel">reminder_channel</string>
+    <string name="reminder_notifications">Reminder Notifications</string>
+    <string name="channel_for_reminder_notifications">Channel for reminder notifications</string>
+    <string name="exit_app">Exit App</string>
+    <string name="are_you_sure_you_want_to_exit">Are you sure you want to exit?</string>
+    <string name="yes">Yes</string>
+    <string name="pet_nutrition">Pet Nutrition</string>
+    <string name="grooming_tips">Grooming Tips</string>
+    <string name="vaccination_schedule">Vaccination Schedule</string>
+    <string name="training_and_obedience">Training and Obedience</string>
+    <string name="exercise_needs">Exercise Needs</string>
+    <string name="https_www_chewy_com_ca_s_query_pet_20food_utm_source_google_utm_medium_cpc_utm_campaign_20526903563_utm_content_154065940540_gad_source_1_gclid_eaiaiqobchmi3pkmzmd_iamvby7uar2qwbgkeaayasaaegjcuvd_bwe" translatable="false"><![CDATA[https://www.chewy.com/ca/s?query=pet%20food&utm_source=google&utm_medium=cpc&utm_campaign=20526903563&utm_content=154065940540&gad_source=1&gclid=EAIaIQobChMI3PKMzMD_iAMVby7UAR2qwBgkEAAYASAAEgJcuvD_BwE]]></string>
+    <string name="https_hastingsvet_com_six_helpful_grooming_tips_for_your_dog_or_cat" translatable="false">https://hastingsvet.com/six-helpful-grooming-tips-for-your-dog-or-cat/</string>
+    <string name="https_example_com_vaccination_schedule" translatable="false">https://example.com/vaccination-schedule</string>
+    <string name="https_www_youtube_com_playlist_list_pl1wcnaqru4bg_rhozat4unspbbrnf4ivj" translatable="false">https://www.youtube.com/playlist?list=PL1wCnaQRu4BG_RhOZaT4UNspBbRnf4IvJ</string>
+    <string name="https_www_youtube_com_watch_v_pzsrsrrwzyu" translatable="false">https://www.youtube.com/watch?v=PzsrsRRWZYU</string>
+    <string name="no">No</string>
+    <string name="pet_profile">Pet Profile</string>
+    <string name="reminders">Reminders</string>
+    <string name="emergency_contacts">Emergency Contacts</string>
+    <string name="settings">Settings</string>
+    <string name="selected">"Selected: "</string>
+    <string name="please_enter_a_reminder_name">Please enter a reminder name</string>
+    <string name="reminder">Reminder</string>
+    <string name="reminder_saved">Reminder saved!</string>
+    <string name="at">" at "</string>
+    <string name="notification_permission_denied">Notification permission denied</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="our_healthh_image">Our Healthh Image!</string>
+    <string name="our_home_image">Our Home Image</string>
+    <string name="pet_education">Pet Education</string>
+    <string name="enter_reminder_name">Enter reminder name</string>
+    <string name="pick_date_and_time">Pick Date and Time</string>
+    <string name="no_date_selected">No date selected</string>
+    <string name="save_reminder">Save Reminder</string>
+    <string name="user_already_registered">User already registered.</string>
+    <string name="registration_successful">Registration Successful!</string>
+    <string name="registration_failed">Registration Failed.</string>
+    <string name="database_error">"Database Error: "</string>
 </resources>

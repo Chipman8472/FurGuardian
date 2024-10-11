@@ -114,18 +114,18 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    Toast.makeText(LoginActivity.this, "User already registered.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, getString(R.string.user_already_registered), Toast.LENGTH_LONG).show();
                 } else {
                     User newUser = new User(email, password);
                     usersRef.child(formattedEmail).setValue(newUser).addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, getString(R.string.registration_successful), Toast.LENGTH_SHORT).show();
                             // After registration, redirect to MainActivity
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();
                         } else {
-                            Toast.makeText(LoginActivity.this, "Registration Failed.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, getString(R.string.registration_failed), Toast.LENGTH_LONG).show();
                         }
                     });
                 }
@@ -133,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(LoginActivity.this, "Database Error: " + databaseError.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, getString(R.string.database_error) + databaseError.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

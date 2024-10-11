@@ -23,7 +23,7 @@
         android:checked="false"
         android:minWidth="48dp"
         android:minHeight="48dp"
-        android:text="Dark Mode"
+        android:text="@string/dark_mode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,7 +37,7 @@
         android:checked="false"
         android:minWidth="48dp"
         android:minHeight="48dp"
-        android:text="Lockscreen Orientation"
+        android:text="@string/lockscreen_orientation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,21 +52,21 @@
         android:checked="false"
         android:minWidth="48dp"
         android:minHeight="48dp"
-        android:text="Allow Notifications"
+        android:text="@string/allow_notifications"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toggleLockOrientation" />
 
     <!-- Toggle Button for French/English Translation -->
     <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/toggleTranslation"
+        android:id="@+id/toggleLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="92dp"
         android:checked="false"
         android:minWidth="48dp"
         android:minHeight="48dp"
-        android:text="Translation"
+        android:text="@string/location"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--Justin Chipman - N01598472-->
+<!--Imran Zafurallah - N01585098-->
+<!--Zane Aransevia - N01351168-->
+<!--Tevadi Brookes - N01582563-->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/action_profile"
         android:icon="@drawable/dog_silhouette"
-        android:title="Pet Profile"
+        android:title="@string/pet_profile"
         app:showAsAction="always|withText" />
     <item
         android:id="@+id/action_reminders"
-        android:title="Reminders"
+        android:title="@string/reminders"
         android:icon="@drawable/ic_notifications_black_24dp"
         app:showAsAction="collapseActionView" />
 
     <item
         android:id="@+id/action_emergency"
-        android:title="Emergency Contacts"
+        android:title="@string/emergency_contacts"
         android:icon="@drawable/emergency_icon"
         app:showAsAction="collapseActionView" />
 
     <item
         android:id="@+id/action_settings"
-        android:title="Settings"
+        android:title="@string/settings"
         android:icon="@drawable/settings_icon"
         app:showAsAction="collapseActionView" />
 </menu>

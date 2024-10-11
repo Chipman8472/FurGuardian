@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--Justin Chipman - N01598472-->
+<!--Imran Zafurallah - N01585098-->
+<!--Zane Aransevia - N01351168-->
+<!--Tevadi Brookes - N01582563-->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -10,7 +14,7 @@
         android:id="@+id/reminder_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Enter reminder name"
+        android:hint="@string/enter_reminder_name"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,7 +26,7 @@
         android:id="@+id/pick_datetime_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Pick Date and Time"
+        android:text="@string/pick_date_and_time"
         app:layout_constraintTop_toBottomOf="@id/reminder_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +37,7 @@
         android:id="@+id/selected_datetime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No date selected"
+        android:text="@string/no_date_selected"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/pick_datetime_button"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +49,7 @@
         android:id="@+id/save_reminder_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Save Reminder"
+        android:text="@string/save_reminder"
         app:layout_constraintTop_toBottomOf="@id/selected_datetime"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
