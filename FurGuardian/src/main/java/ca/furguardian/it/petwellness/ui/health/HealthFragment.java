@@ -10,12 +10,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
+]import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
@@ -63,18 +61,8 @@ public class HealthFragment extends Fragment {
                         .setIcon(R.mipmap.logo)
                         .setTitle(R.string.exit_app)
                         .setMessage(R.string.are_you_sure_you_want_to_exit)
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                requireActivity().finish();
-                            }
-                        })
-                        .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
+                        .setPositiveButton(R.string.yes, (dialog, which) -> requireActivity().finish())
+                        .setNegativeButton(getString(R.string.no), (dialog, which) -> dialog.dismiss())
                         .show();
             }
         });
