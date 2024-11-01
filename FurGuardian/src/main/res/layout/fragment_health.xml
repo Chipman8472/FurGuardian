@@ -29,6 +29,13 @@
                 android:padding="16dp">
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Heart Rate"
+                    android:textStyle="bold"
+                    android:textSize="18sp" />
+
+                <TextView
                     android:id="@+id/textHeartRate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -39,12 +46,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Respiratory Rate: -- bpm" />
-
-                <TextView
-                    android:id="@+id/textTemperature"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Temperature: -- °C" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -62,6 +63,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Physical Activity"
+                    android:textStyle="bold"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/textSteps"

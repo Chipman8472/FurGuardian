@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="ca.furguardian.it.petwellness" />
+                  <option name="mobileSdkAppId" value="1:276746006424:android:e2f9127a95a76253f0c5ed" />
+                  <option name="projectId" value="furguardian-9970c" />
+                  <option name="projectNumber" value="276746006424" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
