@@ -5,12 +5,11 @@
 
 package ca.furguardian.it.petwellness.ui.health;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
-]import android.view.LayoutInflater;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
