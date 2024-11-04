@@ -1,41 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Justin Chipman - N01598472-->
-<!--Imran Zafurallah - N01585098-->
-<!--Zane Aransevia - N01351168-->
-<!--Tevadi Brookes - N01582563-->
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fragment_background"
-    tools:context=".ui.home.HomeFragment">
+    android:paddingBottom="55dp">
 
-    <!-- ImageView Section -->
-<ImageView
-android:id="@+id/image_home"
-android:layout_width="200dp"
-android:layout_height="200dp"
-    android:contentDescription="@string/our_home_image"
-    android:src="@drawable/welcomguardian"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginTop="32dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <!-- TextView Section -->
-<TextView
-android:id="@+id/text_home"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="@string/welcome_message"
-    android:textSize="20sp"
-    android:textStyle="bold"
-    android:textColor="@color/text_color"
-    android:textAlignment="center"
-    app:layout_constraintTop_toBottomOf="@id/image_home"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginTop="16dp" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Main Image at the Top -->
+
+        <!-- Camera View -->
+        <ImageView
+            android:id="@+id/image_home"
+            android:layout_width="372dp"
+            android:layout_height="198dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="32dp"
+            android:contentDescription="@string/our_home_image"
+            android:src="@drawable/welcomguardian" />
+
+        <!-- Combined Camera View and Buttons Layout -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
+
+            <!-- Camera View -->
+
+            <!-- Buttons for Camera, Microphone, and Speaker -->
+
+            <SurfaceView
+                android:id="@+id/surfaceViewCamera"
+                android:layout_width="match_parent"
+                android:layout_height="252dp"
+                android:background="@android:color/black" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="103dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <ImageView
+                    android:id="@+id/imageCamera"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="8dp"
+                    android:src="@drawable/ic_menu_cameraon" />
+
+                <ImageView
+                    android:id="@+id/imageMicrophone"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="8dp"
+                    android:src="@drawable/ic_menu_micoff" />
+
+                <ImageView
+                    android:id="@+id/imageSpeaker"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="8dp"
+                    android:src="@drawable/ic_menu_speakeroff" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Steps Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_steps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="6dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Today's Steps"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textStepsToday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Steps: 0"
+                    android:textSize="16sp" />
+
+                <ProgressBar
+                    android:id="@+id/progressStepsGoal"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="10000"
+                    android:progress="0" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Device Records Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_device_records"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="6dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Device Records"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textFoodDispenserUsage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Last Feeding: --:--"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Pet Education Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_pet_education"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="6dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pet Education"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textPetTip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tip: Regular training helps maintain behavior."
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Interaction Widgets -->
+
+    </LinearLayout>
+</ScrollView>
