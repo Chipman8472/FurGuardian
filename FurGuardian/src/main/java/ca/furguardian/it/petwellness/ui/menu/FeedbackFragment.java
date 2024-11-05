@@ -4,67 +4,68 @@ package ca.furguardian.it.petwellness.ui.menu;
 //	     Zane Aransevia - RCB- N01351168
 //	     Tevadi Brookes - RCC - N01582563
 
+import android.os.Build;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.RatingBar;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import ca.furguardian.it.petwellness.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FeedbackFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class FeedbackFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private EditText nameEditText, phoneEditText, emailEditText, commentEditText;
+    private RatingBar ratingBar;
+    private TextView deviceModelTextView;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public FeedbackFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FeedbackFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FeedbackFragment newInstance(String param1, String param2) {
-        FeedbackFragment fragment = new FeedbackFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_feedback, container, false);
+
+        nameEditText = view.findViewById(R.id.nameEditText);
+        phoneEditText = view.findViewById(R.id.phoneEditText);
+        emailEditText = view.findViewById(R.id.emailEditText);
+        commentEditText = view.findViewById(R.id.commentEditText);
+        ratingBar = view.findViewById(R.id.ratingBar);
+        deviceModelTextView = view.findViewById(R.id.deviceModelTextView);
+
+        // Display device model
+        String deviceModel = Build.MANUFACTURER + " " + Build.MODEL;
+        deviceModelTextView.setText("Device Model: " + deviceModel);
+
+        // Set up submit button
+        view.findViewById(R.id.submitButton).setOnClickListener(v -> submitFeedback());
+
+        return view;
+    }
+
+    private void submitFeedback() {
+        String name = nameEditText.getText().toString();
+        String phone = phoneEditText.getText().toString();
+        String email = emailEditText.getText().toString();
+        String comment = commentEditText.getText().toString();
+        float rating = ratingBar.getRating();
+
+        if (validateInputs(name, phone, email)) {
+            // Handle feedback submission here, save to database
+            Toast.makeText(getContext(), "Thank you for your feedback!", Toast.LENGTH_LONG).show();
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_feedback, container, false);
+    private boolean validateInputs(String name, String phone, String email) {
+        if (name.isEmpty() || phone.isEmpty() || email.isEmpty()) {
+            Toast.makeText(getContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
     }
 }
