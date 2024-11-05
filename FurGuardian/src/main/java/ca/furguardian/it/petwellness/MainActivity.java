@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             onBackPressed();
             return true;
         } else if (item.getItemId() == R.id.action_profile) {
-            // Handle profile action
+            navController.navigate(R.id.petprofilefragment);  // Navigate to Pet Profile fragment
             return true;
         } else if (item.getItemId() == R.id.action_reminders) {
             navController.navigate(R.id.remindersFragment);  // Use NavController for fragment navigation
