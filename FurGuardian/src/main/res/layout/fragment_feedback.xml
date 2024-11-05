@@ -69,7 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:gravity="top"
-        android:hint="Comments"
+        android:hint="@string/comments"
         android:inputType="textMultiLine"
         android:minHeight="100dp"
         android:padding="50dp"
