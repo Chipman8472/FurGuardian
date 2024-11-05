@@ -57,4 +57,5 @@ dependencies {
 
     // Firebase Core (if not already added, for general Firebase functionality)
     implementation libs.firebase.auth.v2200
+
 }

@@ -17,6 +17,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import ca.furguardian.it.petwellness.R;
 
 public class FeedbackFragment extends Fragment {
@@ -24,6 +30,9 @@ public class FeedbackFragment extends Fragment {
     private EditText nameEditText, phoneEditText, emailEditText, commentEditText;
     private RatingBar ratingBar;
     private TextView deviceModelTextView;
+    private FirebaseDatabase db;
+    private DatabaseReference feedbackRef;
+    private String deviceModel;
 
     @Nullable
     @Override
@@ -37,8 +46,12 @@ public class FeedbackFragment extends Fragment {
         ratingBar = view.findViewById(R.id.ratingBar);
         deviceModelTextView = view.findViewById(R.id.deviceModelTextView);
 
-        // Display device model
-        String deviceModel = Build.MANUFACTURER + " " + Build.MODEL;
+        // Initialize Firestore
+        db = FirebaseDatabase.getInstance();
+        feedbackRef= db.getReference("feedback");
+
+        // Set device model and display it
+        deviceModel = Build.MANUFACTURER + " " + Build.MODEL;
         deviceModelTextView.setText("Device Model: " + deviceModel);
 
         // Set up submit button
@@ -55,8 +68,24 @@ public class FeedbackFragment extends Fragment {
         float rating = ratingBar.getRating();
 
         if (validateInputs(name, phone, email)) {
-            // Handle feedback submission here, save to database
-            Toast.makeText(getContext(), "Thank you for your feedback!", Toast.LENGTH_LONG).show();
+            // Prepare feedback data
+            Map<String, Object> feedback = new HashMap<>();
+            feedback.put("name", name);
+            feedback.put("phone", phone);
+            feedback.put("email", email);
+            feedback.put("comment", comment);
+            feedback.put("rating", rating);
+            feedback.put("deviceModel", deviceModel);
+
+            // Add feedback data to Firestore under 'feedback' collection
+            feedbackRef.child("feedback")
+                    .setValue(feedback)
+                    .addOnSuccessListener(documentReference ->
+                            Toast.makeText(getContext(), "Thank you for your feedback!", Toast.LENGTH_LONG).show()
+                    )
+                    .addOnFailureListener(e ->
+                            Toast.makeText(getContext(), "Failed to submit feedback. Please try again.", Toast.LENGTH_SHORT).show()
+                    );
         }
     }
 
@@ -65,7 +94,6 @@ public class FeedbackFragment extends Fragment {
             Toast.makeText(getContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
             return false;
         }
-
         return true;
     }
 }
