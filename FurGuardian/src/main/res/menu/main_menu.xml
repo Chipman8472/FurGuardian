@@ -18,9 +18,9 @@
         app:showAsAction="collapseActionView" />
 
     <item
-        android:id="@+id/action_emergency"
-        android:title="@string/emergency_contacts"
-        android:icon="@drawable/emergency_icon"
+        android:id="@+id/action_account"
+        android:title="@string/account_info"
+        android:icon="@drawable/account_icon"
         app:showAsAction="collapseActionView" />
 
     <item
