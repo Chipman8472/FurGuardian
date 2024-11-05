@@ -1,8 +1,3 @@
-// Justin Chipman - RCB – N01598472
-// Imran Zafurallah - RCB - N01585098
-// Zane Aransevia - RCB- N01351168
-// Tevadi Brookes - RCC - N01582563
-
 package ca.furguardian.it.petwellness.ui.health;
 
 import android.os.Bundle;
@@ -20,18 +15,23 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.Map;
 
 import ca.furguardian.it.petwellness.R;
 import ca.furguardian.it.petwellness.databinding.FragmentHealthBinding;
+import ca.furguardian.it.petwellness.model.DataModel;
 
 public class HealthFragment extends Fragment {
 
     private FragmentHealthBinding binding;
     private final Handler handler = new Handler(Looper.getMainLooper());
-    private final Random random = new Random();
+    private DataModel dataModel;
     private Runnable updateMetricsRunnable;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -39,6 +39,9 @@ public class HealthFragment extends Fragment {
 
         binding = FragmentHealthBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        // Initialize HealthDataSimulator
+        dataModel = new DataModel();
 
         // Initialize UI Elements for Health Metrics using View Binding
         initializeHealthMetrics();
@@ -69,53 +72,54 @@ public class HealthFragment extends Fragment {
         return root;
     }
 
-    // Method to Initialize Health Metrics
     private void initializeHealthMetrics() {
-        // Vitals
-        binding.textHeartRate.setText("Heart Rate: 80 bpm");
-        binding.textRespiratoryRate.setText("Respiratory Rate: 20 bpm");
+        // Retrieve data from Firebase on initialization
+        dataModel.retrieveDataFromDatabase(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Map<String, Object> data = (Map<String, Object>) snapshot.getValue();
+                    if (data != null) {
+                        updateUIWithHealthData(data);
+                    }
+                }
+            }
 
-        // Activity
-        binding.textSteps.setText("Steps: 3500");
-        binding.textDistance.setText("Distance: 2.5 km");
-        binding.textActiveTime.setText("Active Time: 3 hrs");
-
-        // Weight Management
-        binding.textCurrentWeight.setText("Current Weight: 7 kg");
-        binding.textIdealWeight.setText("Ideal Weight: 6-7 kg");
-
-        // Sleep Tracking
-        binding.textSleepHours.setText("Sleep Hours: 12 hrs");
-        binding.textSleepQuality.setText("Quality: Good");
-
-        // Health Tips
-        binding.textHealthTips.setText("Ensure regular hydration and exercise.");
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(), "Failed to load health data.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void startRealTimeUpdates() {
         updateMetricsRunnable = new Runnable() {
             @Override
             public void run() {
-                updateHealthMetrics();
+                // Simulate data and send it to Firebase
+                dataModel.sendDataToDatabase();
                 handler.postDelayed(this, 5000); // Update every 5 seconds
             }
         };
         handler.post(updateMetricsRunnable);
     }
 
-    private void updateHealthMetrics() {
-        int heartRate = 60 + random.nextInt(41);  // Random heart rate between 60 and 100
-        int respiratoryRate = 15 + random.nextInt(6);  // Random respiratory rate between 15 and 20
-        int steps = 3000 + random.nextInt(500);  // Random step count around 3000-3500
-        double distance = 2.0 + random.nextDouble() * 0.5;  // Random distance between 2.0 and 2.5 km
-        int sleepHours = 6 + random.nextInt(7);  // Random sleep hours between 6 and 12
+    // Method to update UI with health data from Firebase
+    private void updateUIWithHealthData(Map<String, Object> data) {
+        int heartRate = ((Long) data.get("heartRate")).intValue();
+        int respiratoryRate = ((Long) data.get("respiratoryRate")).intValue();
+        int steps = ((Long) data.get("steps")).intValue();
+        double distance = (double) data.get("distance");
+        int sleepHours = ((Long) data.get("sleepHours")).intValue();
+        double weight = (double) data.get("weight");
 
-        // Update TextViews
+        // Update TextViews with retrieved data
         binding.textHeartRate.setText("Heart Rate: " + heartRate + " bpm");
         binding.textRespiratoryRate.setText("Respiratory Rate: " + respiratoryRate + " bpm");
         binding.textSteps.setText("Steps: " + steps);
         binding.textDistance.setText(String.format("Distance: %.2f km", distance));
         binding.textSleepHours.setText("Sleep Hours: " + sleepHours + " hrs");
+        binding.textCurrentWeight.setText("Current Weight: " + weight + " kg");
 
         // Update Health Tips based on current metrics
         updateHealthTips(heartRate, steps, sleepHours);
@@ -125,30 +129,15 @@ public class HealthFragment extends Fragment {
     private void updateHealthTips(int heartRate, int steps, int sleepHours) {
         List<String> healthTips = new ArrayList<>();
 
-        // Weight conditions
-        double currentWeight = parseMetric(binding.textCurrentWeight.getText().toString());
-        double idealWeightLow = 6.0;
-        double idealWeightHigh = 7.0;
-
-        // Check heart rate condition
+        // Example conditions for health tips
         if (heartRate > 90) {
             healthTips.add("Your heart rate is elevated. Take a few moments to relax.");
         }
-
-        // Check step count condition
         if (steps < 3500) {
             healthTips.add("You haven't reached your daily step goal. Try to be more active!");
         }
-
-        // Check sleep hours condition
         if (sleepHours < 7) {
             healthTips.add("You might need more sleep for optimal health.");
-        }
-
-        if (currentWeight < idealWeightLow) {
-            healthTips.add("Consider increasing caloric intake with balanced nutrients.");
-        } else if (currentWeight > idealWeightHigh) {
-            healthTips.add("Focus on regular exercise and portion control.");
         }
 
         // Default positive tip if no conditions are met
@@ -156,16 +145,10 @@ public class HealthFragment extends Fragment {
             healthTips.add("Great job! Keep up the healthy habits.");
         }
 
-        // Join all tips into a single string with bullet points or new lines
-        String combinedTips = TextUtils.join("\n• ", healthTips);
-        combinedTips = "• " + combinedTips;  // Adding bullet to the first tip
-
-        // Display the combined tips
-        binding.textHealthTips.setText(combinedTips);
+        // Display the tips in the TextView
+        binding.textHealthTips.setText("• " + TextUtils.join("\n• ", healthTips));
     }
 
-
-    // Show dialog to add weight entry
     private void showAddWeightDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Add Weight Record");
@@ -189,7 +172,6 @@ public class HealthFragment extends Fragment {
         builder.show();
     }
 
-    // Show dialog to add medical record entry
     private void showAddMedicalRecordDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Add Medical Record");
@@ -211,20 +193,6 @@ public class HealthFragment extends Fragment {
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
 
         builder.show();
-    }
-
-    // Utility method to parse metric values safely
-    private double parseMetric(String metricText) {
-        // Extract only the numeric part of the string using regex
-        String numericPart = metricText.replaceAll("[^\\d.]", ""); // Remove any non-numeric characters
-
-        // Convert to double, handling empty or invalid cases
-        try {
-            return Double.parseDouble(numericPart);
-        } catch (NumberFormatException e) {
-            // Return a default value or handle the error as needed
-            return 0.0;
-        }
     }
 
     @Override
