@@ -33,8 +33,6 @@ public class MainActivity extends AppCompatActivity {
         ca.furguardian.it.petwellness.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
-
         NotificationChannel channel = new NotificationChannel(
                 getString(R.string.reminder_channel),
                 getString(R.string.reminder_notifications),
@@ -52,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
-
-
     }
 
     @Override
@@ -78,16 +74,16 @@ public class MainActivity extends AppCompatActivity {
             onBackPressed();
             return true;
         } else if (item.getItemId() == R.id.action_profile) {
-            // Handle profile action
+            navController.navigate(R.id.petprofilefragment);  // Navigate to Pet Profile fragment
             return true;
         } else if (item.getItemId() == R.id.action_reminders) {
-            navController.navigate(R.id.remindersFragment);  // Use NavController for fragment navigation
+            navController.navigate(R.id.remindersFragment);  // Navigate to Reminders fragment
             return true;
         } else if (item.getItemId() == R.id.action_emergency) {
-            // Handle emergency action
+            navController.navigate(R.id.emergencyContactFragment);  // Navigate to Emergency Contact fragment
             return true;
         } else if (item.getItemId() == R.id.action_settings) {
-            navController.navigate(R.id.settingsFragment);
+            navController.navigate(R.id.settingsFragment);  // Navigate to Settings fragment
             return true;
         } else {
             return super.onOptionsItemSelected(item);

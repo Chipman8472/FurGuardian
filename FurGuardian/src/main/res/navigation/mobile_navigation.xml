@@ -43,4 +43,13 @@
         android:name="ca.furguardian.it.petwellness.ui.menu.SettingsFragment"
         android:label="Settings" />
 
+    <fragment
+        android:id="@+id/petprofilefragment"
+        android:name="ca.furguardian.it.petwellness.ui.menu.PetFragment"
+        android:label="Pet Profile" />
+
+    <fragment
+        android:id="@+id/emergencyContactFragment"
+        android:name="ca.furguardian.it.petwellness.ui.menu.EmergencyFragment"
+        android:label="Emergency Contact" />
 </navigation>

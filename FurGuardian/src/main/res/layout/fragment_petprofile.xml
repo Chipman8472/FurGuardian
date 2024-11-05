@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Justin Chipman - N01598472-->
+<!--Imran Zafurallah - N01585098-->
+<!--Zane Aransevia - N01351168-->
+<!--Tevadi Brookes - N01582563-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Pet Image -->
+        <ImageView
+            android:id="@+id/imagePet"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/dog_silhouette"
+            android:layout_gravity="center"
+            android:contentDescription="Pet Image" />
+
+        <!-- Pet Name -->
+        <TextView
+            android:id="@+id/textPetName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pet Name: Max"
+            android:textSize="20sp"
+            android:layout_marginTop="16dp"
+            android:textStyle="bold"
+            android:layout_gravity="center" />
+
+        <!-- Pet Age -->
+        <TextView
+            android:id="@+id/textPetAge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Age: 3 years"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center" />
+
+        <!-- Pet Breed -->
+        <TextView
+            android:id="@+id/textPetBreed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Breed: Labrador"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center" />
+
+    </LinearLayout>
+</ScrollView>
