@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import ca.furguardian.it.petwellness.MainActivity;
 import ca.furguardian.it.petwellness.R;
+import ca.furguardian.it.petwellness.controller.Format;
 import ca.furguardian.it.petwellness.ui.login.RegistrationActivity;
 
 public class LoginActivity extends AppCompatActivity {
@@ -106,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
 
     // Method to login a user
     private void loginUser(String email, String password) {
-        String formattedEmail = formatEmail(email);
+        String formattedEmail = Format.formatEmail(email);
 
         usersRef.child(formattedEmail).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -171,10 +172,5 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(this, "Google Sign-In Failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
-    }
-
-    // Helper method to format email for Firebase storage
-    private String formatEmail(String email) {
-        return email.replace(".", "_").replace("@", "_");
     }
 }

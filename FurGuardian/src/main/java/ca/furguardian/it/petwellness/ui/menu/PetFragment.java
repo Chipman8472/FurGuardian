@@ -19,9 +19,12 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +66,16 @@ public class PetFragment extends Fragment {
 
         // Delete Pet Button
         binding.buttonDelete.setOnClickListener(v -> deleteCurrentPet());
+
+        // Override back button functionality for RemindersFragment
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Navigate back to the home page instead of exiting the app
+                NavController navController = Navigation.findNavController(root);
+                navController.navigate(R.id.navigation_home);  // Navigate directly to the home page
+            }
+        });
 
         return root;
     }

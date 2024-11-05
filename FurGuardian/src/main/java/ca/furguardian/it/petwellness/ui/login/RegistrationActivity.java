@@ -16,6 +16,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import ca.furguardian.it.petwellness.MainActivity;
 import ca.furguardian.it.petwellness.R;
+import ca.furguardian.it.petwellness.controller.Format;
+import ca.furguardian.it.petwellness.controller.InputValidator;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -46,16 +48,23 @@ public class RegistrationActivity extends AppCompatActivity {
             String password = passwordField.getText().toString().trim();
             String confirmPassword = confirmPasswordField.getText().toString().trim();
 
-            if (password.equals(confirmPassword)) {
-                registerUser(email, password, name, phone);
-            } else {
+            if (!InputValidator.isValidEmail(email)) {
+                Toast.makeText(this, "Invalid email format", Toast.LENGTH_SHORT).show();
+            } else if (!InputValidator.isValidPhoneNumber(phone)) {
+                Toast.makeText(this, "Phone number must be 10 digits", Toast.LENGTH_SHORT).show();
+            } else if (!InputValidator.isValidPassword(password)) {
+                Toast.makeText(this, "Password must be 8-16 characters, contain at least 1 uppercase letter, 1 number, and 1 symbol", Toast.LENGTH_LONG).show();
+            } else if (!password.equals(confirmPassword)) {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+            } else {
+                registerUser(name, phone, email, password);
             }
         });
+
     }
 
     private void registerUser(String email, String password, String name, String phoneNumber) {
-        String formattedEmail = formatEmail(email);
+        String formattedEmail = Format.formatEmail(email);
 
         usersRef.child(formattedEmail).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -85,8 +94,5 @@ public class RegistrationActivity extends AppCompatActivity {
         });
     }
 
-    // Helper method to format the email for Firebase keys
-    private String formatEmail(String email) {
-        return email.replace(".", "_").replace("@", "_");
-    }
+
 }
