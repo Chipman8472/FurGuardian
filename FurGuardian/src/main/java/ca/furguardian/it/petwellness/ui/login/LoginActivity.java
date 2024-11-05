@@ -1,6 +1,4 @@
-package ca.furguardian.it.petwellness.login;
-
-import static java.security.AccessController.getContext;
+package ca.furguardian.it.petwellness.ui.login;
 
 import android.content.Context;
 import android.content.Intent;
@@ -33,16 +31,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Initialize the SplashScreen using the system's SplashScreen API
-        SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
-
-        // Keep splash screen for 3 seconds before displaying login screen
-        splashScreen.setKeepOnScreenCondition(() -> {
-            new Handler().postDelayed(() -> {
-                // Allow the splash screen to go away after 3 seconds
-            }, 3000); // 3000 ms = 3 seconds
-            return false;  // Keep splash screen until the handler completes the delay
-        });
 
         // Load the saved preference for dark mode
         SharedPreferences sharedPreferences = this.getSharedPreferences("userPrefs", Context.MODE_PRIVATE);

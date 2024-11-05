@@ -21,9 +21,18 @@
         tools:targetApi="34">
         <!-- Make LoginActivity the launcher activity -->
         <activity
-            android:name=".login.LoginActivity"
+            android:name=".ui.splash.SplashScreenActivity"
             android:exported="true"
             android:label="FurGuardian">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
