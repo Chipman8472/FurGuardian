@@ -43,4 +43,9 @@
         android:name="ca.furguardian.it.petwellness.ui.menu.SettingsFragment"
         android:label="Settings" />
 
+    <fragment
+        android:id="@+id/feedFragment"
+        android:name="ca.furguardian.it.petwellness.ui.menu.FeedbackFragment"
+        android:label="Feedback" />
+
 </navigation>

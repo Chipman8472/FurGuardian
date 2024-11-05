@@ -69,4 +69,5 @@
     <string name="registration_successful">Inscription réussie !</string>
     <string name="registration_failed">Échec de l\'inscription.</string>
     <string name="database_error">Erreur de base de données :</string>
+    <string name="feedback">Feedback</string>
 </resources>
