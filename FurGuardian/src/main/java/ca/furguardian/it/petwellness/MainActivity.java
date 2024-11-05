@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             navController.navigate(R.id.remindersFragment);  // Use NavController for fragment navigation
             return true;
         } else if (item.getItemId() == R.id.action_emergency) {
-            // Handle emergency action
+            navController.navigate(R.id.emergencycontactFragment);// Handle emergency action
             return true;
         } else if (item.getItemId() == R.id.action_settings) {
             navController.navigate(R.id.settingsFragment);
