@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -29,7 +30,7 @@ public class FeedbackFragment extends Fragment {
 
     private EditText nameEditText, phoneEditText, emailEditText, commentEditText;
     private RatingBar ratingBar;
-    private TextView deviceModelTextView;
+    private Button submitButton;
     private FirebaseDatabase db;
     private DatabaseReference feedbackRef;
     private String deviceModel;
@@ -44,18 +45,14 @@ public class FeedbackFragment extends Fragment {
         emailEditText = view.findViewById(R.id.emailEditText);
         commentEditText = view.findViewById(R.id.commentEditText);
         ratingBar = view.findViewById(R.id.ratingBar);
-        deviceModelTextView = view.findViewById(R.id.deviceModelTextView);
+        submitButton = view.findViewById(R.id.submitButton);
 
         // Initialize Firestore
         db = FirebaseDatabase.getInstance();
         feedbackRef= db.getReference("feedback");
 
-        // Set device model and display it
-        deviceModel = Build.MANUFACTURER + " " + Build.MODEL;
-        deviceModelTextView.setText("Device Model: " + deviceModel);
-
         // Set up submit button
-        view.findViewById(R.id.submitButton).setOnClickListener(v -> submitFeedback());
+        submitButton.setOnClickListener(v -> submitFeedback());
 
         return view;
     }
@@ -65,6 +62,7 @@ public class FeedbackFragment extends Fragment {
         String phone = phoneEditText.getText().toString();
         String email = emailEditText.getText().toString();
         String comment = commentEditText.getText().toString();
+        String deviceModel = Build.MODEL;
         float rating = ratingBar.getRating();
 
         if (validateInputs(name, phone, email)) {
@@ -77,9 +75,8 @@ public class FeedbackFragment extends Fragment {
             feedback.put("rating", rating);
             feedback.put("deviceModel", deviceModel);
 
-            // Add feedback data to Firestore under 'feedback' collection
-            feedbackRef.child("feedback")
-                    .setValue(feedback)
+            // Add feedback data to Firebase under 'feedback'
+            feedbackRef.push().setValue(feedback)
                     .addOnSuccessListener(documentReference ->
                             Toast.makeText(getContext(), "Thank you for your feedback!", Toast.LENGTH_LONG).show()
                     )

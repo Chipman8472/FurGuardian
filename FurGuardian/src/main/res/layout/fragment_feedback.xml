@@ -13,7 +13,7 @@
     android:background="@color/fragment_background">
 
     <TextView
-        android:id="@+id/deviceModelTextView"
+        android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Customer Feedback"
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:hint="Full Name"
         android:inputType="textPersonName"
-        app:layout_constraintTop_toBottomOf="@id/deviceModelTextView"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:padding="20dp"
