@@ -5,8 +5,6 @@ package ca.furguardian.it.petwellness;
 //	     Tevadi Brookes - RCC - N01582563
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,7 +13,6 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -83,8 +80,8 @@ public class MainActivity extends AppCompatActivity {
         } else if (item.getItemId() == R.id.action_reminders) {
             navController.navigate(R.id.remindersFragment);  // Use NavController for fragment navigation
             return true;
-        } else if (item.getItemId() == R.id.action_emergency) {
-            navController.navigate(R.id.emergencycontactFragment);// Handle emergency action
+        } else if (item.getItemId() == R.id.action_account) {
+            navController.navigate(R.id.accountFragment);  // Handle Account Management Action
             return true;
         } else if (item.getItemId() == R.id.action_settings) {
             navController.navigate(R.id.settingsFragment);

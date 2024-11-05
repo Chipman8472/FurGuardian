@@ -46,7 +46,7 @@
     <string name="no">Non</string>
     <string name="pet_profile">Profil de l\'animal</string>
     <string name="reminders">Rappels</string>
-    <string name="emergency_contacts">Contacts d\'urgence</string>
+    <string name="account_info">Don\ees du Compte</string>
     <string name="settings">Paramètres</string>
     <string name="selected">Choisi:</string>
     <string name="please_enter_a_reminder_name">Veuillez saisir un nom de rappel</string>

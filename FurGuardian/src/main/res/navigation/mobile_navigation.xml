@@ -49,9 +49,9 @@
         android:label="Feedback" />
 
     <fragment
-        android:id="@+id/emergencycontactFragment"
-        android:name="ca.furguardian.it.petwellness.ui.menu.EmergencyContactFragment"
-        android:label="Emergency Contacts" />
+        android:id="@+id/accountFragment"
+        android:name="ca.furguardian.it.petwellness.ui.menu.AccountFragment"
+        android:label="Account Information" />
 
     <fragment
         android:id="@+id/petprofilefragment"
