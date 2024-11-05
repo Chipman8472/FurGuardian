@@ -98,13 +98,32 @@ public class HealthFragment extends Fragment {
             public void run() {
                 // Simulate data and send it to Firebase
                 dataModel.sendDataToDatabase();
-                handler.postDelayed(this, 5000); // Update every 5 seconds
+
+                // Retrieve the updated data from Firebase to update the UI
+                dataModel.retrieveDataFromDatabase(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            Map<String, Object> data = (Map<String, Object>) snapshot.getValue();
+                            if (data != null) {
+                                updateUIWithHealthData(data);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(getContext(), "Failed to load health data.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                // Schedule the next update in 5 seconds
+                handler.postDelayed(this, 5000);
             }
         };
         handler.post(updateMetricsRunnable);
     }
 
-    // Method to update UI with health data from Firebase
     private void updateUIWithHealthData(Map<String, Object> data) {
         int heartRate = ((Long) data.get("heartRate")).intValue();
         int respiratoryRate = ((Long) data.get("respiratoryRate")).intValue();
@@ -113,7 +132,6 @@ public class HealthFragment extends Fragment {
         int sleepHours = ((Long) data.get("sleepHours")).intValue();
         double weight = (double) data.get("weight");
 
-        // Update TextViews with retrieved data
         binding.textHeartRate.setText("Heart Rate: " + heartRate + " bpm");
         binding.textRespiratoryRate.setText("Respiratory Rate: " + respiratoryRate + " bpm");
         binding.textSteps.setText("Steps: " + steps);
@@ -121,15 +139,12 @@ public class HealthFragment extends Fragment {
         binding.textSleepHours.setText("Sleep Hours: " + sleepHours + " hrs");
         binding.textCurrentWeight.setText("Current Weight: " + weight + " kg");
 
-        // Update Health Tips based on current metrics
         updateHealthTips(heartRate, steps, sleepHours);
     }
 
-    // Method to dynamically update health tips based on metrics
     private void updateHealthTips(int heartRate, int steps, int sleepHours) {
         List<String> healthTips = new ArrayList<>();
 
-        // Example conditions for health tips
         if (heartRate > 90) {
             healthTips.add("Your heart rate is elevated. Take a few moments to relax.");
         }
@@ -140,12 +155,10 @@ public class HealthFragment extends Fragment {
             healthTips.add("You might need more sleep for optimal health.");
         }
 
-        // Default positive tip if no conditions are met
         if (healthTips.isEmpty()) {
             healthTips.add("Great job! Keep up the healthy habits.");
         }
 
-        // Display the tips in the TextView
         binding.textHealthTips.setText("• " + TextUtils.join("\n• ", healthTips));
     }
 
