@@ -28,4 +28,10 @@
         android:title="@string/settings"
         android:icon="@drawable/settings_icon"
         app:showAsAction="collapseActionView" />
+
+    <item
+        android:id="@+id/action_feedback"
+        android:title="@string/feedback"
+        android:icon="@drawable/feedback_icon_foreground"
+        app:showAsAction="collapseActionView" />
 </menu>
