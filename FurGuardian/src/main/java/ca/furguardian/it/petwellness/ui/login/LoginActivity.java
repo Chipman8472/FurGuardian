@@ -100,7 +100,8 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-
+        // Google Sign-In button action
+        googleSignInButton.setOnClickListener(v -> signInWithGoogle());
     }
 
     // Method to login a user
@@ -146,7 +147,31 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    // Method for Google Sign-In
+    private void signInWithGoogle() {
+        Intent signInIntent = googleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, GOOGLE_SIGN_IN_REQUEST_CODE);
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GOOGLE_SIGN_IN_REQUEST_CODE) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                if (account != null) {
+                    Toast.makeText(this, "Google Sign-In Successful!", Toast.LENGTH_SHORT).show();
+                    // Proceed to MainActivity after Google Sign-In
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            } catch (ApiException e) {
+                Toast.makeText(this, "Google Sign-In Failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 
     // Helper method to format email for Firebase storage
     private String formatEmail(String email) {
