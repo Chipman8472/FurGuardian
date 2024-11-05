@@ -98,7 +98,7 @@
         android:layout_marginTop="44dp"
         android:backgroundTint="?attr/colorPrimary"
         android:padding="16dp"
-        android:text="Submit"
+        android:text="@string/submit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

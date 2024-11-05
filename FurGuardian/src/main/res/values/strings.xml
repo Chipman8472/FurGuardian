@@ -78,4 +78,5 @@
     <string name="registration_failed">Registration Failed.</string>
     <string name="database_error">"Database Error: "</string>
     <string name="feedback">Feedback</string>
+    <string name="submit">Submit</string>
 </resources>
