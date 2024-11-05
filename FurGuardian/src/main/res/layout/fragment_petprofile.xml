@@ -3,53 +3,129 @@
 <!--Imran Zafurallah - N01585098-->
 <!--Zane Aransevia - N01351168-->
 <!--Tevadi Brookes - N01582563-->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:background="@color/fragment_background">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <!-- Pet Image (Centered and Larger) -->
+    <ImageView
+        android:id="@+id/imagePet"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        android:contentDescription="Pet Image"
+        android:src="@drawable/dog_silhouette"
+        app:layout_constraintBottom_toTopOf="@id/textPetInfo"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Pet Information Text (Name, Age, etc.) -->
+    <TextView
+        android:id="@+id/textPetInfo"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginTop="8dp"
+        android:text="Pet Name"
+        android:textColor="@color/text_color"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imagePet" />
 
-        <!-- Pet Image -->
-        <ImageView
-            android:id="@+id/imagePet"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:src="@drawable/dog_silhouette"
-            android:layout_gravity="center"
-            android:contentDescription="Pet Image" />
+    <TextView
+        android:id="@+id/pet_breed_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Breed: Unknown"
+        android:textColor="@color/text_color"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textPetInfo" />
 
-        <!-- Pet Name -->
-        <TextView
-            android:id="@+id/textPetName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pet Name: Max"
-            android:textSize="20sp"
-            android:layout_marginTop="16dp"
-            android:textStyle="bold"
-            android:layout_gravity="center" />
+    <TextView
+        android:id="@+id/pet_age_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Age: 0"
+        android:textColor="@color/text_color"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pet_breed_text" />
 
-        <!-- Pet Age -->
-        <TextView
-            android:id="@+id/textPetAge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Age: 3 years"
-            android:layout_marginTop="8dp"
-            android:layout_gravity="center" />
+    <TextView
+        android:id="@+id/pet_weight_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Weight: 0"
+        android:textColor="@color/text_color"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pet_age_text" />
 
-        <!-- Pet Breed -->
-        <TextView
-            android:id="@+id/textPetBreed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Breed: Labrador"
-            android:layout_marginTop="8dp"
-            android:layout_gravity="center" />
+
+    <!-- Button Layout Below Pet Info Text -->
+    <LinearLayout
+        android:id="@+id/layoutButtons"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textPetInfo">
 
     </LinearLayout>
-</ScrollView>
+
+    <Button
+        android:id="@+id/buttonNextPet"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="140dp"
+        android:layout_weight="1"
+        android:text="Next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/buttonAddPet"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="37dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="141dp"
+        android:layout_weight="1"
+        android:text="Add Pet"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonNextPet"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/buttonPreviousPet"
+        app:layout_constraintTop_toBottomOf="@+id/pet_weight_text"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/buttonPreviousPet"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="140dp"
+        android:layout_weight="1"
+        android:text="Previous"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
