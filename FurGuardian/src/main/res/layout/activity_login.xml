@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Justin Chipman - N01598472-->
-<!--Imran Zafurallah - N01585098-->
-<!--Zane Aransevia - N01351168-->
-<!--Tevadi Brookes - N01582563-->
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container"
     android:layout_width="match_parent"
@@ -12,100 +9,117 @@
     android:padding="24dp">
 
     <!-- App Logo -->
-<ImageView
-android:id="@+id/app_logo"
-android:layout_width="200dp"
-android:layout_height="200dp"
-android:src="@mipmap/logo_round"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintBottom_toTopOf="@id/username"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginBottom="24dp" />
+    <ImageView
+        android:id="@+id/app_logo"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@mipmap/logo_round"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/username"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="24dp" />
 
     <!-- Username Input Field -->
-<EditText
-android:id="@+id/username"
-android:layout_width="0dp"
-android:layout_height="wrap_content"
-    android:autofillHints="Email"
-    android:hint="@string/username"
-
-    android:textColor="@color/black"
-    android:textColorHint="#888888"
-    android:inputType="text"
-    android:padding="16dp"
-    android:layout_marginBottom="16dp"
-    android:drawablePadding="8dp"
-    android:elevation="4dp"
-    android:background="@drawable/rounded_edittext_background"
-    app:layout_constraintTop_toBottomOf="@id/app_logo"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Password Input Field -->
-<EditText
-android:id="@+id/password"
-android:layout_width="0dp"
-android:layout_height="wrap_content"
-    android:autofillHints="Password"
-    android:hint="@string/password"
-
-    android:textColor="@color/black"
-android:textColorHint="#888888"
-android:inputType="textPassword"
-android:padding="16dp"
-android:layout_marginBottom="24dp"
-android:drawablePadding="8dp"
-android:elevation="4dp"
-android:background="@drawable/rounded_edittext_background"
-app:layout_constraintTop_toBottomOf="@id/username"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Login Button -->
-<Button
-android:id="@+id/loginButton"
-android:layout_width="0dp"
-android:layout_height="wrap_content"
-android:text="@string/login"
-    android:textColor="@color/text_color"
-android:backgroundTint="#A67C55"
-    android:padding="16dp"
-    android:textStyle="bold"
-    android:layout_marginTop="16dp"
-    android:elevation="6dp"
-    android:background="@drawable/rounded_button_background"
-    app:layout_constraintTop_toBottomOf="@id/password"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/registerButton"
+    <EditText
+        android:id="@+id/username"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/text_color"
-        android:backgroundTint="#A67C55"
+        android:autofillHints="Email"
+        android:hint="@string/username"
+        android:textColor="@color/black"
+        android:textColorHint="#888888"
+        android:inputType="text"
         android:padding="16dp"
-        android:textStyle="bold"
+        android:layout_marginBottom="16dp"
+        android:drawablePadding="8dp"
+        android:elevation="4dp"
+        android:background="@drawable/rounded_edittext_background"
+        app:layout_constraintTop_toBottomOf="@id/app_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Password Input Field -->
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:autofillHints="Password"
+        android:hint="@string/password"
+        android:textColor="@color/black"
+        android:textColorHint="#888888"
+        android:inputType="textPassword"
+        android:padding="16dp"
+        android:layout_marginBottom="24dp"
+        android:drawablePadding="8dp"
+        android:elevation="4dp"
+        android:background="@drawable/rounded_edittext_background"
+        app:layout_constraintTop_toBottomOf="@id/username"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Remember Me Checkbox -->
+    <CheckBox
+        android:id="@+id/rememberMeCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remember me?"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@id/password"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="40dp"/>
+
+    <!-- Login Button -->
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="LOGIN"
+        android:backgroundTint="@android:color/black"
+        android:textColor="@android:color/white"
+        android:padding="12dp"
+        app:layout_constraintTop_toBottomOf="@id/rememberMeCheckbox"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
-        android:elevation="6dp"
-        android:background="@drawable/rounded_button_background"
+        app:layout_constraintWidth_percent="0.8"/>
+
+    <!-- OR Divider -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OR"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/loginButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/register" />
+        android:layout_marginTop="16dp"/>
 
-    <!-- Loading ProgressBar -->
-    <ProgressBar
-        android:id="@+id/loading"
+    <!-- Google Sign-In Button -->
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/googleSignInButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/loginButton"
+        android:layout_marginTop="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.8" />
+
+    <!-- Register Text -->
+    <Button
+        android:id="@+id/registerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-    android:indeterminate="true"
-    app:layout_constraintTop_toBottomOf="@id/loginButton"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginTop="16dp"/>
+        android:text="Register"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/googleSignInButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

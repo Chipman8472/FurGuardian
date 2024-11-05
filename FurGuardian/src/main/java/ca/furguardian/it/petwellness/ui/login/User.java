@@ -1,15 +1,30 @@
 package ca.furguardian.it.petwellness.ui.login;
 
 public class User {
-    private String email, password;
+    private String email;
+    private String password;
+    private String name;
+    private String phoneNumber;
 
+    // Default constructor required for calls to DataSnapshot.getValue(User.class)
     public User() {
-        // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public User(String email, String password) {
+    // Constructor with all fields
+    public User(String email, String password, String name, String phoneNumber) {
         this.email = email;
         this.password = password;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+    }
+
+    // Getters and Setters
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -20,11 +35,19 @@ public class User {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+    public String getName() {
+        return name;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

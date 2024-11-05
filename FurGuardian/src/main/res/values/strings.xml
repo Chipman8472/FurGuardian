@@ -80,4 +80,6 @@
     <string name="feedback">Feedback</string>
     <string name="submit">Submit</string>
     <string name="comments">Comments</string>
+    <string name="title_activity_registration">RegistrationActivity</string>
+    <string name="title_dashboard">Dashboard</string>
 </resources>
