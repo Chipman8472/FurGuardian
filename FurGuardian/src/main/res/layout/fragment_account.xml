@@ -1,0 +1,161 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textAccountInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Account Information"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Name Checkbox and Editable Field -->
+
+    <TextView
+        android:id="@+id/textCurrentName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="11dp"
+        android:text="Current Name: John Doe"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textAccountInfo" />
+
+    <!-- Phone Number Checkbox and Editable Field -->
+
+    <TextView
+        android:id="@+id/textCurrentPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Current Phone: 123-456-7890"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textCurrentName" />
+
+    <!-- Password Checkbox and Editable Fields with Confirmation -->
+
+    <EditText
+        android:id="@+id/editTextPhone"
+        android:layout_width="360dp"
+        android:layout_height="41dp"
+        android:layout_marginBottom="112dp"
+        android:hint="Enter new phone number"
+        android:inputType="phone"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSaveChanges"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="360dp"
+        android:layout_height="41dp"
+        android:layout_marginBottom="164dp"
+        android:hint="Enter new name"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSaveChanges"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkBoxEditPhone"
+        android:layout_width="155dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="131dp"
+        android:text="Edit Phone Number"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/checkBoxEditPassword"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkBoxEditPassword"
+        android:layout_width="120dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="7dp"
+        android:text="Edit Password"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/checkBoxEditPhone"
+        app:layout_constraintStart_toEndOf="@+id/checkBoxEditName"
+        app:layout_constraintTop_toBottomOf="@+id/textCurrentPhone" />
+
+    <CheckBox
+        android:id="@+id/checkBoxEditName"
+        android:layout_width="100dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="7dp"
+        android:text="Edit Name"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/checkBoxEditPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textCurrentPhone" />
+
+    <EditText
+        android:id="@+id/editTextNewPassword"
+        android:layout_width="360dp"
+        android:layout_height="41dp"
+        android:layout_marginBottom="60dp"
+        android:hint="Enter new password"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSaveChanges"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Save Changes Button -->
+
+    <!-- Sign Out Button -->
+
+    <EditText
+        android:id="@+id/editTextConfirmPassword"
+        android:layout_width="360dp"
+        android:layout_height="41dp"
+        android:layout_marginBottom="12dp"
+        android:hint="Confirm new password"
+        android:inputType="textPassword"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSaveChanges"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonSaveChanges"
+        android:layout_width="303dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="54dp"
+        android:layout_marginEnd="54dp"
+        android:layout_marginBottom="174dp"
+        android:text="Save Changes"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSignOut"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonSignOut"
+        android:layout_width="339dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="50dp"
+        android:text="Sign Out"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
