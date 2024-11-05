@@ -1,9 +1,13 @@
 package ca.furguardian.it.petwellness.ui.menu;
 
 import android.os.Bundle;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -36,6 +40,16 @@ public class EmergencyContactFragment extends Fragment {
         // Display each contact in the layout
         displayContacts();
 
+        // Override back button functionality for RemindersFragment
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Navigate back to the home page instead of exiting the app
+                NavController navController = Navigation.findNavController(view);
+                navController.navigate(R.id.navigation_home);  // Navigate directly to the home page
+            }
+        });
+
         return view;
     }
 
@@ -44,8 +58,9 @@ public class EmergencyContactFragment extends Fragment {
             // Create a new TextView for each contact
             TextView contactView = new TextView(getContext());
             contactView.setText("Name: " + contact.getName() + "\nPhone: " + contact.getPhoneNumber());
-            contactView.setTextSize(16);
-            contactView.setPadding(0, 16, 0, 16);
+            contactView.setTextSize(20);
+            contactView.setPadding(0, 50, 0, 50);
+            contactView.setTextColor(getResources().getColor(R.color.black));
 
             // Add each contact view to the container
             contactsContainer.addView(contactView);
@@ -55,8 +70,10 @@ public class EmergencyContactFragment extends Fragment {
     // Example method to retrieve contacts (replace with real data)
     private List<Contact> getContacts() {
         List<Contact> contacts = new ArrayList<>();
-        contacts.add(new Contact("John Doe", "123-456-7890"));
-        contacts.add(new Contact("Jane Smith", "098-765-4321"));
+        contacts.add(new Contact("Humberwood Animal Hospital", "416-213-0999"));
+        contacts.add(new Contact("Veterinary Emergency Clinic", "416-920-2002"));
+        contacts.add(new Contact("Pet Smart", "123-456-7890"));
+        contacts.add(new Contact("PetCo", "098-765-4321"));
         // Add more contacts as needed
         return contacts;
     }
