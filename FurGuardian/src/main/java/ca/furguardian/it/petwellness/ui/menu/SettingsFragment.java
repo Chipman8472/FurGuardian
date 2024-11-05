@@ -4,6 +4,7 @@ package ca.furguardian.it.petwellness.ui.menu;
 //	     Zane Aransevia - RCB- N01351168
 //	     Tevadi Brookes - RCC - N01582563
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +23,8 @@ import ca.furguardian.it.petwellness.R;
 
 public class SettingsFragment extends Fragment {
 
-    private SwitchCompat toggleDarkMode;  // Use SwitchCompat instead of Switch
+    private SwitchCompat toggleDarkMode;// Use SwitchCompat instead of Switch
+    private SwitchCompat toggleLockOrientation;
     private ImageView settingImage;
     public SettingsFragment() {
         // Required empty public constructor
@@ -44,6 +46,7 @@ public class SettingsFragment extends Fragment {
 
         // Initialize the toggle switch
         toggleDarkMode = view.findViewById(R.id.toggleDarkMode);
+        toggleLockOrientation = view.findViewById(R.id.toggleLockOrientation); // Initialize the lock orientation switch
         settingImage = view.findViewById(R.id.image_header);
 
 
@@ -51,13 +54,23 @@ public class SettingsFragment extends Fragment {
         // Load the saved preference for dark mode
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("userPrefs", getContext().MODE_PRIVATE);
         boolean isDarkModeOn = sharedPreferences.getBoolean("darkMode", false);
+        boolean isOrientationLocked = sharedPreferences.getBoolean("lockOrientation", false); // Retrieve lock orientation preference
+
         toggleDarkMode.setChecked(isDarkModeOn);
+        toggleLockOrientation.setChecked(isOrientationLocked); // Set the initial state of the orientation lock
 
         // Set the theme based on the preference
         if (isDarkModeOn) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
+        // Set the screen orientation based on the orientation lock preference
+        if (isOrientationLocked) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+        } else {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         }
 
         // Override back button functionality for RemindersFragment
@@ -81,6 +94,20 @@ public class SettingsFragment extends Fragment {
                 editor.putBoolean("darkMode", false);
             }
             editor.apply();
+        });
+
+        // Toggle orientation lock listener
+        toggleLockOrientation.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("lockOrientation", isChecked);
+            editor.apply();
+
+            // Lock or unlock the screen orientation based on the switch
+            if (isChecked) {
+                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+            } else {
+                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+            }
         });
 
         return view;
