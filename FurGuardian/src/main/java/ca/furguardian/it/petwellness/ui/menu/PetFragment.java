@@ -61,6 +61,9 @@ public class PetFragment extends Fragment {
         // Add Pet Button
         binding.buttonAddPet.setOnClickListener(v -> showAddPetDialog());
 
+        // Delete Pet Button
+        binding.buttonDelete.setOnClickListener(v -> deleteCurrentPet());
+
         return root;
     }
 
@@ -72,6 +75,7 @@ public class PetFragment extends Fragment {
         binding.textPetInfo.setText(currentPet.getName());
         binding.petAgeText.setText("Age: " + currentPet.getAge() + " years");
         binding.petWeightText.setText("Weight: " + currentPet.getWeight() + " kg");
+        binding.petBreedText.setText("Breed: " + currentPet.getBreed());
         binding.imagePet.setImageURI(currentPet.getProfileImageUri());
     }
 
@@ -83,7 +87,6 @@ public class PetFragment extends Fragment {
         // Create a LinearLayout to hold the dialog contents
         LinearLayout layout = new LinearLayout(requireContext());
         layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(16, 16, 16, 16);
 
         // Create EditText for Pet Name
         EditText petNameInput = new EditText(requireContext());
@@ -97,7 +100,7 @@ public class PetFragment extends Fragment {
 
         // Create EditText for Pet Weight
         EditText petWeightInput = new EditText(requireContext());
-        petWeightInput.setHint("Pet Weight (kg)");
+        petWeightInput.setHint("Pet Weight (lbs)");
         layout.addView(petWeightInput);
 
         // Create RadioGroup for Pet Type
@@ -137,7 +140,6 @@ public class PetFragment extends Fragment {
             breedAdapter.notifyDataSetChanged();
         });
 
-
         // Create ImageView for Pet Image Preview
         petImagePreview = new ImageView(requireContext()); // Initialize the class member
         petImagePreview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 200));
@@ -166,32 +168,29 @@ public class PetFragment extends Fragment {
                 petType = selectedRadioButton.getText().toString();
             }
 
-            // Get pet age and weight, with default values if fields are empty
+            // Parse pet age and weight with safe defaults
             int petAge = 0;
             double petWeight = 0.0;
-
             try {
                 petAge = Integer.parseInt(petAgeInput.getText().toString());
-            } catch (NumberFormatException e) {
-                // Handle invalid input (optional)
-            }
+            } catch (NumberFormatException ignored) { }
 
             try {
                 petWeight = Double.parseDouble(petWeightInput.getText().toString());
-            } catch (NumberFormatException e) {
-                // Handle invalid input (optional)
-            }
+            } catch (NumberFormatException ignored) { }
 
-            // Check if any of the mandatory fields are empty
+            // Check if required fields are filled
             if (petName.isEmpty() || petBreed.isEmpty() || petType.isEmpty()) {
                 Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
-                return;
+                return; // Do not dismiss dialog
             }
 
-            // Add pet with a default image if none is selected
+            // Add pet and display current pet
             Uri petImageUri = selectedImageUri != null ? selectedImageUri : Uri.parse("android.resource://ca.furguardian.it.petwellness/" + R.drawable.dog_silhouette);
             addPetToList(petName, petBreed, petType, petAge, petWeight, petImageUri);
-            displayCurrentPet(); // Refresh display of current pet
+            displayCurrentPet();
+
+            dialog.dismiss(); // Dismiss dialog only after adding pet
         });
 
         // Negative button to cancel
@@ -221,6 +220,31 @@ public class PetFragment extends Fragment {
         Pet newPet = new Pet(name, breed, type, age, weight, imageUri);
         pets.add(newPet);
         currentPetIndex = pets.size() - 1; // Set the new pet as the current pet
+    }
+
+    private void deleteCurrentPet() {
+        if (!pets.isEmpty()) {
+            pets.remove(currentPetIndex); // Remove the pet at the current index
+
+            if (pets.isEmpty()) {
+                clearPetDisplay(); // Clear display if no pets are left
+            } else {
+                // Update currentPetIndex to stay within bounds
+                currentPetIndex = currentPetIndex % pets.size();
+                displayCurrentPet(); // Display the next pet after deletion
+            }
+        } else {
+            Toast.makeText(requireContext(), "No pet to delete.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Method to clear pet information from the screen
+    private void clearPetDisplay() {
+        binding.textPetInfo.setText("Pet Name");
+        binding.petAgeText.setText("Age: 0");
+        binding.petWeightText.setText("Weight: 0");
+        binding.petBreedText.setText("Breed: Unknown");
+        binding.imagePet.setImageResource(R.drawable.dog_silhouette);
     }
 
     @Override
