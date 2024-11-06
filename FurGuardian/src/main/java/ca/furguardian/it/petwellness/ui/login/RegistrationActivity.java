@@ -18,21 +18,23 @@ import ca.furguardian.it.petwellness.MainActivity;
 import ca.furguardian.it.petwellness.R;
 import ca.furguardian.it.petwellness.controller.Format;
 import ca.furguardian.it.petwellness.controller.InputValidator;
+import ca.furguardian.it.petwellness.model.User;
+import ca.furguardian.it.petwellness.model.UserModel;
 
 public class RegistrationActivity extends AppCompatActivity {
 
+
+
     private EditText nameField, phoneField, emailField, passwordField, confirmPasswordField;
     private Button registerButton;
-    private FirebaseDatabase database;
-    private DatabaseReference usersRef;
+    private UserModel userModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        database = FirebaseDatabase.getInstance();
-        usersRef = database.getReference("users");
+        userModel = new UserModel();
 
         nameField = findViewById(R.id.name);
         phoneField = findViewById(R.id.phone);
@@ -57,42 +59,25 @@ public class RegistrationActivity extends AppCompatActivity {
             } else if (!password.equals(confirmPassword)) {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
             } else {
-                registerUser(name, phone, email, password);
+                userModel.registerUser(email, password, name, phone, this, new UserModel.RegistrationCallback() {
+                    @Override
+                    public void onRegistrationSuccess() {
+                        Toast.makeText(RegistrationActivity.this, "Registration successful!", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
+                        finish();
+                    }
+
+                    @Override
+                    public void onRegistrationFailed(String errorMessage) {
+                        Toast.makeText(RegistrationActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
 
     }
-
-    private void registerUser(String email, String password, String name, String phoneNumber) {
-        String formattedEmail = Format.formatEmail(email);
-
-        usersRef.child(formattedEmail).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    Toast.makeText(RegistrationActivity.this, getString(R.string.user_already_registered), Toast.LENGTH_LONG).show();
-                } else {
-                    User newUser = new User(email, password, name, phoneNumber);
-                    usersRef.child(formattedEmail).setValue(newUser).addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(RegistrationActivity.this, getString(R.string.registration_successful), Toast.LENGTH_SHORT).show();
-                            // After registration, redirect to MainActivity
-                            Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            Toast.makeText(RegistrationActivity.this, getString(R.string.registration_failed), Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(RegistrationActivity.this, getString(R.string.database_error) + databaseError.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
 
 }
+
+
+
