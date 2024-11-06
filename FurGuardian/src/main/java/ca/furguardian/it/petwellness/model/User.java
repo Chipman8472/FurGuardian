@@ -1,4 +1,4 @@
-package ca.furguardian.it.petwellness.ui.login;
+package ca.furguardian.it.petwellness.model;
 
 public class User {
     private String email;
