@@ -8,6 +8,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -34,21 +36,18 @@ public class MainActivity extends AppCompatActivity {
         ca.furguardian.it.petwellness.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        applySettings();
 
-        SharedPreferences sharedPreferences = this.getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
-        boolean notifOn = sharedPreferences.getBoolean("notificationsEnabled", false);
+        NotificationChannel channel = new NotificationChannel(
+                getString(R.string.reminder_channel),
+                getString(R.string.reminder_notifications),
+                NotificationManager.IMPORTANCE_HIGH
+        );
+        channel.setDescription(getString(R.string.channel_for_reminder_notifications));
 
-        if (notifOn) {
-            NotificationChannel channel = new NotificationChannel(
-                    getString(R.string.reminder_channel),
-                    getString(R.string.reminder_notifications),
-                    NotificationManager.IMPORTANCE_HIGH
-            );
-            channel.setDescription(getString(R.string.channel_for_reminder_notifications));
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
 
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
 
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -101,6 +100,19 @@ public class MainActivity extends AppCompatActivity {
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void applySettings() {
+        SharedPreferences sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+
+        // Apply dark mode setting
+        boolean isDarkModeOn = sharedPreferences.getBoolean("darkMode", false);
+        AppCompatDelegate.setDefaultNightMode(isDarkModeOn ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+
+        // Apply orientation lock setting
+        boolean isOrientationLocked = sharedPreferences.getBoolean("lockOrientation", false);
+        setRequestedOrientation(isOrientationLocked ? ActivityInfo.SCREEN_ORIENTATION_LOCKED : ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+
     }
 
 }

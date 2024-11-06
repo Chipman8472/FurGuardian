@@ -1,14 +1,14 @@
 package ca.furguardian.it.petwellness.ui.menu;
 
 import android.Manifest;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.os.Build;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +16,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -28,11 +29,11 @@ import ca.furguardian.it.petwellness.R;
 
 public class SettingsFragment extends Fragment {
 
-    private static final String NOTIFICATION_CHANNEL_ID = "user_notifications";
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 100;
-
     private SwitchCompat toggleDarkMode, toggleLockOrientation, toggleNotifications, toggleLocation;
     private ImageView settingImage;
+    private SharedPreferences sharedPreferences;
+
+    public SettingsFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,57 +45,12 @@ public class SettingsFragment extends Fragment {
         toggleLocation = view.findViewById(R.id.toggleLocation);
         settingImage = view.findViewById(R.id.image_header);
 
-        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
-        boolean isDarkModeOn = sharedPreferences.getBoolean("darkMode", false);
-        boolean isOrientationLocked = sharedPreferences.getBoolean("lockOrientation", false);
-        boolean isNotificationsEnabled = sharedPreferences.getBoolean("notificationsEnabled", true);
-        boolean isLocationEnabled = sharedPreferences.getBoolean("locationEnabled", true);
+        sharedPreferences = requireActivity().getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
 
-        toggleDarkMode.setChecked(isDarkModeOn);
-        toggleLockOrientation.setChecked(isOrientationLocked);
-        toggleNotifications.setChecked(isNotificationsEnabled);
-        toggleLocation.setChecked(isLocationEnabled);
+        // Load saved preferences
+        initializeToggles();
 
-        // Apply dark mode and orientation settings based on preferences
-        AppCompatDelegate.setDefaultNightMode(isDarkModeOn ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
-        getActivity().setRequestedOrientation(isOrientationLocked ? ActivityInfo.SCREEN_ORIENTATION_LOCKED : ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-
-        toggleDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("darkMode", isChecked);
-            editor.apply();
-            AppCompatDelegate.setDefaultNightMode(isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
-        });
-
-        toggleLockOrientation.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("lockOrientation", isChecked);
-            editor.apply();
-            getActivity().setRequestedOrientation(isChecked ? ActivityInfo.SCREEN_ORIENTATION_LOCKED : ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-        });
-
-        toggleNotifications.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("notificationsEnabled", isChecked);
-            editor.apply();
-            if (isChecked) {
-                enableNotifications();
-            } else {
-                disableNotifications();
-            }
-        });
-
-        toggleLocation.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("locationEnabled", isChecked);
-            editor.apply();
-            if (isChecked) {
-                requestLocationPermission();
-            } else {
-                revokeLocationPermission();
-            }
-        });
-
+        // Handle back button navigation
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -103,52 +59,90 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        setupToggleListeners();
+
         return view;
     }
 
-    private void enableNotifications() {
-        NotificationChannel channel = new NotificationChannel(
-                getString(R.string.reminder_channel),
-                getString(R.string.reminder_notifications),
-                NotificationManager.IMPORTANCE_HIGH
-        );
-        channel.setDescription(getString(R.string.channel_for_reminder_notifications));
-        NotificationManager manager = (NotificationManager) requireContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.createNotificationChannel(channel);
-        Toast.makeText(getContext(), "Notifications enabled", Toast.LENGTH_SHORT).show();
+    private void initializeToggles() {
+        // Set initial states of toggles based on saved preferences
+        toggleDarkMode.setChecked(sharedPreferences.getBoolean("darkMode", false));
+        toggleLockOrientation.setChecked(sharedPreferences.getBoolean("lockOrientation", false));
+        toggleNotifications.setChecked(sharedPreferences.getBoolean("notifications", false));
+        toggleLocation.setChecked(sharedPreferences.getBoolean("location", false));
+
+        // Apply dark mode setting
+        AppCompatDelegate.setDefaultNightMode(toggleDarkMode.isChecked() ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+        // Apply screen orientation lock
+        getActivity().setRequestedOrientation(toggleLockOrientation.isChecked() ? ActivityInfo.SCREEN_ORIENTATION_LOCKED : ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
 
-    private void disableNotifications() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationManager manager = (NotificationManager) requireContext().getSystemService(Context.NOTIFICATION_SERVICE);
-            manager.deleteNotificationChannel(getString(R.string.reminder_channel));
-            Toast.makeText(getContext(), "Notifications disabled", Toast.LENGTH_SHORT).show();
-        }
-    }
+    private void setupToggleListeners() {
+        toggleDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            sharedPreferences.edit().putBoolean("darkMode", isChecked).apply();
+            AppCompatDelegate.setDefaultNightMode(isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+        });
 
-    private void requestLocationPermission() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-        } else {
-            Toast.makeText(getContext(), "Location access enabled", Toast.LENGTH_SHORT).show();
-        }
-    }
+        toggleLockOrientation.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            sharedPreferences.edit().putBoolean("lockOrientation", isChecked).apply();
+            getActivity().setRequestedOrientation(isChecked ? ActivityInfo.SCREEN_ORIENTATION_LOCKED : ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        });
 
-    private void revokeLocationPermission() {
-        // Direct revocation of location permission by the app is not possible in Android.
-        // However, you can guide the user to disable location permission manually if needed.
-        Toast.makeText(getContext(), "Location access disabled. Please disable manually if required.", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(getContext(), "Location permission granted", Toast.LENGTH_SHORT).show();
+        toggleNotifications.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            sharedPreferences.edit().putBoolean("notifications", isChecked).apply();
+            if (isChecked) {
+                requestNotificationPermission();
             } else {
-                Toast.makeText(getContext(), "Location permission denied", Toast.LENGTH_SHORT).show();
-                toggleLocation.setChecked(false); // Reset toggle if permission denied
+                openAppSettings();
             }
+        });
+
+        toggleLocation.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            sharedPreferences.edit().putBoolean("location", isChecked).apply();
+            if (isChecked) {
+                requestLocationPermission();
+            } else {
+                openAppSettings();
+            }
+        });
+    }
+
+    // Method to open app settings for the user to disable permissions
+    private void openAppSettings() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", requireActivity().getPackageName(), null);
+        intent.setData(uri);
+        startActivity(intent);
+    }
+
+    // Method to request notification permission in-app
+    private void requestNotificationPermission() {
+        // Define the permission request action
+        // For Android 13 and higher, request POST_NOTIFICATIONS permission
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
         }
     }
+
+    // Method to request location permission in-app
+    private void requestLocationPermission() {
+        locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
+    }
+
+    // Launchers for permission requests
+    private final ActivityResultLauncher<String> notificationPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (!isGranted) {
+                    toggleNotifications.setChecked(false);  // Disable toggle if permission denied
+                    Toast.makeText(getContext(), "Notification permission denied", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+    private final ActivityResultLauncher<String> locationPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (!isGranted) {
+                    toggleLocation.setChecked(false);  // Disable toggle if permission denied
+                    Toast.makeText(getContext(), "Location permission denied", Toast.LENGTH_SHORT).show();
+                }
+            });
 }

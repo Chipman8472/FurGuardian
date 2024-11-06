@@ -5,6 +5,7 @@ import static java.security.AccessController.getContext;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import ca.furguardian.it.petwellness.MainActivity;
 import ca.furguardian.it.petwellness.R;
@@ -32,6 +34,9 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = this.getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
         boolean isRemembered = sharedPreferences.getBoolean("loggedIn", false);
 
+
+
+
         if (isRemembered) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
@@ -44,7 +49,6 @@ public class LoginActivity extends AppCompatActivity {
         rememberMeCheckbox = findViewById(R.id.rememberMeCheckbox);
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
-
 
 
         loginButton.setOnClickListener(v -> {
@@ -84,5 +88,18 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         registerButton.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, RegistrationActivity.class)));
+    }
+
+    private void applySettings() {
+        SharedPreferences sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+
+        // Apply dark mode setting
+        boolean isDarkModeOn = sharedPreferences.getBoolean("darkMode", false);
+        AppCompatDelegate.setDefaultNightMode(isDarkModeOn ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+
+        // Apply orientation lock setting
+        boolean isOrientationLocked = sharedPreferences.getBoolean("lockOrientation", false);
+        setRequestedOrientation(isOrientationLocked ? ActivityInfo.SCREEN_ORIENTATION_LOCKED : ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+
     }
 }
