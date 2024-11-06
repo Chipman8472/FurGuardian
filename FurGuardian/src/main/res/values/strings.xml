@@ -82,4 +82,12 @@
     <string name="comments">Comments</string>
     <string name="title_activity_registration">RegistrationActivity</string>
     <string name="title_dashboard">Dashboard</string>
+    <string name="pet_name">Pet Name</string>
+    <string name="add_a_new_pet">Add a New Pet</string>
+    <string name="pet_age_years">Pet Age (years)</string>
+    <string name="pet_weight_lbs">Pet Weight (lbs)</string>
+    <string name="dog">Dog</string>
+    <string name="select_image">Select Image</string>
+    <string name="add_pet">Add Pet</string>
+    <string name="cat">Cat</string>
 </resources>
