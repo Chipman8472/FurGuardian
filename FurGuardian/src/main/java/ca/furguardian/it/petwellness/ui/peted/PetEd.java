@@ -4,6 +4,7 @@ package ca.furguardian.it.petwellness.ui.peted;
 //	     Zane Aransevia - RCB- N01351168
 //	     Tevadi Brookes - RCC - N01582563
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Location;

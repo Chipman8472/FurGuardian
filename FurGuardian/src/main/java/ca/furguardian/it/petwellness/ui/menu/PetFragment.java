@@ -91,9 +91,9 @@ public class PetFragment extends Fragment {
 
         Pet currentPet = pets.get(currentPetIndex);
         binding.textPetInfo.setText(currentPet.getName());
-        binding.petAgeText.setText("Age: " + currentPet.getAge() + " years");
-        binding.petWeightText.setText("Weight: " + currentPet.getWeight() + " kg");
-        binding.petBreedText.setText("Breed: " + currentPet.getBreed());
+        binding.petAgeText.setText(getString(R.string.age) + currentPet.getAge() + getString(R.string.years));
+        binding.petWeightText.setText(getString(R.string.weight) + currentPet.getWeight() + getString(R.string.kg));
+        binding.petBreedText.setText(getString(R.string.breed) + currentPet.getBreed());
         binding.imagePet.setImageURI(currentPet.getProfileImageUri());
     }
 
@@ -199,12 +199,12 @@ public class PetFragment extends Fragment {
 
             // Check if required fields are filled
             if (petName.isEmpty() || petBreed.isEmpty() || petType.isEmpty()) {
-                Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), getString(R.string.please_fill_in_all_fields), Toast.LENGTH_SHORT).show();
                 return; // Do not dismiss dialog
             }
 
             // Add pet and display current pet
-            Uri petImageUri = selectedImageUri != null ? selectedImageUri : Uri.parse("android.resource://ca.furguardian.it.petwellness/" + R.drawable.dog_silhouette);
+            Uri petImageUri = selectedImageUri != null ? selectedImageUri : Uri.parse(getString(R.string.android_resource_ca_furguardian_it_petwellness) + R.drawable.dog_silhouette);
             addPetToList(petName, petBreed, petType, petAge, petWeight, petImageUri);
             displayCurrentPet();
 
@@ -212,7 +212,7 @@ public class PetFragment extends Fragment {
         });
 
         // Negative button to cancel
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+        builder.setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
 
         builder.show();
     }
@@ -252,16 +252,16 @@ public class PetFragment extends Fragment {
                 displayCurrentPet(); // Display the next pet after deletion
             }
         } else {
-            Toast.makeText(requireContext(), "No pet to delete.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), getString(R.string.no_pet_to_delete), Toast.LENGTH_SHORT).show();
         }
     }
 
     // Method to clear pet information from the screen
     private void clearPetDisplay() {
-        binding.textPetInfo.setText("Pet Name");
-        binding.petAgeText.setText("Age: 0");
-        binding.petWeightText.setText("Weight: 0");
-        binding.petBreedText.setText("Breed: Unknown");
+        binding.textPetInfo.setText(R.string.pet_name1);
+        binding.petAgeText.setText(R.string.age_0);
+        binding.petWeightText.setText(R.string.weight_0);
+        binding.petBreedText.setText(R.string.breed_unknown);
         binding.imagePet.setImageResource(R.drawable.dog_silhouette);
     }
 

@@ -77,10 +77,10 @@ public class AccountFragment extends Fragment {
         // Save Changes Button logic
         buttonSaveChanges.setOnClickListener(v -> {
             new AlertDialog.Builder(requireContext())
-                    .setTitle("Confirm Changes")
-                    .setMessage("Are you sure you want to save these changes?")
-                    .setPositiveButton("Yes", (dialog, which) -> saveChanges(userEmail))
-                    .setNegativeButton("No", null)
+                    .setTitle(R.string.confirm_changes1)
+                    .setMessage(R.string.are_you_sure_you_want_to_save_these_changes1)
+                    .setPositiveButton(R.string.yes, (dialog, which) -> saveChanges(userEmail))
+                    .setNegativeButton(R.string.no, null)
                     .show();
         });
 
@@ -100,7 +100,7 @@ public class AccountFragment extends Fragment {
     }
 
     private void loadUserInfo(String email) {
-        userModel.getUserData(email, new UserModel.UserDataCallback() {
+        userModel.getUserData(email, getContext(),new UserModel.UserDataCallback() {
             @Override
             public void onDataRetrieved(User user) {
                 currentUser = user;
@@ -119,7 +119,7 @@ public class AccountFragment extends Fragment {
 
             @Override
             public void onDataFailed(String errorMessage) {
-                Toast.makeText(getContext(), "Failed to load user information: " + errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.failed_to_load_user_information) + errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -130,7 +130,7 @@ public class AccountFragment extends Fragment {
         boolean isPasswordUpdated = checkBoxEditPassword.isChecked();
 
         if (currentUser == null) {
-            Toast.makeText(getContext(), "User data not available", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.user_data_not_available), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -155,23 +155,23 @@ public class AccountFragment extends Fragment {
 
             if (!newPassword.isEmpty() && newPassword.equals(confirmPassword)) {
                 currentUser.setPassword(newPassword);
-                Toast.makeText(getContext(), "Password updated", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.password_updated), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(getContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.passwords_do_not_match), Toast.LENGTH_SHORT).show();
                 return;
             }
         }
 
         // Update user data in the database
-        userModel.updateUserData(email, currentUser, new UserModel.UpdateDataCallback() {
+        userModel.updateUserData(email, currentUser, getContext(), new UserModel.UpdateDataCallback() {
             @Override
             public void onUpdateSuccess() {
-                Toast.makeText(getContext(), "Changes saved successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.changes_saved_successfully), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onUpdateFailed(String errorMessage) {
-                Toast.makeText(getContext(), "Failed to save changes: " + errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.failed_to_save_changes) + errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
     }

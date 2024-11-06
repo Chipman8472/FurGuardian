@@ -3,6 +3,9 @@ package ca.furguardian.it.petwellness.model;
 //	     Imran Zafurallah - RCB - N01585098
 //	     Zane Aransevia - RCB- N01351168
 //	     Tevadi Brookes - RCC - N01582563
+
+import android.content.Context;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -10,6 +13,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+
+import ca.furguardian.it.petwellness.R;
 
 public class DataModel {
 
@@ -45,14 +50,14 @@ public class DataModel {
     }
 
     // Method to send the simulated data to Firebase
-    public void sendDataToDatabase() {
+    public void sendDataToDatabase(Context context) {
         Map<String, Object> data = simulateData();
         dataRef.setValue(data)
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        System.out.println("Data successfully sent to database.");
-                    } else {
-                        System.out.println("Failed to send data to database.");
+                    if (task.isSuccessful())
+                        System.out.println(context.getString(R.string.data_successfully_sent_to_database));
+                    else {
+                        System.out.println(context.getString(R.string.failed_to_send_data_to_database));
                     }
                 });
     }

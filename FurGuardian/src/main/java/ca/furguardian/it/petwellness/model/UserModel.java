@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import ca.furguardian.it.petwellness.R;
 import ca.furguardian.it.petwellness.controller.Format;
 import ca.furguardian.it.petwellness.model.User;
 import ca.furguardian.it.petwellness.ui.login.LoginActivity;
@@ -39,14 +40,14 @@ public class UserModel {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    callback.onRegistrationFailed("User already registered.");
+                    callback.onRegistrationFailed(context.getString(R.string.user_already_registered1));
                 } else {
                     User newUser = new User(email, password, name, phoneNumber);
                     usersRef.child(formattedEmail).setValue(newUser).addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             callback.onRegistrationSuccess();
                         } else {
-                            callback.onRegistrationFailed("Registration failed. Please try again.");
+                            callback.onRegistrationFailed(context.getString(R.string.registration_failed_please_try_again));
                         }
                     });
                 }
@@ -54,13 +55,13 @@ public class UserModel {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                callback.onRegistrationFailed("Database error: " + databaseError.getMessage());
+                callback.onRegistrationFailed(context.getString(R.string.database_error1) + databaseError.getMessage());
             }
         });
     }
 
     // Method to login a user by retrieving data from the database
-    public void loginUser(String email, String password, LoginCallback callback) {
+    public void loginUser(String email, String password,Context context, LoginCallback callback) {
         String formattedEmail = Format.formatEmail(email);
 
         usersRef.child(formattedEmail).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -71,22 +72,22 @@ public class UserModel {
                     if (user != null && user.getPassword().equals(password)) {
                         callback.onLoginSuccess(user);
                     } else {
-                        callback.onLoginFailed("Invalid email or password.");
+                        callback.onLoginFailed(context.getString(R.string.invalid_email_or_password));
                     }
                 } else {
-                    callback.onLoginFailed("User not found. Please register.");
+                    callback.onLoginFailed(context.getString(R.string.user_not_found_please_register));
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                callback.onLoginFailed("Database error: " + databaseError.getMessage());
+                callback.onLoginFailed(context.getString(R.string.database_error1) + databaseError.getMessage());
             }
         });
     }
 
     // Method to retrieve user data by email
-    public void getUserData(String email, UserDataCallback callback) {
+    public void getUserData(String email, Context context, UserDataCallback callback) {
         String formattedEmail = Format.formatEmail(email);
 
         usersRef.child(formattedEmail).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -97,29 +98,29 @@ public class UserModel {
                     if (user != null) {
                         callback.onDataRetrieved(user);
                     } else {
-                        callback.onDataFailed("User data not found.");
+                        callback.onDataFailed(context.getString(R.string.user_data_not_found));
                     }
                 } else {
-                    callback.onDataFailed("User does not exist.");
+                    callback.onDataFailed(context.getString(R.string.user_does_not_exist));
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                callback.onDataFailed("Database error: " + databaseError.getMessage());
+                callback.onDataFailed(context.getString(R.string.database_error1) + databaseError.getMessage());
             }
         });
     }
 
     // Method to update user data in the database
-    public void updateUserData(String email, User updatedUser, UpdateDataCallback callback) {
+    public void updateUserData(String email, User updatedUser, Context context, UpdateDataCallback callback) {
         String formattedEmail = Format.formatEmail(email);
 
         usersRef.child(formattedEmail).setValue(updatedUser).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 callback.onUpdateSuccess();
             } else {
-                callback.onUpdateFailed("Failed to update user data.");
+                callback.onUpdateFailed(context.getString(R.string.failed_to_update_user_data));
             }
         });
     }

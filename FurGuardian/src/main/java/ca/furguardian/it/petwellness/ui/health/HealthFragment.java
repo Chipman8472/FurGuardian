@@ -90,7 +90,7 @@ public class HealthFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), "Failed to load health data.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.failed_to_load_health_data), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -100,7 +100,7 @@ public class HealthFragment extends Fragment {
             @Override
             public void run() {
                 // Simulate data and send it to Firebase
-                dataModel.sendDataToDatabase();
+                dataModel.sendDataToDatabase(getContext());
 
                 // Retrieve the updated data from Firebase to update the UI
                 dataModel.retrieveDataFromDatabase(new ValueEventListener() {
@@ -116,7 +116,7 @@ public class HealthFragment extends Fragment {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(getContext(), "Failed to load health data.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getString(R.string.failed_to_load_health_data1), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -135,12 +135,12 @@ public class HealthFragment extends Fragment {
         int sleepHours = ((Long) data.get("sleepHours")).intValue();
         double weight = (double) data.get("weight");
 
-        binding.textHeartRate.setText("Heart Rate: " + heartRate + " bpm");
-        binding.textRespiratoryRate.setText("Respiratory Rate: " + respiratoryRate + " bpm");
-        binding.textSteps.setText("Steps: " + steps);
-        binding.textDistance.setText(String.format("Distance: %.2f km", distance));
-        binding.textSleepHours.setText("Sleep Hours: " + sleepHours + " hrs");
-        binding.textCurrentWeight.setText("Current Weight: " + weight + " kg");
+        binding.textHeartRate.setText(getString(R.string.heart_rate) + heartRate + getString(R.string.bpm));
+        binding.textRespiratoryRate.setText(getString(R.string.respiratory_rate) + respiratoryRate + getString(R.string.bpm));
+        binding.textSteps.setText(getString(R.string.steps) + steps);
+        binding.textDistance.setText(String.format(getString(R.string.distance_2f_km), distance));
+        binding.textSleepHours.setText(getString(R.string.sleep_hours) + sleepHours + getString(R.string.hrs));
+        binding.textCurrentWeight.setText(getString(R.string.current_weight) + weight + getString(R.string.kg));
 
         updateHealthTips(heartRate, steps, sleepHours);
     }
@@ -149,17 +149,17 @@ public class HealthFragment extends Fragment {
         List<String> healthTips = new ArrayList<>();
 
         if (heartRate > 90) {
-            healthTips.add("Your heart rate is elevated. Take a few moments to relax.");
+            healthTips.add(getString(R.string.your_heart_rate_is_elevated_take_a_few_moments_to_relax));
         }
         if (steps < 3500) {
-            healthTips.add("You haven't reached your daily step goal. Try to be more active!");
+            healthTips.add(getString(R.string.you_haven_t_reached_your_daily_step_goal_try_to_be_more_active));
         }
         if (sleepHours < 7) {
-            healthTips.add("You might need more sleep for optimal health.");
+            healthTips.add(getString(R.string.you_might_need_more_sleep_for_optimal_health));
         }
 
         if (healthTips.isEmpty()) {
-            healthTips.add("Great job! Keep up the healthy habits.");
+            healthTips.add(getString(R.string.great_job_keep_up_the_healthy_habits));
         }
 
         binding.textHealthTips.setText("• " + TextUtils.join("\n• ", healthTips));
@@ -167,46 +167,46 @@ public class HealthFragment extends Fragment {
 
     private void showAddWeightDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Add Weight Record");
+        builder.setTitle(getString(R.string.add_weight_record));
 
         final EditText input = new EditText(getContext());
-        input.setHint("Enter weight in kg");
+        input.setHint(getString(R.string.enter_weight_in_kg));
         builder.setView(input);
 
-        builder.setPositiveButton("Add", (dialog, which) -> {
+        builder.setPositiveButton(getString(R.string.add), (dialog, which) -> {
             String weight = input.getText().toString();
             if (!weight.isEmpty()) {
-                binding.textCurrentWeight.setText("Current Weight: " + weight + " kg");
-                Toast.makeText(getContext(), "Weight record updated!", Toast.LENGTH_SHORT).show();
+                binding.textCurrentWeight.setText(getString(R.string.current_weight) + weight + getString(R.string.kg));
+                Toast.makeText(getContext(), getString(R.string.weight_record_updated), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(getContext(), "Weight cannot be empty", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.weight_cannot_be_empty), Toast.LENGTH_SHORT).show();
             }
         });
 
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+        builder.setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
 
         builder.show();
     }
 
     private void showAddMedicalRecordDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Add Medical Record");
+        builder.setTitle(getString(R.string.add_medical_record));
 
         final EditText input = new EditText(getContext());
-        input.setHint("Enter medical record details");
+        input.setHint(getString(R.string.enter_medical_record_details));
         builder.setView(input);
 
-        builder.setPositiveButton("Add", (dialog, which) -> {
+        builder.setPositiveButton(getString(R.string.add), (dialog, which) -> {
             String record = input.getText().toString();
             if (!record.isEmpty()) {
                 binding.textMedicalRecords.setText(record);
-                Toast.makeText(getContext(), "Medical record updated!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.medical_record_updated), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(getContext(), "Record cannot be empty", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.record_cannot_be_empty), Toast.LENGTH_SHORT).show();
             }
         });
 
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+        builder.setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
 
         builder.show();
     }

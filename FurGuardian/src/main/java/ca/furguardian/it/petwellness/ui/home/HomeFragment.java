@@ -30,36 +30,36 @@ public class HomeFragment extends Fragment {
         View root = binding.getRoot();
 
         // Simulate data for Steps
-        binding.textStepsToday.setText("Steps: 4500");
+        binding.textStepsToday.setText(getString(R.string.steps_4500));
         binding.progressStepsGoal.setProgress(4500);  // Update with the real-time step count
 
         // Simulate data for Device Records
-        binding.textFoodDispenserUsage.setText("Last Feeding: 08:30 AM");
+        binding.textFoodDispenserUsage.setText(getString(R.string.last_feeding_08_30_am));
 
         // Simulate a rotating Pet Education Tip
-        binding.textPetTip.setText("Tip: Keep your pet hydrated.");
+        binding.textPetTip.setText(getString(R.string.tip_keep_your_pet_hydrated));
 
         // Set up placeholders for Camera, Microphone, and Speaker
         binding.imageCamera.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Camera: Connecting...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.camera_connecting), Toast.LENGTH_SHORT).show();
 
             // Use Handler to create a delay
             new Handler().postDelayed(() -> {
-                Toast.makeText(getContext(), "Camera: Connected!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.camera_connected), Toast.LENGTH_SHORT).show();
             }, 3000); // Delay
         });
 
         binding.imageMicrophone.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Microphone: Start speaking...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.microphone_start_speaking), Toast.LENGTH_SHORT).show();
 
             // Use Handler to create a delay
             new Handler().postDelayed(() -> {
-                Toast.makeText(getContext(), "Microphone: Sent!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.microphone_sent), Toast.LENGTH_SHORT).show();
             }, 3000); // Delay
         });
 
         binding.imageSpeaker.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Speaker: Playing audio...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.speaker_playing_audio), Toast.LENGTH_SHORT).show();
         });
 
         // Override back button functionality for RemindersFragment

@@ -45,8 +45,8 @@ public class PetEdAdapter extends RecyclerView.Adapter<PetEdAdapter.ViewHolder> 
 
         // Handle item click for adding to calendar
         holder.itemView.setOnClickListener(v -> {
-            if (item.equals("Vaccination Schedule")) {
-                addEventToCalendar("Pet Vaccination", "Pet Vaccination Schedule", System.currentTimeMillis() + 86400000);  //  1 day from now
+            if (item.equals(mContext.getString(R.string.vaccination_schedule1))) {
+                addEventToCalendar(mContext.getString(R.string.pet_vaccination), mContext.getString(R.string.pet_vaccination_schedule), System.currentTimeMillis() + 86400000);  //  1 day from now
             } else {
                 String url = mUrls.get(position); // Get the URL for the clicked item
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));

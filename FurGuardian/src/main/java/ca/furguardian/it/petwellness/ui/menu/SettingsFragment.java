@@ -137,7 +137,7 @@ public class SettingsFragment extends Fragment {
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (!isGranted) {
                     toggleNotifications.setChecked(false);  // Disable toggle if permission denied
-                    Toast.makeText(getContext(), "Notification permission denied", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.notification_permission_denied1), Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -145,7 +145,7 @@ public class SettingsFragment extends Fragment {
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (!isGranted) {
                     toggleLocation.setChecked(false);  // Disable toggle if permission denied
-                    Toast.makeText(getContext(), "Location permission denied", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.location_permission_denied), Toast.LENGTH_SHORT).show();
                 }
             });
 }

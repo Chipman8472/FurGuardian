@@ -56,24 +56,24 @@ public class RegistrationActivity extends AppCompatActivity {
             String confirmPassword = confirmPasswordField.getText().toString().trim();
 
             if (!InputValidator.isValidEmail(email)) {
-                Toast.makeText(this, "Invalid email format", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.invalid_email_format), Toast.LENGTH_SHORT).show();
             } else if (!InputValidator.isValidPhoneNumber(phone)) {
-                Toast.makeText(this, "Phone number must be 10 digits", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.phone_number_must_be_10_digits), Toast.LENGTH_SHORT).show();
             } else if (!InputValidator.isValidPassword(password)) {
-                Toast.makeText(this, "Password must be 8-16 characters, contain at least 1 uppercase letter, 1 number, and 1 symbol", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.password_must_be_8_16_characters_contain_at_least_1_uppercase_letter_1_number_and_1_symbol), Toast.LENGTH_LONG).show();
             } else if (!password.equals(confirmPassword)) {
-                Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.passwords_do_not_match1), Toast.LENGTH_SHORT).show();
             } else {
                 SharedPreferences sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("email", email);
-                editor.putString("password", password);
+                editor.putString(getString(R.string.email), email);
+                editor.putString(getString(R.string.password1), password);
                 editor.apply();
 
                 userModel.registerUser(email, password, name, phone, this, new UserModel.RegistrationCallback() {
                     @Override
                     public void onRegistrationSuccess() {
-                        Toast.makeText(RegistrationActivity.this, "Registration successful!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegistrationActivity.this, getString(R.string.registration_successful1), Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
                         finish();
                     }

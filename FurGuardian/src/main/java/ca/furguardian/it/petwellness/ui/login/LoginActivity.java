@@ -59,14 +59,14 @@ public class LoginActivity extends AppCompatActivity {
             String password = loginPassword.getText().toString().trim();
 
             if (!email.isEmpty() && !password.isEmpty()) {
-                userModel.loginUser(email, password, new UserModel.LoginCallback() {
+                userModel.loginUser(email, password, this,new UserModel.LoginCallback() {
                     @Override
                     public void onLoginSuccess(User user) {
                         // Handle "Remember Me"
                         SharedPreferences sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("email", email);
-                        editor.putString("password", password);
+                        editor.putString(getString(R.string.email1), email);
+                        editor.putString(getString(R.string.password), password);
                         if (rememberMeCheckbox.isChecked()) {
                             editor.putBoolean("loggedIn", true);
                         } else {
@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.apply();
 
                         // Navigate to MainActivity
-                        Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, getString(R.string.login_successful), Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
                     }
@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
             } else {
-                Toast.makeText(LoginActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, getString(R.string.please_fill_all_fields), Toast.LENGTH_SHORT).show();
             }
         });
 
