@@ -1,6 +1,8 @@
 package ca.furguardian.it.petwellness.ui.login;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -59,6 +61,12 @@ public class RegistrationActivity extends AppCompatActivity {
             } else if (!password.equals(confirmPassword)) {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
             } else {
+                SharedPreferences sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("email", email);
+                editor.putString("password", password);
+                editor.apply();
+
                 userModel.registerUser(email, password, name, phone, this, new UserModel.RegistrationCallback() {
                     @Override
                     public void onRegistrationSuccess() {
