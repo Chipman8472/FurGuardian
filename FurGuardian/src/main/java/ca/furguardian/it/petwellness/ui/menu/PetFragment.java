@@ -1,5 +1,10 @@
 package ca.furguardian.it.petwellness.ui.menu;
 
+//       Justin Chipman - RCB – N01598472
+//	     Imran Zafurallah - RCB - N01585098
+//	     Zane Aransevia - RCB- N01351168
+//	     Tevadi Brookes - RCC - N01582563
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -95,7 +100,7 @@ public class PetFragment extends Fragment {
     // Open Add Pet dialog
     private void showAddPetDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("Add a New Pet");
+        builder.setTitle(R.string.add_a_new_pet);
 
         // Create a LinearLayout to hold the dialog contents
         LinearLayout layout = new LinearLayout(requireContext());
@@ -103,28 +108,28 @@ public class PetFragment extends Fragment {
 
         // Create EditText for Pet Name
         EditText petNameInput = new EditText(requireContext());
-        petNameInput.setHint("Pet Name");
+        petNameInput.setHint(R.string.pet_name);
         layout.addView(petNameInput);
 
         // Create EditText for Pet Age
         EditText petAgeInput = new EditText(requireContext());
-        petAgeInput.setHint("Pet Age (years)");
+        petAgeInput.setHint(R.string.pet_age_years);
         layout.addView(petAgeInput);
 
         // Create EditText for Pet Weight
         EditText petWeightInput = new EditText(requireContext());
-        petWeightInput.setHint("Pet Weight (lbs)");
+        petWeightInput.setHint(R.string.pet_weight_lbs);
         layout.addView(petWeightInput);
 
         // Create RadioGroup for Pet Type
         RadioGroup petTypeRadioGroup = new RadioGroup(requireContext());
 
         RadioButton dogRadioButton = new RadioButton(requireContext());
-        dogRadioButton.setText("Dog");
+        dogRadioButton.setText(R.string.dog);
         petTypeRadioGroup.addView(dogRadioButton);
 
         RadioButton catRadioButton = new RadioButton(requireContext());
-        catRadioButton.setText("Cat");
+        catRadioButton.setText(R.string.cat);
         petTypeRadioGroup.addView(catRadioButton);
 
         layout.addView(petTypeRadioGroup);
@@ -161,7 +166,7 @@ public class PetFragment extends Fragment {
 
         // Button to select image
         Button selectImageButton = new Button(requireContext());
-        selectImageButton.setText("Select Image");
+        selectImageButton.setText(R.string.select_image);
         selectImageButton.setOnClickListener(v -> openGallery());
         layout.addView(selectImageButton);
 
@@ -169,7 +174,7 @@ public class PetFragment extends Fragment {
         builder.setView(layout);
 
         // Positive button to add pet
-        builder.setPositiveButton("Add Pet", (dialog, which) -> {
+        builder.setPositiveButton(R.string.add_pet, (dialog, which) -> {
             String petName = petNameInput.getText().toString();
             String petBreed = petBreedSpinner.getSelectedItem() != null ? petBreedSpinner.getSelectedItem().toString() : "";
 
