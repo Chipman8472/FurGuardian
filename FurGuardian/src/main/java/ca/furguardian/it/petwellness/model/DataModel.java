@@ -1,5 +1,8 @@
 package ca.furguardian.it.petwellness.model;
-
+//       Justin Chipman - RCB – N01598472
+//	     Imran Zafurallah - RCB - N01585098
+//	     Zane Aransevia - RCB- N01351168
+//	     Tevadi Brookes - RCC - N01582563
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
