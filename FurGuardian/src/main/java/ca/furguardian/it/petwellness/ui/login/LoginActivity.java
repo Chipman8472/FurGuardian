@@ -1,5 +1,7 @@
 package ca.furguardian.it.petwellness.ui.login;
 
+import static java.security.AccessController.getContext;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,6 +29,13 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        SharedPreferences sharedPreferences = this.getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        boolean isRemembered = sharedPreferences.getBoolean("loggedIn", false);
+
+        if (isRemembered) {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+        }
 
         userModel = new UserModel();
 
@@ -35,6 +44,8 @@ public class LoginActivity extends AppCompatActivity {
         rememberMeCheckbox = findViewById(R.id.rememberMeCheckbox);
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
+
+
 
         loginButton.setOnClickListener(v -> {
             String email = loginEmail.getText().toString().trim();
@@ -47,12 +58,12 @@ public class LoginActivity extends AppCompatActivity {
                         // Handle "Remember Me"
                         SharedPreferences sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("email", email);
+                        editor.putString("password", password);
                         if (rememberMeCheckbox.isChecked()) {
-                            editor.putBoolean("rememberMe", true);
-                            editor.putString("email", email);
-                            editor.putString("password", password);
+                            editor.putBoolean("loggedIn", true);
                         } else {
-                            editor.clear();
+                            editor.putBoolean("loggedIn", false);
                         }
                         editor.apply();
 

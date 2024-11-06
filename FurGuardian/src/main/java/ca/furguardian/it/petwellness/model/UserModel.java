@@ -1,6 +1,8 @@
 package ca.furguardian.it.petwellness.model;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,6 +15,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import ca.furguardian.it.petwellness.controller.Format;
 import ca.furguardian.it.petwellness.model.User;
+import ca.furguardian.it.petwellness.ui.login.LoginActivity;
 
 public class UserModel {
 
@@ -22,6 +25,8 @@ public class UserModel {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         this.usersRef = database.getReference("users");
     }
+
+
 
     // Method to register a user in the database
     public void registerUser(String email, String password, String name, String phoneNumber, Context context, RegistrationCallback callback) {
@@ -103,6 +108,33 @@ public class UserModel {
         });
     }
 
+    // Method to update user data in the database
+    public void updateUserData(String email, User updatedUser, UpdateDataCallback callback) {
+        String formattedEmail = Format.formatEmail(email);
+
+        usersRef.child(formattedEmail).setValue(updatedUser).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                callback.onUpdateSuccess();
+            } else {
+                callback.onUpdateFailed("Failed to update user data.");
+            }
+        });
+    }
+
+    // Sign out method
+    public void signOut(Context context) {
+        // Clear stored session data
+        SharedPreferences sharedPreferences = context.getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();  // Clear all data in SharedPreferences
+        editor.apply();
+
+        // Redirect to LoginActivity
+        Intent intent = new Intent(context, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);  // Clear back stack
+        context.startActivity(intent);
+    }
+
     // Callback interfaces
     public interface RegistrationCallback {
         void onRegistrationSuccess();
@@ -117,5 +149,10 @@ public class UserModel {
     public interface UserDataCallback {
         void onDataRetrieved(User user);
         void onDataFailed(String errorMessage);
+    }
+
+    public interface UpdateDataCallback {
+        void onUpdateSuccess();
+        void onUpdateFailed(String errorMessage);
     }
 }

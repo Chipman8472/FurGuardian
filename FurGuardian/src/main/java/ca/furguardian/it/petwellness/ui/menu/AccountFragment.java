@@ -2,7 +2,6 @@ package ca.furguardian.it.petwellness.ui.menu;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,17 +20,9 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import ca.furguardian.it.petwellness.R;
-import ca.furguardian.it.petwellness.ui.login.LoginActivity;
+import ca.furguardian.it.petwellness.model.User;
+import ca.furguardian.it.petwellness.model.UserModel;
 
 public class AccountFragment extends Fragment {
 
@@ -39,9 +30,8 @@ public class AccountFragment extends Fragment {
     private EditText editTextName, editTextPhone, editTextNewPassword, editTextConfirmPassword;
     private Button buttonSaveChanges, buttonSignOut;
     private TextView textCurrentName, textCurrentPhone;
-    private FirebaseAuth auth;
-    private FirebaseUser user;
-    private DatabaseReference usersRef;
+    private UserModel userModel;
+    private User currentUser;
 
     @Nullable
     @Override
@@ -61,12 +51,14 @@ public class AccountFragment extends Fragment {
         textCurrentName = root.findViewById(R.id.textCurrentName);
         textCurrentPhone = root.findViewById(R.id.textCurrentPhone);
 
-        auth = FirebaseAuth.getInstance();
-        user = auth.getCurrentUser();
+        userModel = new UserModel();
 
-        // Initialize Firebase Realtime Database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        usersRef = database.getReference("users");
+        // Retrieve user email from SharedPreferences
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        String userEmail = sharedPreferences.getString("email", "");
+
+        // Load user info using UserModel
+        loadUserInfo(userEmail);
 
         // Handle checkbox events to toggle visibility of EditText fields
         checkBoxEditName.setOnCheckedChangeListener((buttonView, isChecked) -> editTextName.setVisibility(isChecked ? View.VISIBLE : View.GONE));
@@ -77,18 +69,12 @@ public class AccountFragment extends Fragment {
             editTextConfirmPassword.setVisibility(visibility);
         });
 
-        // Load user info from Firebase
-        if (user != null) {
-            loadUserInfo();
-        }
-
         // Save Changes Button logic
         buttonSaveChanges.setOnClickListener(v -> {
-            // Show confirmation dialog
             new AlertDialog.Builder(requireContext())
                     .setTitle("Confirm Changes")
                     .setMessage("Are you sure you want to save these changes?")
-                    .setPositiveButton("Yes", (dialog, which) -> saveChanges())
+                    .setPositiveButton("Yes", (dialog, which) -> saveChanges(userEmail))
                     .setNegativeButton("No", null)
                     .show();
         });
@@ -108,99 +94,84 @@ public class AccountFragment extends Fragment {
         return root;
     }
 
-    private void loadUserInfo() {
-        String userEmail = user.getEmail().replace(".", ","); // Use this format for Firebase keys
-        usersRef.child(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+    private void loadUserInfo(String email) {
+        userModel.getUserData(email, new UserModel.UserDataCallback() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    String name = dataSnapshot.child("name").getValue(String.class);
-                    String phone = dataSnapshot.child("phone").getValue(String.class);
+            public void onDataRetrieved(User user) {
+                currentUser = user;
+                // Set current name and phone to TextViews
+                textCurrentName.setText(user.getName());
+                textCurrentPhone.setText(user.getPhoneNumber());
 
-                    // Set current name and phone to TextViews
-                    textCurrentName.setText(name);
-                    textCurrentPhone.setText(phone);
-
-                    // Populate EditText fields if checkboxes are checked
-                    if (checkBoxEditName.isChecked()) {
-                        editTextName.setText(name);
-                    }
-                    if (checkBoxEditPhone.isChecked()) {
-                        editTextPhone.setText(phone);
-                    }
+                // Populate EditText fields if checkboxes are checked
+                if (checkBoxEditName.isChecked()) {
+                    editTextName.setText(user.getName());
+                }
+                if (checkBoxEditPhone.isChecked()) {
+                    editTextPhone.setText(user.getPhoneNumber());
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getContext(), "Failed to load user information", Toast.LENGTH_SHORT).show();
+            public void onDataFailed(String errorMessage) {
+                Toast.makeText(getContext(), "Failed to load user information: " + errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void saveChanges() {
-        String newName = editTextName.getText().toString().trim();
-        String newPhone = editTextPhone.getText().toString().trim();
+    private void saveChanges(String email) {
         boolean isNameUpdated = checkBoxEditName.isChecked();
         boolean isPhoneUpdated = checkBoxEditPhone.isChecked();
         boolean isPasswordUpdated = checkBoxEditPassword.isChecked();
 
-        // Update display name in Firebase Authentication
+        if (currentUser == null) {
+            Toast.makeText(getContext(), "User data not available", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Update name if checked
         if (isNameUpdated) {
-            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(newName)
-                    .build();
-
-            user.updateProfile(profileUpdates)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getContext(), "Name updated", Toast.LENGTH_SHORT).show();
-                            textCurrentName.setText(newName); // Update displayed name
-                        } else {
-                            Toast.makeText(getContext(), "Failed to update name", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+            String newName = editTextName.getText().toString().trim();
+            currentUser.setName(newName);
+            textCurrentName.setText(newName); // Update displayed name
         }
 
-        // Update phone number in Firebase Realtime Database
+        // Update phone if checked
         if (isPhoneUpdated) {
-            String userEmail = user.getEmail().replace(".", ",");
-            usersRef.child(userEmail).child("phone").setValue(newPhone)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getContext(), "Phone updated", Toast.LENGTH_SHORT).show();
-                            textCurrentPhone.setText(newPhone); // Update displayed phone
-                        } else {
-                            Toast.makeText(getContext(), "Failed to update phone", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+            String newPhone = editTextPhone.getText().toString().trim();
+            currentUser.setPhoneNumber(newPhone);
+            textCurrentPhone.setText(newPhone); // Update displayed phone
         }
 
-        // Update password if necessary
+        // Update password if checked and confirmed
         if (isPasswordUpdated) {
             String newPassword = editTextNewPassword.getText().toString().trim();
             String confirmPassword = editTextConfirmPassword.getText().toString().trim();
 
             if (!newPassword.isEmpty() && newPassword.equals(confirmPassword)) {
-                user.updatePassword(newPassword)
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(getContext(), "Password updated", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getContext(), "Failed to update password", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                currentUser.setPassword(newPassword);
+                Toast.makeText(getContext(), "Password updated", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
+                return;
             }
         }
+
+        // Update user data in the database
+        userModel.updateUserData(email, currentUser, new UserModel.UpdateDataCallback() {
+            @Override
+            public void onUpdateSuccess() {
+                Toast.makeText(getContext(), "Changes saved successfully", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onUpdateFailed(String errorMessage) {
+                Toast.makeText(getContext(), "Failed to save changes: " + errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void signOut() {
-        auth.signOut();
-        Intent intent = new Intent(getActivity(), LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        getActivity().finish();
+        userModel.signOut(requireContext());
     }
 }
