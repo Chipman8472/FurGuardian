@@ -91,8 +91,8 @@ public class AccountFragment extends Fragment {
         buttonSaveChanges.setOnClickListener(v -> {
             // Show confirmation dialog
             new AlertDialog.Builder(requireContext())
-                    .setTitle("Confirm Changes")
-                    .setMessage("Are you sure you want to save these changes?")
+                    .setTitle(R.string.confirm_changes)
+                    .setMessage(R.string.are_you_sure_you_want_to_save_these_changes)
                     .setPositiveButton("Yes", (dialog, which) -> saveChanges())
                     .setNegativeButton("No", null)
                     .show();
@@ -119,8 +119,8 @@ public class AccountFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    String name = dataSnapshot.child("name").getValue(String.class);
-                    String phone = dataSnapshot.child("phone").getValue(String.class);
+                    String name = dataSnapshot.child(getString(R.string.name)).getValue(String.class);
+                    String phone = dataSnapshot.child(getString(R.string.phone)).getValue(String.class);
 
                     // Set current name and phone to TextViews
                     textCurrentName.setText(name);

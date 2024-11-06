@@ -90,4 +90,8 @@
     <string name="select_image">Select Image</string>
     <string name="add_pet">Add Pet</string>
     <string name="cat">Cat</string>
+    <string name="confirm_changes">Confirm Changes</string>
+    <string name="are_you_sure_you_want_to_save_these_changes">Are you sure you want to save these changes?</string>
+    <string name="name">name</string>
+    <string name="phone">phone</string>
 </resources>

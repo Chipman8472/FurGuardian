@@ -11,7 +11,8 @@
     android:layout_gravity="center"
     app:cardElevation="6dp"
     app:cardCornerRadius="16dp"
-    app:cardBackgroundColor="#A67C55">
+    app:cardBackgroundColor="#A67C55"
+    android:background="@color/fragment_background">
 
     <TextView
         android:id="@+id/text_item"
