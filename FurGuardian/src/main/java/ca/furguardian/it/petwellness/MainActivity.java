@@ -5,6 +5,9 @@ package ca.furguardian.it.petwellness;
 //	     Tevadi Brookes - RCC - N01582563
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +23,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import ca.furguardian.it.petwellness.databinding.ActivityMainBinding;
+import ca.furguardian.it.petwellness.ui.login.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,16 +35,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
 
+        SharedPreferences sharedPreferences = this.getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        boolean notifOn = sharedPreferences.getBoolean("notificationsEnabled", false);
 
-        NotificationChannel channel = new NotificationChannel(
-                getString(R.string.reminder_channel),
-                getString(R.string.reminder_notifications),
-                NotificationManager.IMPORTANCE_HIGH
-        );
-        channel.setDescription(getString(R.string.channel_for_reminder_notifications));
+        if (notifOn) {
+            NotificationChannel channel = new NotificationChannel(
+                    getString(R.string.reminder_channel),
+                    getString(R.string.reminder_notifications),
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+            channel.setDescription(getString(R.string.channel_for_reminder_notifications));
 
-        NotificationManager notificationManager = getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(channel);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(

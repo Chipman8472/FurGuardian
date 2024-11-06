@@ -3,8 +3,12 @@ package ca.furguardian.it.petwellness.ui.menu;
 //	     Imran Zafurallah - RCB - N01585098
 //	     Zane Aransevia - RCB- N01351168
 //	     Tevadi Brookes - RCC - N01582563
+import static androidx.core.content.ContextCompat.getSystemService;
+
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.TimePickerDialog;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -56,6 +60,7 @@ public class RemindersFragment extends Fragment {
 
         pickDateTimeButton.setOnClickListener(v -> openDateTimePicker());
         saveReminderButton.setOnClickListener(v -> saveReminder());
+
 
         // Override back button functionality for RemindersFragment
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
