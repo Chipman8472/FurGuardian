@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         boolean isRemembered = sharedPreferences.getBoolean("loggedIn", false);
 
 
-
+        applySettings();
 
         if (isRemembered) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -67,11 +67,7 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString(getString(R.string.email1), email);
                         editor.putString(getString(R.string.password), password);
-                        if (rememberMeCheckbox.isChecked()) {
-                            editor.putBoolean("loggedIn", true);
-                        } else {
-                            editor.putBoolean("loggedIn", false);
-                        }
+                        editor.putBoolean("loggedIn", rememberMeCheckbox.isChecked());
                         editor.apply();
 
                         // Navigate to MainActivity
@@ -94,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void applySettings() {
-        SharedPreferences sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("settingPrefs", Context.MODE_PRIVATE);
 
         // Apply dark mode setting
         boolean isDarkModeOn = sharedPreferences.getBoolean("darkMode", false);

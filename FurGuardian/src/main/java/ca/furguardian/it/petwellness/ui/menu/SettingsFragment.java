@@ -48,7 +48,7 @@ public class SettingsFragment extends Fragment {
         toggleLocation = view.findViewById(R.id.toggleLocation);
         settingImage = view.findViewById(R.id.image_header);
 
-        sharedPreferences = requireActivity().getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        sharedPreferences = requireActivity().getSharedPreferences("settingPrefs", Context.MODE_PRIVATE);
 
         // Load saved preferences
         initializeToggles();
