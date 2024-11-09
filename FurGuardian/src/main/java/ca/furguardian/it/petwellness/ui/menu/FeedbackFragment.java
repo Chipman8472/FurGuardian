@@ -1,10 +1,7 @@
 package ca.furguardian.it.petwellness.ui.menu;
-//       Justin Chipman - RCB – N01598472
-//	     Imran Zafurallah - RCB - N01585098
-//	     Zane Aransevia - RCB- N01351168
-//	     Tevadi Brookes - RCC - N01582563
 
-import android.os.Build;
+import static ca.furguardian.it.petwellness.controller.InputValidator.validateFeedbackInputs;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,28 +9,22 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
-import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import ca.furguardian.it.petwellness.R;
+import ca.furguardian.it.petwellness.controller.InputValidator;
+import ca.furguardian.it.petwellness.model.FeedbackModel;
 
 public class FeedbackFragment extends Fragment {
 
     private EditText nameEditText, phoneEditText, emailEditText, commentEditText;
     private RatingBar ratingBar;
     private Button submitButton;
-    private FirebaseDatabase db;
-    private DatabaseReference feedbackRef;
-    private String deviceModel;
+    private FeedbackModel feedbackModel;
 
     @Nullable
     @Override
@@ -47,9 +38,8 @@ public class FeedbackFragment extends Fragment {
         ratingBar = view.findViewById(R.id.ratingBar);
         submitButton = view.findViewById(R.id.submitButton);
 
-        // Initialize Firestore
-        db = FirebaseDatabase.getInstance();
-        feedbackRef= db.getReference("feedback");
+        // Initialize FeedbackModel
+        feedbackModel = new FeedbackModel();
 
         // Set up submit button
         submitButton.setOnClickListener(v -> submitFeedback());
@@ -62,35 +52,15 @@ public class FeedbackFragment extends Fragment {
         String phone = phoneEditText.getText().toString();
         String email = emailEditText.getText().toString();
         String comment = commentEditText.getText().toString();
-        String deviceModel = Build.MODEL;
         float rating = ratingBar.getRating();
 
-        if (validateInputs(name, phone, email)) {
-            // Prepare feedback data
-            Map<String, Object> feedback = new HashMap<>();
-            feedback.put("name", name);
-            feedback.put("phone", phone);
-            feedback.put("email", email);
-            feedback.put("comment", comment);
-            feedback.put("rating", rating);
-            feedback.put("deviceModel", deviceModel);
-
-            // Add feedback data to Firebase under 'feedback'
-            feedbackRef.push().setValue(feedback)
-                    .addOnSuccessListener(documentReference ->
-                            Toast.makeText(getContext(), "Thank you for your feedback!", Toast.LENGTH_LONG).show()
-                    )
-                    .addOnFailureListener(e ->
-                            Toast.makeText(getContext(), "Failed to submit feedback. Please try again.", Toast.LENGTH_SHORT).show()
-                    );
-        }
-    }
-
-    private boolean validateInputs(String name, String phone, String email) {
-        if (name.isEmpty() || phone.isEmpty() || email.isEmpty()) {
+        if (InputValidator.validateFeedbackInputs(name, phone, email)) {
+            // Use FeedbackModel to submit feedback
+            feedbackModel.submitFeedback(name, phone, email, comment, rating, getContext());
+        }else {
             Toast.makeText(getContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
-            return false;
         }
-        return true;
     }
+
+
 }

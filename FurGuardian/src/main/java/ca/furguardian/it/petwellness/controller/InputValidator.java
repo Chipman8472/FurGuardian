@@ -4,6 +4,7 @@ package ca.furguardian.it.petwellness.controller;
 //	     Zane Aransevia - RCB- N01351168
 //	     Tevadi Brookes - RCC - N01582563
 import android.util.Patterns;
+import android.widget.Toast;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,5 +31,9 @@ public class InputValidator {
         Matcher matcher = pattern.matcher(password);
 
         return matcher.matches();
+    }
+
+    public static boolean validateFeedbackInputs(String name, String phone, String email) {
+        return !name.isEmpty() && !phone.isEmpty() && !email.isEmpty();
     }
 }

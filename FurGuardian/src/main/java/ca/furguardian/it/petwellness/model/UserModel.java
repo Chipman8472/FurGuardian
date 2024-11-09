@@ -6,6 +6,7 @@ package ca.furguardian.it.petwellness.model;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,7 @@ import ca.furguardian.it.petwellness.ui.login.LoginActivity;
 public class UserModel {
 
     private final DatabaseReference usersRef;
+    private static final String TAG = "UserModel";
 
     public UserModel() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -81,6 +83,7 @@ public class UserModel {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "Database error during login: " + databaseError.getMessage(), databaseError.toException());
                 callback.onLoginFailed(context.getString(R.string.database_error1) + databaseError.getMessage());
             }
         });
