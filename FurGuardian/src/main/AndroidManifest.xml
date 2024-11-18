@@ -7,6 +7,8 @@
         android:name="android.hardware.telephony"
         android:required="false" />
 
+
+
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
@@ -31,6 +33,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FurGuardian"
         tools:targetApi="34">
+        <uses-library android:name="android.test.runner" android:required="false"/>
         <activity
             android:name=".ui.login.RegistrationActivity"
             android:exported="false"
