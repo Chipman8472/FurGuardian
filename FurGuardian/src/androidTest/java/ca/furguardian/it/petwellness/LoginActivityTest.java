@@ -8,6 +8,8 @@ import static org.junit.Assert.assertNotNull;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
@@ -107,15 +109,28 @@ public class LoginActivityTest {
     }
 
     @Test
-    public void testActivityIntentOnSuccessfulLogin() {
-        // Simulate successful login and check if MainActivity is started
+    public void testActivityTransitionOnSuccessfulLogin() {
         try (ActivityScenario<LoginActivity> scenario = ActivityScenario.launch(LoginActivity.class)) {
             scenario.onActivity(activity -> {
+                // Simulate clicking login button and performing login
+                Button loginButton = activity.findViewById(R.id.loginButton);
+                EditText emailInput = activity.findViewById(R.id.username);
+                EditText passwordInput = activity.findViewById(R.id.password);
+
+                // Enter valid login credentials
+                emailInput.setText("admin");
+                passwordInput.setText("password123");
+
+                // Click login button
+                loginButton.performClick();
+
+                // Assert MainActivity is launched
                 Intent expectedIntent = new Intent(activity, MainActivity.class);
-                assertNotNull("Intent for MainActivity should not be null", expectedIntent);
+                assertNotNull("Expected MainActivity Intent should not be null", expectedIntent);
             });
         }
     }
+
 
     @Test
     public void testEmptyLoginFields() {
