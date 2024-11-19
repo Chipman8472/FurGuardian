@@ -1,5 +1,8 @@
 package ca.furguardian.it.petwellness.ui.records;
-
+//Justin Chipman - N01598472
+//Imran Zafurallah - N01585098
+//Zane Aransevia - N01351168
+//Tevadi Brookes - N01582563
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
