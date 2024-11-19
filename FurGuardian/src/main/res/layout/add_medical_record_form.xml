@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/fragment_background">
+
+    <!-- Date Picker for Selecting Record Date -->
+    <DatePicker
+        android:id="@+id/recordDatePicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:calendarViewShown="false"
+        android:spinnersShown="true" />
+
+    <!-- EditText for Record Type -->
+    <EditText
+        android:id="@+id/recordTypeEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Record Type (e.g., Vaccination)"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_edittext_background"
+        android:padding="12dp"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <!-- EditText for Record Details -->
+    <EditText
+        android:id="@+id/recordDetailsEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Details (e.g., Rabies booster administered)"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/rounded_edittext_background"
+        android:padding="12dp"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <!-- Submit Button -->
+    <Button
+        android:id="@+id/addRecordButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Record"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="end"
+        android:background="@drawable/rounded_button_background"
+        android:textColor="@color/white"
+        android:elevation="4dp" />
+</LinearLayout>
