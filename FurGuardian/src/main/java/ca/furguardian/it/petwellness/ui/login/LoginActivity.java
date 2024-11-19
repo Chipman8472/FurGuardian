@@ -25,8 +25,9 @@ import ca.furguardian.it.petwellness.model.UserModel;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText loginEmail, loginPassword;
-    private CheckBox rememberMeCheckbox;
+    public EditText loginEmail;
+    public EditText loginPassword;
+    public CheckBox rememberMeCheckbox;
     private Button loginButton, registerButton;
     private UserModel userModel;
 
