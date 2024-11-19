@@ -12,6 +12,7 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
@@ -36,10 +37,18 @@ import java.util.Locale;
 import ca.furguardian.it.petwellness.R;
 import ca.furguardian.it.petwellness.databinding.FragmentPetedBinding;
 
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.content.Intent;
+import android.net.Uri;
+
 public class PetEd extends Fragment {
 
     private FragmentPetedBinding binding;
-    private RecyclerView recyclerView;
+    private List<String> petNutritionUrls;
+    private List<String> groomingTipsUrls;
+    private List<String> vaccinationScheduleUrls;
+    private List<String> trainingTipsUrls;
     private PetEdAdapter adapter;
     private FusedLocationProviderClient fusedLocationClient;
 
@@ -90,11 +99,18 @@ public class PetEd extends Fragment {
             }
         });
 
-        // Initialize RecyclerView and set an empty adapter immediately
-        recyclerView = binding.recyclerView;
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new PetEdAdapter(new ArrayList<>(), new ArrayList<>(), getContext()); // Empty adapter to prevent delay
-        recyclerView.setAdapter(adapter);
+        // Initialize URLs
+        petNutritionUrls = Arrays.asList("https://www.chewy.com", "https://www.canadian-pet-food.com");
+        groomingTipsUrls = Arrays.asList("https://hastingsvet.com", "https://canada-grooming-tips.com");
+        vaccinationScheduleUrls = Arrays.asList("https://example.com/vaccination_schedule", "https://canada-vaccine-schedule.com");
+        trainingTipsUrls = Arrays.asList("https://www.youtube.com");
+
+        // Initialize Spinners
+        setupSpinner(binding.spinnerPetNutrition, petNutritionUrls);
+        setupSpinner(binding.spinnerGroomingTips, groomingTipsUrls);
+        setupSpinner(binding.spinnerVaccinationSchedule, vaccinationScheduleUrls);
+        setupSpinner(binding.spinnerTrainingTips, trainingTipsUrls);
+
 
         // Request location and set URLs accordingly
         requestLocation();
@@ -102,10 +118,20 @@ public class PetEd extends Fragment {
         return root;
     }
 
-    private void setRecyclerViewData(List<String> topics, List<String> urls) {
-        // Update the adapter with actual data once available
-        adapter = new PetEdAdapter(topics, urls, getContext());
-        recyclerView.setAdapter(adapter);
+    private void setupSpinner(Spinner spinner, List<String> urls) {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position != 0) { // Avoid triggering on initial selection
+                    String url = urls.get(position - 1); // Adjust index for the header
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
     }
 
     private void requestLocation() {
@@ -120,7 +146,7 @@ public class PetEd extends Fragment {
                             setUrlsBasedOnLocation(getContext(), location);
                         } else {
                             // Default URLs if location is unavailable
-                            setRecyclerViewData(petEducationTopics, defaultUrls);
+                            setSpinnerData(defaultUrls, defaultUrls, defaultUrls, defaultUrls);
                         }
                     }
                 });
