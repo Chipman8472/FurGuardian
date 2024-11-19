@@ -5,71 +5,215 @@
 	     Tevadi Brookes - N01582563
 -->
 <resources>
-    <string name="title_home">Maison</string>
-    <string name="title_health">Sante</string>
+    <string name="app_name" translatable="false">FurGuardian</string>
+    <string name="title_home">Accueil</string>
+    <string name="title_health">Santé</string>
     <string name="title_notifications">Notifications</string>
+    <string name="Records">Dossiers</string>
+    <string name="title_peted" translatable="false">PetEd</string>
     <string name="hello">Bonjour</string>
-    <string name="healthfragtext">Ceci est le fragment Sante\\</string>
-    <string name="add_feeding_schedule">Ajouter un programme d\'alimentation</string>
-    <string name="time">Heure (par exemple, 8h00)</string>
-    <string name="meal">Type de repas (par exemple, aliments secs)</string>
-    <string name="notes_optional">Remarques (facultatif)</string>
+    <string name="healthfragtext">Ceci est le fragment Santé</string>
+    <string name="add_feeding_schedule">Ajouter un horaire d\'alimentation</string>
+    <string name="time">Heure (ex. : 8h00)</string>
+    <string name="meal">Type de repas (ex. : Croquettes)</string>
+    <string name="notes_optional">Notes (optionnel)</string>
     <string name="add_schedule">Ajouter un horaire</string>
     <string name="schedule">Matin : 8h00 Après-midi : 13h00 Soir : 19h00</string>
-    <string name="show_past_records">Afficher les enregistrements antérieurs</string>
-    <string name="Records">Enregistrements</string>
-    <string name="location">Emplacement</string>
-    <string name="reminder_channel">reminder_channel</string>
-    <string name="reminder_notifications">Notifications de rappel</string>
-    <string name="channel_for_reminder_notifications">Canal de notifications de rappel</string>
-    <string name="are_you_sure_you_want_to_exit">Êtes-vous sûr de vouloir quitter ?</string>
-    <string name="pet_nutrition">Nutrition des animaux de compagnie</string>
-    <string name="grooming_tips">Conseils de toilettage</string>
-    <string name="vaccination_schedule">Calendrier de vaccination</string>
-    <string name="training_and_obedience">Entraînement et obéissance</string>
-    <string name="exercise_needs">Besoins en matière d\'exercice</string>
-    <string name="prompt_email">e-mail</string>
+    <string name="show_past_records">Afficher les dossiers précédents</string>
+    <string name="title_activity_login" translatable="false">LoginActivity</string>
+    <string name="prompt_email">Courriel</string>
     <string name="prompt_password">Mot de passe</string>
-    <string name="action_sign_in">Connectez-vous ou inscrivez-vous</string>
+    <string name="action_sign_in">Se connecter ou s\'enregistrer</string>
     <string name="action_sign_in_short">Se connecter</string>
-    <string name="welcome">Bienvenue !</string>
-    <string name="invalid_username">Pas un nom d\'utilisateur valide</string>
-    <string name="invalid_password">Le mot de passe doit contenir plus de 5 caractères</string>
-    <string name="login_failed">La connexion a échoué</string>
+    <string name="welcome">"Bienvenue !"</string>
+    <string name="invalid_username">Nom d\'utilisateur invalide</string>
+    <string name="invalid_password">Le mot de passe doit contenir >5 caractères</string>
+    <string name="login_failed">"Échec de connexion"</string>
     <string name="welcome_message">Bienvenue sur notre page d\'accueil. Nous sommes actuellement en construction.</string>
-    <string name="health_message">Ceci est notre page santé qui sera dédiée à la lutte contre les marqueurs de santé. actuellement en construction</string>
+    <string name="health_message">Voici notre page santé qui sera dédiée au suivi des marqueurs de santé. Actuellement en construction.</string>
+    <string name="hello_blank_fragment" translatable="false">Bonjour fragment vierge</string>
     <string name="dark_mode">Mode sombre</string>
-    <string name="lockscreen_orientation">Orientation de l\'écran de verrouillage</string>
+    <string name="lockscreen_orientation">Orientation de l\'écran verrouillé</string>
     <string name="allow_notifications">Autoriser les notifications</string>
+    <string name="location">Emplacement</string>
+    <string name="reminder_channel">canal_rappel</string>
+    <string name="reminder_notifications">Notifications de rappel</string>
+    <string name="channel_for_reminder_notifications">Canal pour les notifications de rappel</string>
     <string name="exit_app">Quitter l\'application</string>
+    <string name="are_you_sure_you_want_to_exit">Êtes-vous sûr de vouloir quitter ?</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
     <string name="pet_profile">Profil de l\'animal</string>
     <string name="reminders">Rappels</string>
-    <string name="account_info">Don\ees du Compte</string>
+    <string name="account_info">Informations du compte</string>
     <string name="settings">Paramètres</string>
-    <string name="selected">Choisi:</string>
-    <string name="please_enter_a_reminder_name">Veuillez saisir un nom de rappel</string>
+    <string name="selected">"Sélectionné : "</string>
+    <string name="please_enter_a_reminder_name">Veuillez entrer un nom de rappel</string>
     <string name="reminder">Rappel</string>
-    <string name="reminder_saved">Rappel enregistré !</string>
-    <string name="at">à</string>
-    <string name="notification_permission_denied">Autorisation de notification refusée</string>
+    <string name="reminder_saved">Rappel enregistré !</string>
+    <string name="at">" à "</string>
+    <string name="notification_permission_denied">Permission de notification refusée</string>
     <string name="username">Nom d\'utilisateur</string>
     <string name="password">Mot de passe</string>
-    <string name="login">Se connecter</string>
-    <string name="register">Registre</string>
-    <string name="our_healthh_image">Notre image santé !</string>
-    <string name="our_home_image">Notre image de maison</string>
-    <string name="pet_education">Éducation des animaux de compagnie</string>
+    <string name="login">Connexion</string>
+    <string name="register">S\'enregistrer</string>
+    <string name="our_healthh_image">Notre image de santé !</string>
+    <string name="our_home_image">Notre image d\'accueil</string>
+    <string name="pet_education">Éducation des animaux</string>
     <string name="enter_reminder_name">Entrez le nom du rappel</string>
-    <string name="pick_date_and_time">Choisissez la date et l\'heure</string>
+    <string name="pick_date_and_time">Choisissez une date et une heure</string>
     <string name="no_date_selected">Aucune date sélectionnée</string>
     <string name="save_reminder">Enregistrer le rappel</string>
     <string name="user_already_registered">Utilisateur déjà enregistré.</string>
-    <string name="registration_successful">Inscription réussie !</string>
-    <string name="registration_failed">Échec de l\'inscription.</string>
-    <string name="database_error">Erreur de base de données :</string>
-    <string name="feedback">Feedback</string>
-    <string name="submit">Submit</string>
-    <string name="comments">Comments</string>
+    <string name="registration_successful">Enregistrement réussi !</string>
+    <string name="registration_failed">Échec de l\'enregistrement.</string>
+    <string name="database_error">"Erreur de base de données : "</string>
+    <string name="feedback">Retour</string>
+    <string name="submit">Soumettre</string>
+    <string name="comments">Commentaires</string>
+    <string name="title_activity_registration">RegistrationActivity</string>
+    <string name="title_dashboard">Tableau de bord</string>
+    <string name="pet_name">Nom de l\'animal</string>
+    <string name="add_a_new_pet">Ajouter un nouvel animal</string>
+    <string name="pet_age_years">Âge de l\'animal (années)</string>
+    <string name="pet_weight_lbs">Poids de l\'animal (lb)</string>
+    <string name="dog">Chien</string>
+    <string name="select_image">Sélectionner une image</string>
+    <string name="add_pet">Ajouter un animal</string>
+    <string name="cat">Chat</string>
+    <string name="confirm_changes">Confirmer les modifications</string>
+    <string name="are_you_sure_you_want_to_save_these_changes">Êtes-vous sûr de vouloir enregistrer ces modifications ?</string>
+    <string name="name">nom</string>
+    <string name="phone">téléphone</string>
+    <string name="passwords_do_not_match">Les mots de passe ne correspondent pas</string>
+    <string name="password_updated">Mot de passe mis à jour</string>
+    <string name="user_data_not_available">Données utilisateur non disponibles</string>
+    <string name="failed_to_load_user_information">"Échec du chargement des informations utilisateur : "</string>
+    <string name="confirm_changes1">Confirmer les modifications</string>
+    <string name="are_you_sure_you_want_to_save_these_changes1">Êtes-vous sûr de vouloir enregistrer ces modifications ?</string>
+    <string name="yes1">Oui</string>
+    <string name="no1">Non</string>
+    <string name="invalid_email_format">Format de courriel invalide</string>
+    <string name="phone_number_must_be_10_digits">Le numéro de téléphone doit comporter 10 chiffres</string>
+    <string name="password_must_be_8_16_characters_contain_at_least_1_uppercase_letter_1_number_and_1_symbol">Le mot de passe doit comporter 8–16 caractères, inclure au moins 1 majuscule, 1 chiffre et 1 symbole</string>
+    <string name="failed_to_save_changes">Échec de l\'enregistrement des modifications</string>
+    <string name="user_already_registered1">L\'utilisateur est déjà inscrit.</string>
+    <string name="registration_failed_please_try_again">Échec de l\'inscription. Veuillez réessayer.</string>
+    <string name="database_error1">Erreur de base de données : </string>
+    <string name="invalid_email_or_password">Courriel ou mot de passe invalide.</string>
+    <string name="user_not_found_please_register">Utilisateur non trouvé. Veuillez vous inscrire.</string>
+    <string name="user_data_not_found">Données de l\'utilisateur introuvables.</string>
+    <string name="user_does_not_exist">L\'utilisateur n\'existe pas.</string>
+    <string name="failed_to_update_user_data">Échec de la mise à jour des données de l\'utilisateur.</string>
+    <string name="data_successfully_sent_to_database">Données envoyées avec succès à la base de données.</string>
+    <string name="failed_to_send_data_to_database">Échec de l\'envoi des données à la base de données.</string>
+    <string name="your_heart_rate_is_elevated_take_a_few_moments_to_relax">Votre fréquence cardiaque est élevée. Prenez quelques instants pour vous détendre.</string>
+    <string name="you_haven_t_reached_your_daily_step_goal_try_to_be_more_active">Vous n\'avez pas atteint votre objectif de pas quotidien. Essayez d\'être plus actif!</string>
+    <string name="you_might_need_more_sleep_for_optimal_health">Vous pourriez avoir besoin de plus de sommeil pour une santé optimale.</string>
+    <string name="great_job_keep_up_the_healthy_habits">Bravo! Continuez à adopter des habitudes saines.</string>
+    <string name="current_weight">Poids actuel : </string>
+    <string name="sleep_hours">Heures de sommeil : </string>
+    <string name="steps">Pas : </string>
+    <string name="heart_rate">Fréquence cardiaque : </string>
+    <string name="respiratory_rate">Fréquence respiratoire : </string>
+    <string name="distance_2f_km">Distance : %.2f km</string>
+    <string name="hrs"> h</string>
+    <string name="kg"> kg</string>
+    <string name="bpm"> bpm</string>
+    <string name="add_weight_record">Ajouter un enregistrement de poids</string>
+    <string name="enter_weight_in_kg">Entrez le poids en kg</string>
+    <string name="add">Ajouter</string>
+    <string name="weight_record_updated">Enregistrement de poids mis à jour!</string>
+    <string name="weight_cannot_be_empty">Le poids ne peut pas être vide</string>
+    <string name="cancel">Annuler</string>
+    <string name="add_medical_record">Ajouter un enregistrement médical</string>
+    <string name="enter_medical_record_details">Entrez les détails de l\'enregistrement médical</string>
+    <string name="vaccination_schedule1">Calendrier de vaccination</string>
+    <string name="pet_vaccination">Vaccination des animaux</string>
+    <string name="pet_vaccination_schedule">Calendrier de vaccination des animaux</string>
+    <string name="notification_permission_denied1">Autorisation de notification refusée</string>
+    <string name="location_permission_denied">Autorisation de localisation refusée</string>
+    <string name="age">Âge : </string>
+    <string name="weight">Poids : </string>
+    <string name="breed">Race : </string>
+    <string name="years"> années</string>
+    <string name="please_fill_in_all_fields">Veuillez remplir tous les champs</string>
+    <string name="android_resource_ca_furguardian_it_petwellness">android.resource://ca.furguardian.it.petwellness/</string>
+    <string name="no_pet_to_delete">Aucun animal à supprimer.</string>
+    <string name="pet_name1">Nom de l\'animal</string>
+    <string name="age_0">Âge : 0</string>
+    <string name="weight_0">Poids : 0</string>
+    <string name="breed_unknown">Race : Inconnue</string>
+    <string name="changes_saved_successfully">Modifications enregistrées avec succès</string>
+   <string name="passwords_do_not_match1">Les mots de passe ne correspondent pas</string>
+    <string name="email">courriel</string>
+    <string name="password1">mot de passe</string>
+    <string name="registration_successful1">Inscription réussie!</string>
+    <string name="email1">courriel</string>
+    <string name="login_successful">Connexion réussie!</string>
+    <string name="please_fill_all_fields">Veuillez remplir tous les champs</string>
+    <string name="last_feeding_08_30_am">Dernier repas : 08h30</string>
+    <string name="tip_keep_your_pet_hydrated">Conseil : Gardez votre animal hydraté.</string>
+    <string name="camera_connecting">Caméra : Connexion…</string>
+    <string name="camera_connected">Caméra : Connectée!</string>
+    <string name="microphone_start_speaking">Microphone : Commencez à parler…</string>
+    <string name="microphone_sent">Microphone : Envoyé!</string>
+    <string name="speaker_playing_audio">Haut-parleur : Lecture de l\'audio…</string>
+    <string name="steps_4500">Pas : 4500</string>
+    <string name="medical_record_updated">Enregistrement médical mis à jour!</string>
+    <string name="record_cannot_be_empty">L\'enregistrement ne peut pas être vide</string>
+    <string name="failed_to_load_health_data">Échec du chargement des données de santé.</string>
+    <string name="failed_to_load_health_data1">Échec du chargement des données de santé.</string>
+
+    <!-- Month Array -->
+    <string-array name="months">
+        <item>Sélectionner le mois</item>
+        <item>Janvier</item>
+        <item>Février</item>
+        <item>Mars</item>
+        <item>Avril</item>
+        <item>Mai</item>
+        <item>Juin</item>
+        <item>Juillet</item>
+        <item>Août</item>
+        <item>Septembre</item>
+        <item>Octobre</item>
+        <item>Novembre</item>
+        <item>Décembre</item>
+    </string-array>
+
+    <!-- Year Array -->
+    <string-array name="years">
+        <item>Sélectionner l\'année</item>
+        <item>2022</item>
+        <item>2023</item>
+        <item>2024</item>
+        <item>2025</item>
+        <item>2026</item>
+    </string-array>
+
+    <!-- Spinner Prompt for Month -->
+    <string name="select_month">Sélectionner le mois</string>
+
+    <!-- Spinner Prompt for Year -->
+    <string name="select_year">Sélectionner l\'année</string>
+
+    <!-- PetEd -->
+    <string name="pet_nutrition">Nutrition des animaux</string>
+    <string name="grooming_tips">Conseils de toilettage</string>
+    <string name="vaccination_schedule">Calendrier de vaccination</string>
+    <string name="training_and_obedience">Formation et obéissance</string>
+    <string name="exercise_needs">Besoins en exercice</string>
+    <string name="https_www_chewy_com_ca_s_query_pet_20food_utm_source_google_utm_medium_cpc_utm_campaign_20526903563_utm_content_154065940540_gad_source_1_gclid_eaiaiqobchmi3pkmzmd_iamvby7uar2qwbgkeaayasaaegjcuvd_bwe" translatable="false"><![CDATA[https://www.chewy.com/ca/s?query=pet%20food&utm_source=google&utm_medium=cpc&utm_campaign=20526903563&utm_content=154065940540&gad_source=1&gclid=EAIaIQobChMI3PKMzMD_iAMVby7UAR2qwBgkEAAYASAAEgJcuvD_BwE]]></string>
+    <string name="https_hastingsvet_com_six_helpful_grooming_tips_for_your_dog_or_cat" translatable="false">https://hastingsvet.com/six-helpful-grooming-tips-for-your-dog-or-cat/</string>
+    <string name="https_example_com_vaccination_schedule" translatable="false">https://example.com/vaccination-schedule</string>
+    <string name="delete_record">Supprimer l\'enregistrement</string>
+    <string name="are_you_sure_delete">Êtes-vous sûr de vouloir supprimer cet enregistrement ?</string>
+    <string name="view_less">Voir moins</string>
+    <string name="view_more">Voir plus</string>
+    <string name="all_fields_are_required">Tous les champs sont obligatoires</string>
+    <string name="record_added_successfully">Enregistrement ajouté avec succès</string>
+    <string name="failed_to_add_record">Échec de l\'ajout de l\'enregistrement : </string>
+    <string name="record_deleted_successfully">Enregistrement supprimé avec succès</string>
+    <string name="failed_to_delete_record">Échec de la suppression de l\'enregistrement : </string>
 </resources>

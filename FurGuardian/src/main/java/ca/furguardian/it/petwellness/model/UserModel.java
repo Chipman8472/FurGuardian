@@ -19,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import ca.furguardian.it.petwellness.R;
 import ca.furguardian.it.petwellness.controller.Format;
+import ca.furguardian.it.petwellness.controller.PasswordUtil;
 import ca.furguardian.it.petwellness.model.User;
 import ca.furguardian.it.petwellness.ui.login.LoginActivity;
 
@@ -34,7 +35,6 @@ public class UserModel {
 
 
 
-    // Method to register a user in the database
     public void registerUser(String email, String password, String name, String phoneNumber, Context context, RegistrationCallback callback) {
         String formattedEmail = Format.formatEmail(email);
 
@@ -44,7 +44,10 @@ public class UserModel {
                 if (dataSnapshot.exists()) {
                     callback.onRegistrationFailed(context.getString(R.string.user_already_registered1));
                 } else {
-                    User newUser = new User(email, password, name, phoneNumber);
+                    String salt = PasswordUtil.generateSalt();
+                    String hashedPassword = PasswordUtil.hashPassword(password, salt);
+
+                    User newUser = new User(email, hashedPassword, salt, name, phoneNumber);
                     usersRef.child(formattedEmail).setValue(newUser).addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             callback.onRegistrationSuccess();
@@ -62,8 +65,8 @@ public class UserModel {
         });
     }
 
-    // Method to login a user by retrieving data from the database
-    public void loginUser(String email, String password,Context context, LoginCallback callback) {
+
+    public void loginUser(String email, String password, Context context, LoginCallback callback) {
         String formattedEmail = Format.formatEmail(email);
 
         usersRef.child(formattedEmail).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -71,8 +74,13 @@ public class UserModel {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     User user = dataSnapshot.getValue(User.class);
-                    if (user != null && user.getPassword().equals(password)) {
-                        callback.onLoginSuccess(user);
+                    if (user != null) {
+                        boolean isPasswordValid = PasswordUtil.validatePassword(password, user.getHashedPassword(), user.getSalt());
+                        if (isPasswordValid) {
+                            callback.onLoginSuccess(user);
+                        } else {
+                            callback.onLoginFailed(context.getString(R.string.invalid_email_or_password));
+                        }
                     } else {
                         callback.onLoginFailed(context.getString(R.string.invalid_email_or_password));
                     }
@@ -83,11 +91,11 @@ public class UserModel {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e(TAG, "Database error during login: " + databaseError.getMessage(), databaseError.toException());
                 callback.onLoginFailed(context.getString(R.string.database_error1) + databaseError.getMessage());
             }
         });
     }
+
 
     // Method to retrieve user data by email
     public void getUserData(String email, Context context, UserDataCallback callback) {
