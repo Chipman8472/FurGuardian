@@ -5,10 +5,6 @@ public class MedicalRecord {
     private String type;
     private String details;
 
-    public MedicalRecord() {
-        // Default constructor required for Firebase
-    }
-
     public MedicalRecord(String date, String type, String details) {
         this.date = date;
         this.type = type;
