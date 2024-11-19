@@ -21,8 +21,8 @@ import ca.furguardian.it.petwellness.R;
 
 public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHolder> {
 
-    private List<Record> records;
-    private Context context;
+    private final List<Record> records;
+    private final Context context;
 
     public RecordsAdapter(List<Record> records, Context context) {
         this.records = records;
@@ -48,7 +48,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
         boolean isExpanded = record.isExpanded();
         holder.textDetails.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
         holder.buttonDelete.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
-        holder.buttonToggle.setText(isExpanded ? "View Less" : "View More");
+        holder.buttonToggle.setText(isExpanded ? context.getString(R.string.view_less) : context.getString(R.string.view_more));
 
         // Set up the toggle button
         holder.buttonToggle.setOnClickListener(v -> {
@@ -68,8 +68,8 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
 
                 // Show a confirmation dialog
                 new AlertDialog.Builder(context)
-                        .setTitle("Delete Record")
-                        .setMessage("Are you sure you want to delete this record?")
+                        .setTitle(R.string.delete_record)
+                        .setMessage(R.string.are_you_sure_delete)
                         .setPositiveButton("Yes", (dialog, which) -> {
                             FirebaseDatabaseHelper databaseHelper = new FirebaseDatabaseHelper();
                             databaseHelper.deleteRecord(currentRecord.getDate(), new FirebaseDatabaseHelper.OnRecordOperationListener() {
@@ -87,7 +87,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
                                 }
                             });
                         })
-                        .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                        .setNegativeButton(R.string.no, (dialog, which) -> dialog.dismiss())
                         .show();
             }
         });

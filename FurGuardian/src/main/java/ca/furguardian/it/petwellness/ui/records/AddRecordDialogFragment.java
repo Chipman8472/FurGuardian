@@ -25,7 +25,6 @@ public class AddRecordDialogFragment extends DialogFragment {
 
     private DatePicker recordDatePicker;
     private EditText recordTypeEditText, recordDetailsEditText;
-    private Button addRecordButton;
     private FirebaseDatabaseHelper databaseHelper;
 
     @Nullable
@@ -40,7 +39,7 @@ public class AddRecordDialogFragment extends DialogFragment {
         recordDatePicker = rootView.findViewById(R.id.recordDatePicker);
         recordTypeEditText = rootView.findViewById(R.id.recordTypeEditText);
         recordDetailsEditText = rootView.findViewById(R.id.recordDetailsEditText);
-        addRecordButton = rootView.findViewById(R.id.addRecordButton);
+        Button addRecordButton = rootView.findViewById(R.id.addRecordButton);
 
         addRecordButton.setOnClickListener(view -> {
             int day = recordDatePicker.getDayOfMonth();
@@ -52,7 +51,7 @@ public class AddRecordDialogFragment extends DialogFragment {
             String recordDetails = recordDetailsEditText.getText().toString();
 
             if (TextUtils.isEmpty(recordType) || TextUtils.isEmpty(recordDetails)) {
-                Toast.makeText(getContext(), "All fields are required", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.all_fields_are_required, Toast.LENGTH_SHORT).show();
             } else {
                 uploadRecord(recordDate, recordType, recordDetails);
             }
