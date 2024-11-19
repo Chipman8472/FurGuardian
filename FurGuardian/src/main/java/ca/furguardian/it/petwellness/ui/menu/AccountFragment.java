@@ -1,10 +1,5 @@
 package ca.furguardian.it.petwellness.ui.menu;
 
-//       Justin Chipman - RCB – N01598472
-//	     Imran Zafurallah - RCB - N01585098
-//	     Zane Aransevia - RCB- N01351168
-//	     Tevadi Brookes - RCC - N01582563
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -28,6 +23,7 @@ import androidx.navigation.Navigation;
 import ca.furguardian.it.petwellness.R;
 import ca.furguardian.it.petwellness.model.User;
 import ca.furguardian.it.petwellness.model.UserModel;
+import ca.furguardian.it.petwellness.controller.PasswordUtil;
 
 public class AccountFragment extends Fragment {
 
@@ -100,7 +96,7 @@ public class AccountFragment extends Fragment {
     }
 
     private void loadUserInfo(String email) {
-        userModel.getUserData(email, getContext(),new UserModel.UserDataCallback() {
+        userModel.getUserData(email, getContext(), new UserModel.UserDataCallback() {
             @Override
             public void onDataRetrieved(User user) {
                 currentUser = user;
@@ -154,7 +150,12 @@ public class AccountFragment extends Fragment {
             String confirmPassword = editTextConfirmPassword.getText().toString().trim();
 
             if (!newPassword.isEmpty() && newPassword.equals(confirmPassword)) {
-                currentUser.setPassword(newPassword);
+                // Hash the new password with a new salt
+                String newSalt = PasswordUtil.generateSalt();
+                String hashedPassword = PasswordUtil.hashPassword(newPassword, newSalt);
+
+                currentUser.setHashedPassword(hashedPassword); // Store hashed password
+                currentUser.setSalt(newSalt); // Store the new salt
                 Toast.makeText(getContext(), getString(R.string.password_updated), Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getContext(), getString(R.string.passwords_do_not_match), Toast.LENGTH_SHORT).show();
