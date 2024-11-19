@@ -35,8 +35,8 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Record record = records.get(position);
-        holder.textTitle.setText(record.getTitle());
-        holder.textSummary.setText(record.getSummary());
+        holder.textTitle.setText(record.getSummary());
+        holder.textDate.setText(record.getDate());
         holder.textDetails.setText(record.getDetails());
 
         boolean isExpanded = record.isExpanded();
@@ -55,13 +55,13 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textTitle, textSummary, textDetails;
+        TextView textTitle, textDate, textDetails;
         Button buttonToggle;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textTitle = itemView.findViewById(R.id.text_title);
-            textSummary = itemView.findViewById(R.id.text_summary);
+            textDate = itemView.findViewById(R.id.text_summary);
             textDetails = itemView.findViewById(R.id.text_details);
             buttonToggle = itemView.findViewById(R.id.button_toggle);
         }

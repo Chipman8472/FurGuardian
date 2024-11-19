@@ -1,20 +1,20 @@
 package ca.furguardian.it.petwellness.ui.records;
 
 public class Record {
-    private String title;
+    private String date;
     private String summary;
     private String details;
     private boolean isExpanded;
 
-    public Record(String title, String summary, String details) {
-        this.title = title;
+    public Record(String Date, String summary, String details) {
+        this.date = Date;
         this.summary = summary;
         this.details = details;
         this.isExpanded = false;
     }
 
-    public String getTitle() {
-        return title;
+    public String getDate() {
+        return date;
     }
 
     public String getSummary() {
