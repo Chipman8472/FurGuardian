@@ -4,8 +4,7 @@
 <!--Zane Aransevia - N01351168-->
 <!--Tevadi Brookes - N01582563-->
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -19,117 +18,68 @@
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Pet Records"
+        android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:textColor="@color/black"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Dropdown for Month -->
-    <Spinner
-        android:id="@+id/monthSpinner"
+    <!-- Date Picker for Month and Year -->
+    <DatePicker
+        android:id="@+id/recordsDatePicker"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/titleTextView"
-        app:layout_constraintStart_toStartOf="parent"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:spinnersShown="true"
+        app:layout_constraintBottom_toTopOf="@id/searchButton"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/rounded_edittext_background"
-        android:padding="12dp"
-        android:spinnerMode="dropdown"
-        android:prompt="@string/select_month"
-        tools:entries="@array/months" />
-
-    <!-- Dropdown for Year -->
-    <Spinner
-        android:id="@+id/yearSpinner"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/monthSpinner"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/rounded_edittext_background"
-        android:padding="12dp"
-        android:spinnerMode="dropdown"
-        android:prompt="@string/select_year"
-        tools:entries="@array/years" />
+        app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
     <!-- Search Button -->
     <Button
         android:id="@+id/searchButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Retrieve Records"
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_button_background"
+        android:elevation="4dp"
+        android:text="Retrieve Records"
         android:textColor="@color/white"
-        android:elevation="4dp"
-        app:layout_constraintTop_toBottomOf="@id/yearSpinner"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- CardView for Medical Records -->
-    <androidx.cardview.widget.CardView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:cardCornerRadius="16dp"
-        android:elevation="4dp"
-        app:layout_constraintTop_toBottomOf="@id/searchButton"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:cardBackgroundColor="@color/white">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recordsDatePicker" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+    <!-- RecyclerView for Displaying Records -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recordsRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchButton"
+        tools:listitem="@layout/card_medical_record" />
 
-            <!-- Record Date -->
-            <TextView
-                android:id="@+id/recordDateTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Date"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:layout_marginBottom="8dp" />
-
-            <!-- Record Type -->
-            <TextView
-                android:id="@+id/recordTypeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Allergies"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:layout_marginBottom="4dp" />
-
-            <!-- Record Details -->
-            <TextView
-                android:id="@+id/recordDetailsTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Details"
-                android:textColor="@color/black" />
-
-            <!-- Delete Record Button -->
-            <Button
-                android:id="@+id/deleteRecordButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Delete Records"
-                android:textColor="@color/red"
-                android:background="@null"
-                android:layout_marginTop="8dp" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    <!-- Floating Action Button for Adding Records -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addRecordFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="26dp"
+        android:layout_marginBottom="70dp"
+        android:contentDescription="Add Records"
+        android:src="@drawable/ic_add_foreground"
+        app:backgroundTint="@color/cardview_light_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 <!--<androidx.constraintlayout.widget.ConstraintLayout-->
 <!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
