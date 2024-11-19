@@ -15,4 +15,5 @@
     <color name="grey">#D3D3D3</color>
     <color name="fragment_background">#F5E2C4</color>
     <color name="edit_background">#FF6200EE</color>
+    <color name="red">#F44336</color>
 </resources>

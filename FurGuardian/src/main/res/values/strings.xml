@@ -173,4 +173,40 @@
     <string name="record_cannot_be_empty">Record cannot be empty</string>
     <string name="failed_to_load_health_data">Failed to load health data.</string>
     <string name="failed_to_load_health_data1">Failed to load health data.</string>
+
+
+
+    <!-- Month Array -->
+    <string-array name="months">
+        <item>Select Month</item>
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+
+    <!-- Year Array -->
+    <string-array name="years">
+        <item>Select Year</item>
+        <item>2022</item>
+        <item>2023</item>
+        <item>2024</item>
+        <item>2025</item>
+        <item>2026</item>
+    </string-array>
+
+    <!-- Spinner Prompt for Month -->
+    <string name="select_month">Select Month</string>
+
+    <!-- Spinner Prompt for Year -->
+    <string name="select_year">Select Year</string>
+
 </resources>

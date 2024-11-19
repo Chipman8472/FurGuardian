@@ -61,8 +61,6 @@ public class RecordsFragment extends Fragment {
             }
         });
 
-//        final TextView textView = binding.textRecords;
-//        recordsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
