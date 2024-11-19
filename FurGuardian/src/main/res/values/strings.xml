@@ -41,16 +41,7 @@
     <string name="exit_app">Exit App</string>
     <string name="are_you_sure_you_want_to_exit">Are you sure you want to exit?</string>
     <string name="yes">Yes</string>
-    <string name="pet_nutrition">Pet Nutrition</string>
-    <string name="grooming_tips">Grooming Tips</string>
-    <string name="vaccination_schedule">Vaccination Schedule</string>
-    <string name="training_and_obedience">Training and Obedience</string>
-    <string name="exercise_needs">Exercise Needs</string>
-    <string name="https_www_chewy_com_ca_s_query_pet_20food_utm_source_google_utm_medium_cpc_utm_campaign_20526903563_utm_content_154065940540_gad_source_1_gclid_eaiaiqobchmi3pkmzmd_iamvby7uar2qwbgkeaayasaaegjcuvd_bwe" translatable="false"><![CDATA[https://www.chewy.com/ca/s?query=pet%20food&utm_source=google&utm_medium=cpc&utm_campaign=20526903563&utm_content=154065940540&gad_source=1&gclid=EAIaIQobChMI3PKMzMD_iAMVby7UAR2qwBgkEAAYASAAEgJcuvD_BwE]]></string>
-    <string name="https_hastingsvet_com_six_helpful_grooming_tips_for_your_dog_or_cat" translatable="false">https://hastingsvet.com/six-helpful-grooming-tips-for-your-dog-or-cat/</string>
-    <string name="https_example_com_vaccination_schedule" translatable="false">https://example.com/vaccination-schedule</string>
-    <string name="https_www_youtube_com_playlist_list_pl1wcnaqru4bg_rhozat4unspbbrnf4ivj" translatable="false">https://www.youtube.com/playlist?list=PL1wCnaQRu4BG_RhOZaT4UNspBbRnf4IvJ</string>
-    <string name="https_www_youtube_com_watch_v_pzsrsrrwzyu" translatable="false">https://www.youtube.com/watch?v=PzsrsRRWZYU</string>
+
     <string name="no">No</string>
     <string name="pet_profile">Pet Profile</string>
     <string name="reminders">Reminders</string>
@@ -211,33 +202,16 @@
 
 
 <!--    PetEd-->
-    <string-array name="pet_nutrition_links">
-<!--        <item>Select a link</item>-->
-        <item>Pet Nutrition: Chewy</item>
-<!--        <item>Pet Nutrition: Canadian Pet Food</item>-->
-    </string-array>
-
-    <string-array name="grooming_tips_links">
-<!--        <item>Select a link</item>-->
-        <item>Grooming Tips: Hastings Vet</item>
-<!--        <item>Grooming Tips: Canada Grooming Tips</item>-->
-    </string-array>
-
-    <string-array name="vaccination_schedule_links">
-<!--        <item>Select a link</item>-->
-<!--        <item>Vaccination Schedule: Example</item>-->
-        <item>Vaccination Schedule: Canada Vaccine Schedule</item>
-    </string-array>
-
-    <string-array name="training_tips_links">
-<!--        <item>Select a link</item>-->
-        <item>Training Tips: YouTube Video</item>
-    </string-array>
-
-    <string-array name="exercise_tips_links">
-        <!--        <item>Select a link</item>-->
-        <item>Exercise Tips: YouTube Video</item>
-    </string-array>
+    <string name="pet_nutrition">Pet Nutrition</string>
+    <string name="grooming_tips">Grooming Tips</string>
+    <string name="vaccination_schedule">Vaccination Schedule</string>
+    <string name="training_and_obedience">Training and Obedience</string>
+    <string name="exercise_needs">Exercise Needs</string>
+    <string name="https_www_chewy_com_ca_s_query_pet_20food_utm_source_google_utm_medium_cpc_utm_campaign_20526903563_utm_content_154065940540_gad_source_1_gclid_eaiaiqobchmi3pkmzmd_iamvby7uar2qwbgkeaayasaaegjcuvd_bwe" translatable="false"><![CDATA[https://www.chewy.com/ca/s?query=pet%20food&utm_source=google&utm_medium=cpc&utm_campaign=20526903563&utm_content=154065940540&gad_source=1&gclid=EAIaIQobChMI3PKMzMD_iAMVby7UAR2qwBgkEAAYASAAEgJcuvD_BwE]]></string>
+    <string name="https_hastingsvet_com_six_helpful_grooming_tips_for_your_dog_or_cat" translatable="false">https://hastingsvet.com/six-helpful-grooming-tips-for-your-dog-or-cat/</string>
+    <string name="https_example_com_vaccination_schedule" translatable="false">https://example.com/vaccination-schedule</string>
+    <string name="https_www_youtube_com_playlist_list_pl1wcnaqru4bg_rhozat4unspbbrnf4ivj" translatable="false">https://www.youtube.com/playlist?list=PL1wCnaQRu4BG_RhOZaT4UNspBbRnf4IvJ</string>
+    <string name="https_www_youtube_com_watch_v_pzsrsrrwzyu" translatable="false">https://www.youtube.com/watch?v=PzsrsRRWZYU</string>
 
 
 </resources>

@@ -4,6 +4,7 @@
     <selectionStates>
       <SelectionState runConfigName="FurGuardian">
         <option name="selectionMode" value="DROPDOWN" />
+        <DropdownSelection timestamp="2024-11-06T04:24:31.712372600Z">
         <DropdownSelection timestamp="2024-11-14T19:48:07.852927500Z">
           <Target type="DEFAULT_BOOT">
             <handle>
@@ -15,6 +16,7 @@
       </SelectionState>
       <SelectionState runConfigName="FurGuardian">
         <option name="selectionMode" value="DROPDOWN" />
+        <DropdownSelection timestamp="2024-11-06T04:24:31.712372600Z">
         <DropdownSelection timestamp="2024-11-14T19:48:07.852927500Z">
           <Target type="DEFAULT_BOOT">
             <handle>
