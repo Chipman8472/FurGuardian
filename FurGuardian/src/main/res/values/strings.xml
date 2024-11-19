@@ -212,26 +212,35 @@
 
 <!--    PetEd-->
     <string-array name="pet_nutrition_links">
-        <item>Select a link</item>
+<!--        <item>Select a link</item>-->
         <item>Pet Nutrition: Chewy</item>
-        <item>Pet Nutrition: Canadian Pet Food</item>
+<!--        <item>Pet Nutrition: Canadian Pet Food</item>-->
     </string-array>
 
     <string-array name="grooming_tips_links">
-        <item>Select a link</item>
+<!--        <item>Select a link</item>-->
         <item>Grooming Tips: Hastings Vet</item>
-        <item>Grooming Tips: Canada Grooming Tips</item>
+<!--        <item>Grooming Tips: Canada Grooming Tips</item>-->
     </string-array>
 
     <string-array name="vaccination_schedule_links">
-        <item>Select a link</item>
-        <item>Vaccination Schedule: Example</item>
+<!--        <item>Select a link</item>-->
+<!--        <item>Vaccination Schedule: Example</item>-->
         <item>Vaccination Schedule: Canada Vaccine Schedule</item>
     </string-array>
 
     <string-array name="training_tips_links">
-        <item>Select a link</item>
+<!--        <item>Select a link</item>-->
         <item>Training Tips: YouTube Video</item>
     </string-array>
 
+    <string-array name="exercise_tips_links">
+        <!--        <item>Select a link</item>-->
+        <item>Exercise Tips: YouTube Video</item>
+    </string-array>
+
+
 </resources>
+
+
+

@@ -7,11 +7,6 @@ package ca.furguardian.it.petwellness.ui.peted;
 //package ca.furguardian.it.petwellness.ui.peted;
 
 // Imports
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,34 +14,28 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.CancellationTokenSource;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import ca.furguardian.it.petwellness.R;
 import ca.furguardian.it.petwellness.databinding.FragmentPetedBinding;
+import java.util.Arrays;
+import java.util.List;
 
 public class PetEd extends Fragment {
 
     private FragmentPetedBinding binding;
-    private FusedLocationProviderClient fusedLocationClient;
 
+    // URL Lists
     private List<String> petNutritionUrls = Arrays.asList("https://www.chewy.com");
-    private List<String> groomingTipsUrls = Arrays.asList("https://hastingsvet.com/six-helpful-grooming-tips-for-your-dog-or-cat/");
+    private List<String> groomingTipsUrls = Arrays.asList("https://hastingsvet.com");
     private List<String> vaccinationScheduleUrls = Arrays.asList("https://example.com/vaccination_schedule");
-    private List<String> trainingTipsUrls = Arrays.asList("https://www.youtube.com/playlist?list=PL1wCnaQRu4BG_RhOZaT4UNspBbRnf4IvJ");
-    private List<String> exerciseTipsUrls = Arrays.asList("https://www.youtube.com/watch?v=PzsrsRRWZYU");
+    private List<String> trainingTipsUrls = Arrays.asList(
+            "/www.youtube.com/playlist?list=PL1wCnaQRu4BG_RhOZaT4UNspBbRnf4IvJ" ,// Embedded YouTube video
+            "https://www.youtube.com/embed/tgbNymZ7vqY"  // Another example
+    );
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         PetEdViewModel petEdViewModel = new ViewModelProvider(this).get(PetEdViewModel.class);
@@ -54,33 +43,16 @@ public class PetEd extends Fragment {
         binding = FragmentPetedBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // Initialize FusedLocationProviderClient
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
-
-        // Set the text from ViewModel
-        final TextView textView = binding.textPeted;
-        petEdViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-
-        // Override back button functionality
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                new AlertDialog.Builder(requireContext())
-                        .setIcon(R.mipmap.logo)
-                        .setTitle(R.string.exit_app)
-                        .setMessage(R.string.are_you_sure_you_want_to_exit)
-                        .setPositiveButton(R.string.yes, (dialog, which) -> requireActivity().finish())
-                        .setNegativeButton(getString(R.string.no), (dialog, which) -> dialog.dismiss())
-                        .show();
-            }
-        });
+        // Configure WebView
+        WebSettings webSettings = binding.webView.getSettings();
+        webSettings.setJavaScriptEnabled(true); // Enable JavaScript for YouTube embedding
+        binding.webView.setVisibility(View.GONE); // Initially hide WebView
 
         // Setup each spinner with its respective URLs
         setupSpinner(binding.spinnerPetNutrition, petNutritionUrls);
         setupSpinner(binding.spinnerGroomingTips, groomingTipsUrls);
         setupSpinner(binding.spinnerVaccinationSchedule, vaccinationScheduleUrls);
         setupSpinner(binding.spinnerTrainingTips, trainingTipsUrls);
-        setupSpinner(binding.spinnerExerciseNeeds, exerciseTipsUrls);
 
         return root;
     }
@@ -97,21 +69,31 @@ public class PetEd extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position >= 0) { // Valid URL selection
+                if (position >= 0) { // Valid selection
                     String url = urls.get(position);
-                    loadUrlInWebView(url); // Load the URL in WebView
+                    loadContentInWebView(url); // Load the URL in WebView
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                // No action needed
             }
         });
     }
 
-    private void loadUrlInWebView(String url) {
-        binding.webView.setVisibility(View.VISIBLE); // Make the WebView visible
-        binding.webView.loadUrl(url); // Load the URL in WebView
+    private void loadContentInWebView(String url) {
+        binding.webView.setVisibility(View.VISIBLE); // Show WebView
+        if (url.contains("youtube.com/embed")) {
+            // Embed YouTube video
+            String html = "<html><body style='margin:0;padding:0;'><iframe width='100%' height='100%' src='"
+                    + url
+                    + "' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></body></html>";
+            binding.webView.loadData(html, "text/html", "utf-8");
+        } else {
+            // Load normal webpage
+            binding.webView.loadUrl(url);
+        }
     }
 
     @Override
@@ -120,6 +102,7 @@ public class PetEd extends Fragment {
         binding = null;
     }
 }
+
 
 
 
