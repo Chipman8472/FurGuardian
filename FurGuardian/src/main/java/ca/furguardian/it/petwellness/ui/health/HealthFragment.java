@@ -128,13 +128,15 @@ public class HealthFragment extends Fragment {
     }
 
     private void updateUIWithHealthData(Map<String, Object> data) {
-        int heartRate = ((Long) data.get("heartRate")).intValue();
-        int respiratoryRate = ((Long) data.get("respiratoryRate")).intValue();
-        int steps = ((Long) data.get("steps")).intValue();
-        double distance = (double) data.get("distance");
-        int sleepHours = ((Long) data.get("sleepHours")).intValue();
-        double weight = (double) data.get("weight");
+        // Safely retrieve and cast data from the map
+        int heartRate = ((Number) data.get("heartRate")).intValue();
+        int respiratoryRate = ((Number) data.get("respiratoryRate")).intValue();
+        int steps = ((Number) data.get("steps")).intValue();
+        double distance = ((Number) data.get("distance")).doubleValue();
+        int sleepHours = ((Number) data.get("sleepHours")).intValue();
+        double weight = ((Number) data.get("weight")).doubleValue();
 
+        // Update UI elements with the retrieved values
         binding.textHeartRate.setText(getString(R.string.heart_rate) + heartRate + getString(R.string.bpm));
         binding.textRespiratoryRate.setText(getString(R.string.respiratory_rate) + respiratoryRate + getString(R.string.bpm));
         binding.textSteps.setText(getString(R.string.steps) + steps);
@@ -142,8 +144,10 @@ public class HealthFragment extends Fragment {
         binding.textSleepHours.setText(getString(R.string.sleep_hours) + sleepHours + getString(R.string.hrs));
         binding.textCurrentWeight.setText(getString(R.string.current_weight) + weight + getString(R.string.kg));
 
+        // Update health tips
         updateHealthTips(heartRate, steps, sleepHours);
     }
+
 
     private void updateHealthTips(int heartRate, int steps, int sleepHours) {
         List<String> healthTips = new ArrayList<>();
