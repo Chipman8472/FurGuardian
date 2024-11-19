@@ -44,7 +44,8 @@
         android:entries="@array/pet_nutrition_links"
         app:layout_constraintTop_toBottomOf="@id/image_header"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/pet_nutrition"/>
 
     <Spinner
         android:id="@+id/spinner_grooming_tips"
@@ -54,7 +55,8 @@
         android:entries="@array/grooming_tips_links"
         app:layout_constraintTop_toBottomOf="@id/spinner_pet_nutrition"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/grooming_tips"/>
 
     <Spinner
         android:id="@+id/spinner_vaccination_schedule"
@@ -64,7 +66,7 @@
         android:entries="@array/vaccination_schedule_links"
         app:layout_constraintTop_toBottomOf="@id/spinner_grooming_tips"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <Spinner
         android:id="@+id/spinner_training_tips"
@@ -74,7 +76,19 @@
         android:entries="@array/training_tips_links"
         app:layout_constraintTop_toBottomOf="@id/spinner_vaccination_schedule"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/training_and_obedience"/>
+
+    <Spinner
+        android:id="@+id/spinner_exercise_needs"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:entries="@array/exercise_tips_links"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_training_tips"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/exercise_needs"/>
 
     <WebView
         android:id="@+id/web_view"
