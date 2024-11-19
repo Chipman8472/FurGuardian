@@ -5,68 +5,116 @@
 
 package ca.furguardian.it.petwellness.ui.records;
 
-
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 import ca.furguardian.it.petwellness.R;
-import ca.furguardian.it.petwellness.databinding.FragmentRecordsBinding;
-import ca.furguardian.it.petwellness.ui.records.RecordsViewModel;
 
 public class RecordsFragment extends Fragment {
 
-    private FragmentRecordsBinding binding;
+    private DatePicker recordsDatePicker;
+    private Button searchButton;
+    private RecyclerView recordsRecyclerView;
+    private FloatingActionButton addRecordFab;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        RecordsViewModel recordsViewModel =
-                new ViewModelProvider(this).get(RecordsViewModel.class);
+    private RecordsAdapter recordsAdapter;
+    private List<MedicalRecord> recordsList = new ArrayList<>();
 
-        binding = FragmentRecordsBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+    private DatabaseReference databaseReference;
 
-        // Override back button functionality for RemindersFragment
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                // This will show the "Exit App" dialog unless overridden in a fragment
-                new AlertDialog.Builder(requireContext())
-                        .setIcon(R.mipmap.logo)
-                        .setTitle(R.string.exit_app)
-                        .setMessage(R.string.are_you_sure_you_want_to_exit)
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                requireActivity().finish();
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_records, container, false);
 
-                            }
-                        })
-                        .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .show();  // Navigate directly to the home page
-            }
+        // Initialize Firebase reference
+        databaseReference = FirebaseDatabase.getInstance().getReference("pets");
+
+        // Initialize UI components
+        recordsDatePicker = rootView.findViewById(R.id.recordsDatePicker);
+        searchButton = rootView.findViewById(R.id.searchButton);
+        recordsRecyclerView = rootView.findViewById(R.id.recordsRecyclerView);
+        addRecordFab = rootView.findViewById(R.id.addRecordFab);
+
+        // Set up RecyclerView
+        recordsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recordsAdapter = new RecordsAdapter(recordsList);
+        recordsRecyclerView.setAdapter(recordsAdapter);
+
+        // Handle Search Button Click
+        searchButton.setOnClickListener(view -> {
+            int selectedDay = recordsDatePicker.getDayOfMonth();
+            int selectedMonth = recordsDatePicker.getMonth() + 1; // Months are zero-based
+            int selectedYear = recordsDatePicker.getYear();
+
+            String selectedDate = String.format("%04d-%02d-%02d", selectedYear, selectedMonth, selectedDay);
+            fetchRecords(selectedYear, selectedMonth);
         });
 
-        return root;
+        // Handle Add Record FloatingActionButton Click
+        addRecordFab.setOnClickListener(view -> openAddRecordDialog());
+
+        return rootView;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    private void fetchRecords(int year, int month) {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                recordsList.clear();
+                for (DataSnapshot petSnapshot : snapshot.getChildren()) {
+                    for (DataSnapshot recordSnapshot : petSnapshot.child("records").getChildren()) {
+                        MedicalRecord record = recordSnapshot.getValue(MedicalRecord.class);
+
+                        // Filter records by selected year and month
+                        if (record != null) {
+                            String[] dateParts = record.getDate().split("-");
+                            int recordYear = Integer.parseInt(dateParts[0]);
+                            int recordMonth = Integer.parseInt(dateParts[1]);
+
+                            if (recordYear == year && recordMonth == month) {
+                                recordsList.add(record);
+                            }
+                        }
+                    }
+                }
+
+                recordsAdapter.notifyDataSetChanged();
+                Toast.makeText(getContext(), recordsList.size() + " records found", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("Firebase", "Failed to fetch records: " + error.getMessage());
+            }
+        });
+    }
+
+    private void openAddRecordDialog() {
+        AddRecordDialogFragment dialogFragment = new AddRecordDialogFragment();
+        dialogFragment.show(getChildFragmentManager(), "AddRecordDialog");
     }
 }
