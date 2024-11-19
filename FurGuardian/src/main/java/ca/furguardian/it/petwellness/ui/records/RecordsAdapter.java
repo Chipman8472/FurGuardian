@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ca.furguardian.it.petwellness.R;
+import ca.furguardian.it.petwellness.model.PetModel;
 
 public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHolder> {
 
@@ -71,8 +72,8 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
                         .setTitle(R.string.delete_record)
                         .setMessage(R.string.are_you_sure_delete)
                         .setPositiveButton("Yes", (dialog, which) -> {
-                            FirebaseDatabaseHelper databaseHelper = new FirebaseDatabaseHelper();
-                            databaseHelper.deleteRecord(currentRecord.getDate(), new FirebaseDatabaseHelper.OnRecordOperationListener() {
+                            PetModel databaseHelper = new PetModel();
+                            databaseHelper.deleteRecord(currentRecord.getDate(), new PetModel.OnRecordOperationListener() {
                                 @Override
                                 public void onSuccess(String message) {
                                     Toast.makeText(context, message, Toast.LENGTH_SHORT).show();

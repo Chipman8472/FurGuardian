@@ -20,12 +20,13 @@ import androidx.fragment.app.DialogFragment;
 import java.util.Locale;
 
 import ca.furguardian.it.petwellness.R;
+import ca.furguardian.it.petwellness.model.PetModel;
 
 public class AddRecordDialogFragment extends DialogFragment {
 
     private DatePicker recordDatePicker;
     private EditText recordTypeEditText, recordDetailsEditText;
-    private FirebaseDatabaseHelper databaseHelper;
+    private PetModel databaseHelper;
 
     @Nullable
     @Override
@@ -33,7 +34,7 @@ public class AddRecordDialogFragment extends DialogFragment {
         View rootView = inflater.inflate(R.layout.add_medical_record_form, container, false);
 
         // Initialize Firebase helper
-        databaseHelper = new FirebaseDatabaseHelper();
+        databaseHelper = new PetModel();
 
         // Initialize UI components
         recordDatePicker = rootView.findViewById(R.id.recordDatePicker);
@@ -62,7 +63,7 @@ public class AddRecordDialogFragment extends DialogFragment {
 
     private void uploadRecord(String date, String type, String details) {
         MedicalRecord record = new MedicalRecord(date, type, details);
-        databaseHelper.addRecord(record, date, new FirebaseDatabaseHelper.OnRecordOperationListener() {
+        databaseHelper.addRecord(record, date, new PetModel.OnRecordOperationListener() {
             @Override
             public void onSuccess(String message) {
                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();

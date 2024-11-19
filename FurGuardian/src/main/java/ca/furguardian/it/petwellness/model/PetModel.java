@@ -1,4 +1,4 @@
-package ca.furguardian.it.petwellness.ui.records;
+package ca.furguardian.it.petwellness.model;
 //Justin Chipman - N01598472
 //Imran Zafurallah - N01585098
 //Zane Aransevia - N01351168
@@ -7,12 +7,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import ca.furguardian.it.petwellness.R;
+import ca.furguardian.it.petwellness.ui.records.MedicalRecord;
 
-public class FirebaseDatabaseHelper {
+public class PetModel {
 
     private final DatabaseReference databaseReference;
 
-    public FirebaseDatabaseHelper() {
+    public PetModel() {
         // Initialize Firebase reference to the pet records node
         this.databaseReference = FirebaseDatabase.getInstance().getReference("pets").child("12334").child("records");
     }
