@@ -1,13 +1,17 @@
 package ca.furguardian.it.petwellness.ui.peted;
+//       Justin Chipman - RCB – N01598472
+//	     Imran Zafurallah - RCB - N01585098
+//	     Zane Aransevia - RCB- N01351168
+//	     Tevadi Brookes - RCC - N01582563
+
 //package ca.furguardian.it.petwellness.ui.peted;
 
 // Imports
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
-import android.location.Location;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,21 +42,11 @@ public class PetEd extends Fragment {
     private FragmentPetedBinding binding;
     private FusedLocationProviderClient fusedLocationClient;
 
-    private List<String> defaultUrls = Arrays.asList(
-            "https://www.chewy.com",
-            "https://hastingsvet.com/six-helpful-grooming-tips-for-your-dog-or-cat/",
-            "https://example.com/vaccination_schedule",
-            "https://www.youtube.com/playlist?list=PL1wCnaQRu4BG_RhOZaT4UNspBbRnf4IvJ",
-            "https://www.youtube.com/watch?v=PzsrsRRWZYU"
-    );
-
-    private List<String> canadianUrls = Arrays.asList(
-            "https://www.canadian-pet-food.com",
-            "https://canada-grooming-tips.com",
-            "https://canada-vaccine-schedule.com",
-            "https://www.youtube.com",
-            "https://www.youtube.com"
-    );
+    private List<String> petNutritionUrls = Arrays.asList("https://www.chewy.com");
+    private List<String> groomingTipsUrls = Arrays.asList("https://hastingsvet.com/six-helpful-grooming-tips-for-your-dog-or-cat/");
+    private List<String> vaccinationScheduleUrls = Arrays.asList("https://example.com/vaccination_schedule");
+    private List<String> trainingTipsUrls = Arrays.asList("https://www.youtube.com/playlist?list=PL1wCnaQRu4BG_RhOZaT4UNspBbRnf4IvJ");
+    private List<String> exerciseTipsUrls = Arrays.asList("https://www.youtube.com/watch?v=PzsrsRRWZYU");
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         PetEdViewModel petEdViewModel = new ViewModelProvider(this).get(PetEdViewModel.class);
@@ -61,7 +55,7 @@ public class PetEd extends Fragment {
         View root = binding.getRoot();
 
         // Initialize FusedLocationProviderClient
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
 
         // Set the text from ViewModel
         final TextView textView = binding.textPeted;
@@ -81,11 +75,12 @@ public class PetEd extends Fragment {
             }
         });
 
-        // Initialize Spinners with default URLs
-        setSpinnerData(defaultUrls, defaultUrls, defaultUrls, defaultUrls);
-
-        // Request location and set URLs accordingly
-        requestLocation();
+        // Setup each spinner with its respective URLs
+        setupSpinner(binding.spinnerPetNutrition, petNutritionUrls);
+        setupSpinner(binding.spinnerGroomingTips, groomingTipsUrls);
+        setupSpinner(binding.spinnerVaccinationSchedule, vaccinationScheduleUrls);
+        setupSpinner(binding.spinnerTrainingTips, trainingTipsUrls);
+        setupSpinner(binding.spinnerExerciseNeeds, exerciseTipsUrls);
 
         return root;
     }
@@ -102,9 +97,9 @@ public class PetEd extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position >= 0) { // Avoid triggering on invalid positions
+                if (position >= 0) { // Valid URL selection
                     String url = urls.get(position);
-                    loadUrlInWebView(url); // Load the URL in the WebView
+                    loadUrlInWebView(url); // Load the URL in WebView
                 }
             }
 
@@ -115,61 +110,8 @@ public class PetEd extends Fragment {
     }
 
     private void loadUrlInWebView(String url) {
+        binding.webView.setVisibility(View.VISIBLE); // Make the WebView visible
         binding.webView.loadUrl(url); // Load the URL in WebView
-    }
-
-    private void requestLocation() {
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            return;
-        }
-
-        fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY, new CancellationTokenSource().getToken())
-                .addOnSuccessListener(location -> {
-                    if (location != null) {
-                        setUrlsBasedOnLocation(location);
-                    } else {
-                        // Default URLs if location is unavailable
-                        setSpinnerData(defaultUrls, defaultUrls, defaultUrls, defaultUrls);
-                    }
-                });
-    }
-
-    private void setUrlsBasedOnLocation(Location location) {
-        Geocoder geocoder = new Geocoder(requireContext(), Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            if (!addresses.isEmpty() && "CA".equals(addresses.get(0).getCountryCode())) {
-                setSpinnerData(
-                        canadianUrls.subList(0, 1),
-                        canadianUrls.subList(1, 2),
-                        canadianUrls.subList(2, 3),
-                        canadianUrls.subList(3, 5)
-                );
-            } else {
-                setSpinnerData(defaultUrls, defaultUrls, defaultUrls, defaultUrls);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            setSpinnerData(defaultUrls, defaultUrls, defaultUrls, defaultUrls); // Default URLs in case of error
-        }
-    }
-
-    private void setSpinnerData(List<String> petNutritionUrls, List<String> groomingTipsUrls, List<String> vaccinationScheduleUrls, List<String> trainingTipsUrls) {
-        setupSpinner(binding.spinnerPetNutrition, petNutritionUrls);
-        setupSpinner(binding.spinnerGroomingTips, groomingTipsUrls);
-        setupSpinner(binding.spinnerVaccinationSchedule, vaccinationScheduleUrls);
-        setupSpinner(binding.spinnerTrainingTips, trainingTipsUrls);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            requestLocation();
-        } else {
-            setSpinnerData(defaultUrls, defaultUrls, defaultUrls, defaultUrls);
-        }
     }
 
     @Override
@@ -178,6 +120,7 @@ public class PetEd extends Fragment {
         binding = null;
     }
 }
+
 
 
 
