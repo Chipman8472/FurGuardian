@@ -40,12 +40,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Detailed information about the record."
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/button_toggle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="View More"/>
+
+        <Button
+            android:id="@+id/button_delete"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Delete" />
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>
