@@ -55,8 +55,6 @@ public class HealthFragment extends Fragment {
         // Set click listener for adding manual weight entry
         binding.buttonAddWeight.setOnClickListener(v -> showAddWeightDialog());
 
-        // Set click listener for adding medical record entry
-        binding.buttonAddMedicalRecord.setOnClickListener(v -> showAddMedicalRecordDialog());
 
         // Override back button functionality for HealthFragment
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
@@ -184,29 +182,6 @@ public class HealthFragment extends Fragment {
                 Toast.makeText(getContext(), getString(R.string.weight_record_updated), Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getContext(), getString(R.string.weight_cannot_be_empty), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        builder.setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
-
-        builder.show();
-    }
-
-    private void showAddMedicalRecordDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(getString(R.string.add_medical_record));
-
-        final EditText input = new EditText(getContext());
-        input.setHint(getString(R.string.enter_medical_record_details));
-        builder.setView(input);
-
-        builder.setPositiveButton(getString(R.string.add), (dialog, which) -> {
-            String record = input.getText().toString();
-            if (!record.isEmpty()) {
-                binding.textMedicalRecords.setText(record);
-                Toast.makeText(getContext(), getString(R.string.medical_record_updated), Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getContext(), getString(R.string.record_cannot_be_empty), Toast.LENGTH_SHORT).show();
             }
         });
 
