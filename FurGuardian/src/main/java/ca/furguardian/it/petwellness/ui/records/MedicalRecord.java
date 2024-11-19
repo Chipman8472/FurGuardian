@@ -5,6 +5,10 @@ public class MedicalRecord {
     private String type;
     private String details;
 
+    public MedicalRecord() {
+        // Required empty constructor for Firebase
+    }
+
     public MedicalRecord(String date, String type, String details) {
         this.date = date;
         this.type = type;
@@ -23,4 +27,3 @@ public class MedicalRecord {
         return details;
     }
 }
-
