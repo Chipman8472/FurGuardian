@@ -3,15 +3,12 @@
 <!--Imran Zafurallah - N01585098-->
 <!--Zane Aransevia - N01351168-->
 <!--Tevadi Brookes - N01582563-->
-
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fragment_background"
-    tools:context=".ui.peted.PetEd">
+    android:background="@color/fragment_background">
 
     <TextView
         android:id="@+id/text_peted"
@@ -24,7 +21,8 @@
         android:layout_marginTop="24dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/image_header" />
 
     <ImageView
         android:id="@+id/image_header"
@@ -32,143 +30,29 @@
         android:layout_height="200dp"
         android:src="@drawable/edu"
         app:layout_constraintTop_toBottomOf="@id/text_peted"
+        app:layout_constraintBottom_toTopOf="@id/spinner"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="24dp" />
 
     <Spinner
-        android:id="@+id/spinner_pet_nutrition"
+        android:id="@+id/spinner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:entries="@array/pet_nutrition_links"
         app:layout_constraintTop_toBottomOf="@id/image_header"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/pet_nutrition"/>
-
-    <Spinner
-        android:id="@+id/spinner_grooming_tips"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:entries="@array/grooming_tips_links"
-        app:layout_constraintTop_toBottomOf="@id/spinner_pet_nutrition"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/grooming_tips"/>
-
-    <Spinner
-        android:id="@+id/spinner_vaccination_schedule"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:entries="@array/vaccination_schedule_links"
-        app:layout_constraintTop_toBottomOf="@id/spinner_grooming_tips"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <Spinner
-        android:id="@+id/spinner_training_tips"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:entries="@array/training_tips_links"
-        app:layout_constraintTop_toBottomOf="@id/spinner_vaccination_schedule"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/training_and_obedience"/>
-
-    <Spinner
-        android:id="@+id/spinner_exercise_needs"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:entries="@array/exercise_tips_links"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_training_tips"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/exercise_needs"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <WebView
-        android:id="@+id/web_view"
+        android:id="@+id/webView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/spinner_training_tips"
+        android:layout_margin="16dp"
+        app:layout_constraintTop_toBottomOf="@id/spinner"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
-
-<!--<androidx.constraintlayout.widget.ConstraintLayout-->
-<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    android:background="@color/fragment_background"-->
-<!--    tools:context=".ui.peted.PetEd">-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/text_peted"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="@string/pet_education"-->
-<!--        android:textAlignment="center"-->
-<!--        android:textSize="20sp"-->
-<!--        android:textColor="@color/text_color"-->
-<!--        android:layout_marginTop="24dp"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/image_header" />-->
-
-<!--    <ImageView-->
-<!--        android:id="@+id/image_header"-->
-<!--        android:layout_width="200dp"-->
-<!--        android:layout_height="200dp"-->
-<!--        android:src="@drawable/edu"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/text_peted"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        android:layout_marginBottom="24dp" />-->
-<!--&lt;!&ndash;        app:layout_constraintBottom_toTopOf="@id/recycler_view"&ndash;&gt;-->
-
-
-<!--    <Spinner-->
-<!--        android:id="@+id/spinner_websites"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="16dp"-->
-<!--        android:entries="@array/websites_array"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/image_header"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent" />-->
-
-<!--    <Spinner-->
-<!--        android:id="@+id/spinner_videos"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="16dp"-->
-<!--        android:layout_marginTop="104dp"-->
-<!--        android:entries="@array/videos_array"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/recycler_view"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.781"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/spinner_websites" />-->
-
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/recycler_view"-->
-<!--        android:layout_width="380dp"-->
-<!--        android:layout_height="272dp"-->
-<!--        android:layout_margin="16dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/image_header" />-->
-<!--</androidx.constraintlayout.widget.ConstraintLayout>-->
