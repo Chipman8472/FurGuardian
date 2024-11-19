@@ -63,4 +63,5 @@ dependencies {
     androidTestImplementation 'androidx.test:rules:1.6.1'
     testImplementation libs.junit
 
+    implementation libs.play.services.location.v2101
 }
