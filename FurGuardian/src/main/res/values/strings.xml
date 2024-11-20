@@ -191,6 +191,22 @@
     <string name="failed_to_add_record">"Failed to add record: "</string>
     <string name="record_deleted_successfully">Record deleted successfully</string>
     <string name="failed_to_delete_record">"Failed to delete record: "</string>
+    <string name="failed_to_submit_feedback">"Failed to submit feedback: "</string>
+    <string name="your_feedback_has_been_submitted_successfully">Your feedback has been submitted successfully!</string>
+    <string name="ok">OK</string>
+    <string name="thank_you">Thank You!</string>
+    <string name="please_enter_a_valid_phone_number">Please enter a valid phone number.</string>
+    <string name="please_enter_a_valid_email_address">Please enter a valid email address.</string>
+    <string name="please_provide_comments">Please provide comments.</string>
+    <string name="add_record">Add Record</string>
+    <string name="pet_name12">Pet Name</string>
+    <string name="breed_unknown1">Breed: Unknown</string>
+    <string name="submit1">Submit</string>
+    <string name="comments1">Comments</string>
+    <string name="email12">Email</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="full_name">Full Name</string>
+    <string name="customer_feedback">Customer Feedback</string>
 
 
 </resources>

@@ -18,7 +18,7 @@
         android:layout_marginStart="140dp"
         android:layout_marginEnd="141dp"
         android:layout_marginBottom="64dp"
-        android:text="Add Record"
+        android:text="@string/add_record"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

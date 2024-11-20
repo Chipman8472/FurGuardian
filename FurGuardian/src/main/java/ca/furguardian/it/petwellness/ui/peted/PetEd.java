@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -121,33 +122,51 @@ public class PetEd extends Fragment {
     }
 
     private void setSpinnerData(List<String> topics, List<String> urls) {
+        // Update current URLs
         currentUrls = urls;
+
+        // Ensure Fragment is attached and spinner is initialized
+        if (!isAdded() || spinner == null) {
+            return; // Exit if Fragment is not in a valid state
+        }
+
         requireActivity().runOnUiThread(() -> {
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, topics);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner.setAdapter(adapter);
+            try {
+                // Initialize spinner with topics
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, topics);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner.setAdapter(adapter);
 
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if (petEducationTopics.get(position).equals(getString(R.string.vaccination_schedule1))) {
-                        addEventToCalendar(
-                                getString(R.string.pet_vaccination),
-                                getString(R.string.pet_vaccination_schedule),
-                                System.currentTimeMillis() + 86400000
-                        );
-                    } else {
-                        initializeWebView(currentUrls.get(position)); // Lazy initialize WebView
+                // Set OnItemSelectedListener
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        try {
+                            if (position < petEducationTopics.size() && petEducationTopics.get(position).equals(getString(R.string.vaccination_schedule1))) {
+                                addEventToCalendar(
+                                        getString(R.string.pet_vaccination),
+                                        getString(R.string.pet_vaccination_schedule),
+                                        System.currentTimeMillis() + 86400000
+                                );
+                            } else if (position < currentUrls.size()) {
+                                initializeWebView(currentUrls.get(position)); // Lazy initialize WebView
+                            }
+                        } catch (IndexOutOfBoundsException e) {
+                            e.printStackTrace(); // Log and handle index errors gracefully
+                        }
                     }
-                }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-                    // Handle when no item is selected, if necessary
-                }
-            });
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        // Handle when no item is selected, if necessary
+                    }
+                });
+            } catch (IllegalStateException e) {
+                e.printStackTrace(); // Log and handle invalid state gracefully
+            }
         });
     }
+
 
     private void initializeWebView(String url) {
         if (webView == null) {
@@ -179,8 +198,8 @@ public class PetEd extends Fragment {
     }
 
     private void updateUrlsBasedOnLocation(Location location) {
-        Geocoder geocoder = new Geocoder(requireContext(), Locale.getDefault());
         try {
+            Geocoder geocoder = new Geocoder(requireContext(), Locale.getDefault());
             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             if (!addresses.isEmpty()) {
                 String countryCode = addresses.get(0).getCountryCode();
@@ -192,7 +211,7 @@ public class PetEd extends Fragment {
             } else {
                 setSpinnerData(petEducationTopics, defaultUrls); // Fallback if no address found
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             setSpinnerData(petEducationTopics, defaultUrls); // Fallback on error
         }
