@@ -1,6 +1,9 @@
 package ca.furguardian.it.petwellness.ui.peted;
+//       Justin Chipman - RCB – N01598472
+//	     Imran Zafurallah - RCB - N01585098
+//	     Zane Aransevia - RCB- N01351168
+//	     Tevadi Brookes - RCC - N01582563
 
-// Imports
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
