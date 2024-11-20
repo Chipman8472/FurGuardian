@@ -55,8 +55,6 @@ public class HealthFragment extends Fragment {
         // Set click listener for adding manual weight entry
         binding.buttonAddWeight.setOnClickListener(v -> showAddWeightDialog());
 
-        // Set click listener for adding medical record entry
-        binding.buttonAddMedicalRecord.setOnClickListener(v -> showAddMedicalRecordDialog());
 
         // Override back button functionality for HealthFragment
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
@@ -128,13 +126,15 @@ public class HealthFragment extends Fragment {
     }
 
     private void updateUIWithHealthData(Map<String, Object> data) {
-        int heartRate = ((Long) data.get("heartRate")).intValue();
-        int respiratoryRate = ((Long) data.get("respiratoryRate")).intValue();
-        int steps = ((Long) data.get("steps")).intValue();
-        double distance = (double) data.get("distance");
-        int sleepHours = ((Long) data.get("sleepHours")).intValue();
-        double weight = (double) data.get("weight");
+        // Safely retrieve and cast data from the map
+        int heartRate = ((Number) data.get("heartRate")).intValue();
+        int respiratoryRate = ((Number) data.get("respiratoryRate")).intValue();
+        int steps = ((Number) data.get("steps")).intValue();
+        double distance = ((Number) data.get("distance")).doubleValue();
+        int sleepHours = ((Number) data.get("sleepHours")).intValue();
+        double weight = ((Number) data.get("weight")).doubleValue();
 
+        // Update UI elements with the retrieved values
         binding.textHeartRate.setText(getString(R.string.heart_rate) + heartRate + getString(R.string.bpm));
         binding.textRespiratoryRate.setText(getString(R.string.respiratory_rate) + respiratoryRate + getString(R.string.bpm));
         binding.textSteps.setText(getString(R.string.steps) + steps);
@@ -142,8 +142,10 @@ public class HealthFragment extends Fragment {
         binding.textSleepHours.setText(getString(R.string.sleep_hours) + sleepHours + getString(R.string.hrs));
         binding.textCurrentWeight.setText(getString(R.string.current_weight) + weight + getString(R.string.kg));
 
+        // Update health tips
         updateHealthTips(heartRate, steps, sleepHours);
     }
+
 
     private void updateHealthTips(int heartRate, int steps, int sleepHours) {
         List<String> healthTips = new ArrayList<>();
@@ -180,29 +182,6 @@ public class HealthFragment extends Fragment {
                 Toast.makeText(getContext(), getString(R.string.weight_record_updated), Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getContext(), getString(R.string.weight_cannot_be_empty), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        builder.setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
-
-        builder.show();
-    }
-
-    private void showAddMedicalRecordDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(getString(R.string.add_medical_record));
-
-        final EditText input = new EditText(getContext());
-        input.setHint(getString(R.string.enter_medical_record_details));
-        builder.setView(input);
-
-        builder.setPositiveButton(getString(R.string.add), (dialog, which) -> {
-            String record = input.getText().toString();
-            if (!record.isEmpty()) {
-                binding.textMedicalRecords.setText(record);
-                Toast.makeText(getContext(), getString(R.string.medical_record_updated), Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getContext(), getString(R.string.record_cannot_be_empty), Toast.LENGTH_SHORT).show();
             }
         });
 

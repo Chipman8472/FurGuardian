@@ -1,4 +1,8 @@
 package ca.furguardian.it.petwellness;
+//       Justin Chipman - RCB – N01598472
+//	     Imran Zafurallah - RCB - N01585098
+//	     Zane Aransevia - RCB- N01351168
+//	     Tevadi Brookes - RCC - N01582563
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -118,8 +122,8 @@ public class LoginActivityTest {
                 EditText passwordInput = activity.findViewById(R.id.password);
 
                 // Enter valid login credentials
-                emailInput.setText("admin");
-                passwordInput.setText("password123");
+                emailInput.setText("justin@justin.com");
+                passwordInput.setText("Justin99!");
 
                 // Click login button
                 loginButton.performClick();

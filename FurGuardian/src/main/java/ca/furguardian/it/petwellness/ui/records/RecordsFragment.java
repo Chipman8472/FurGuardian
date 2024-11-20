@@ -1,72 +1,89 @@
+package ca.furguardian.it.petwellness.ui.records;
 //Justin Chipman - N01598472
 //Imran Zafurallah - N01585098
 //Zane Aransevia - N01351168
 //Tevadi Brookes - N01582563
-
-package ca.furguardian.it.petwellness.ui.records;
-
-
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import ca.furguardian.it.petwellness.R;
-import ca.furguardian.it.petwellness.databinding.FragmentRecordsBinding;
-import ca.furguardian.it.petwellness.ui.records.RecordsViewModel;
 
 public class RecordsFragment extends Fragment {
 
-    private FragmentRecordsBinding binding;
+    private RecyclerView recyclerView;
+    private RecordsAdapter adapter;
+    private List<Record> records;
+    private DatabaseReference databaseReference;
+    private Button addRecordButton;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        RecordsViewModel recordsViewModel =
-                new ViewModelProvider(this).get(RecordsViewModel.class);
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_records, container, false);
 
-        binding = FragmentRecordsBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        recyclerView = view.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Override back button functionality for RemindersFragment
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                // This will show the "Exit App" dialog unless overridden in a fragment
-                new AlertDialog.Builder(requireContext())
-                        .setIcon(R.mipmap.logo)
-                        .setTitle(R.string.exit_app)
-                        .setMessage(R.string.are_you_sure_you_want_to_exit)
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                requireActivity().finish();
+        addRecordButton = view.findViewById(R.id.addRecordButton);
+        records = new ArrayList<>();
+        adapter = new RecordsAdapter(records, getContext());
+        recyclerView.setAdapter(adapter);
 
-                            }
-                        })
-                        .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .show();  // Navigate directly to the home page
-            }
+        // Firebase reference
+        databaseReference = FirebaseDatabase.getInstance().getReference("pets").child("12334").child("records");
+
+        // Load existing records from Firebase
+        loadRecordsFromFirebase();
+
+        // Open Add Record dialog
+        addRecordButton.setOnClickListener(v -> {
+            AddRecordDialogFragment dialog = new AddRecordDialogFragment();
+            dialog.show(getParentFragmentManager(), "AddRecordDialogFragment");
         });
 
-        return root;
+        return view;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    private void loadRecordsFromFirebase() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                records.clear(); // Clear the list to avoid duplication
+                for (DataSnapshot recordSnapshot : snapshot.getChildren()) {
+                    MedicalRecord medicalRecord = recordSnapshot.getValue(MedicalRecord.class);
+                    if (medicalRecord != null) {
+                        records.add(new Record(
+                                medicalRecord.getDate(),
+                                medicalRecord.getType(),
+                                medicalRecord.getDetails()
+                        ));
+                    }
+                }
+                adapter.notifyDataSetChanged(); // Notify adapter of data change
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle error
+            }
+        });
     }
 }
