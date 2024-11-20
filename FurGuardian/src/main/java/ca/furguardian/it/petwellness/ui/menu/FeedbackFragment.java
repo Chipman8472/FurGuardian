@@ -79,11 +79,11 @@ public class FeedbackFragment extends Fragment {
 
         // Validate inputs
         if (!InputValidator.isValidPhoneNumber(phone)) {
-            showToast("Please enter a valid phone number.");
+            showToast(getString(R.string.please_enter_a_valid_phone_number));
         } else if (!InputValidator.isValidEmail(email)) {
-            showToast("Please enter a valid email address.");
+            showToast(getString(R.string.please_enter_a_valid_email_address));
         } else if (comment.isEmpty()) {
-            showToast("Please provide comments.");
+            showToast(getString(R.string.please_provide_comments));
         } else {
             // Proceed with submission
             submitFeedback(name, phone, email, comment, rating);
@@ -110,9 +110,9 @@ public class FeedbackFragment extends Fragment {
 
                     // Show success dialog
                     new AlertDialog.Builder(requireContext())
-                            .setTitle("Thank You!")
-                            .setMessage("Your feedback has been submitted successfully!")
-                            .setPositiveButton("OK", (dialog, which) -> resetFields())
+                            .setTitle(getString(R.string.thank_you))
+                            .setMessage(getString(R.string.your_feedback_has_been_submitted_successfully))
+                            .setPositiveButton(getString(R.string.ok), (dialog, which) -> resetFields())
                             .setCancelable(false)
                             .show();
                 }, 2000); // Delay of 2 seconds
@@ -122,7 +122,7 @@ public class FeedbackFragment extends Fragment {
             public void onFailure(String errorMessage) {
                 progressBar.setVisibility(View.GONE);
                 submitButton.setEnabled(true);
-                showToast("Failed to submit feedback: " + errorMessage);
+                showToast(getString(R.string.failed_to_submit_feedback) + errorMessage);
             }
         });
     }
@@ -138,7 +138,7 @@ public class FeedbackFragment extends Fragment {
 
     private void startCountdown(long millis) {
         submitButton.setEnabled(false);
-        submitButton.setBackgroundColor(getResources().getColor(R.color.grey)); // Optional: change button appearance
+        submitButton.setBackgroundColor(getResources().getColor(R.color.grey));
         counterTextView.setVisibility(View.VISIBLE);
 
         new CountDownTimer(millis, 1000) {
