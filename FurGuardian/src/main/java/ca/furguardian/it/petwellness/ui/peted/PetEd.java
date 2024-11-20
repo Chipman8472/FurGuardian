@@ -1,8 +1,4 @@
 package ca.furguardian.it.petwellness.ui.peted;
-//       Justin Chipman - RCB – N01598472
-//	     Imran Zafurallah - RCB - N01585098
-//	     Zane Aransevia - RCB- N01351168
-//	     Tevadi Brookes - RCC - N01582563
 
 // Imports
 import android.Manifest;
@@ -10,8 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
-import android.location.Location;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.view.LayoutInflater;
@@ -19,28 +15,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.CancellationTokenSource;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import ca.furguardian.it.petwellness.R;
 import ca.furguardian.it.petwellness.databinding.FragmentPetedBinding;
 
@@ -50,6 +52,7 @@ public class PetEd extends Fragment {
     private Spinner spinner;
     private WebView webView;
     private FusedLocationProviderClient fusedLocationClient;
+    private ExecutorService executor;
 
     private List<String> petEducationTopics = Arrays.asList(
             "Pet Nutrition", "Grooming Tips", "Vaccination Schedule", "Training and Obedience", "Exercise Needs"
@@ -59,7 +62,7 @@ public class PetEd extends Fragment {
             "https://www.chewy.com",
             "https://hastingsvet.com",
             "https://example.com/vaccination_schedule",
-            "www.youtube.com/playlist?list=PL1wCnaQRu4BG_RhOZaT4UNspBbRnf4IvJ",
+            "https://www.youtube.com/playlist?list=PL1wCnaQRu4BG_RhOZaT4UNspBbRnf4IvJ",
             "https://www.youtube.com/watch?v=PzsrsRRWZYU"
     );
 
@@ -73,14 +76,18 @@ public class PetEd extends Fragment {
 
     private List<String> currentUrls;
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         PetEdViewModel petEdViewModel = new ViewModelProvider(this).get(PetEdViewModel.class);
 
         binding = FragmentPetedBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        // Initialize ExecutorService for background tasks
+        executor = Executors.newSingleThreadExecutor();
+
         // Initialize FusedLocationProviderClient
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
 
         // Set the text from ViewModel
         final TextView textView = binding.textPeted;
@@ -100,99 +107,91 @@ public class PetEd extends Fragment {
             }
         });
 
-        // Initialize WebView
-        webView = binding.webView;
-
-        // Enable JavaScript
-        webView.getSettings().setJavaScriptEnabled(true);
-
-        // Enable media playback
-        webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
-
-        // Set WebViewClient to load URLs within the WebView
-        webView.setWebViewClient(new WebViewClient());
-
-        // Set WebChromeClient to handle video playback
-        webView.setWebChromeClient(new WebChromeClient());
-
-        // Allow mixed content (HTTP and HTTPS) if required
-        webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
-
-        // Load the initial URL (optional)
-        webView.loadUrl("https://www.youtube.com");
-
         // Initialize Spinner
         spinner = binding.spinner;
-        requestLocation(); // Fetch location and set up the spinner data
+        setSpinnerData(petEducationTopics, defaultUrls); // Use default data for initial setup
+
+        // Fetch location and update URLs in the background
+        executor.execute(this::fetchAndSetLocationData);
 
         return root;
     }
 
     private void setSpinnerData(List<String> topics, List<String> urls) {
         currentUrls = urls;
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, topics);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        requireActivity().runOnUiThread(() -> {
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, topics);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapter);
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (petEducationTopics.get(position).equals(getString(R.string.vaccination_schedule1))) {
-                    addEventToCalendar(
-                            getString(R.string.pet_vaccination),
-                            getString(R.string.pet_vaccination_schedule),
-                            System.currentTimeMillis() + 86400000
-                    );
-                } else {
-                    webView.loadUrl(currentUrls.get(position));
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (petEducationTopics.get(position).equals(getString(R.string.vaccination_schedule1))) {
+                        addEventToCalendar(
+                                getString(R.string.pet_vaccination),
+                                getString(R.string.pet_vaccination_schedule),
+                                System.currentTimeMillis() + 86400000
+                        );
+                    } else {
+                        initializeWebView(currentUrls.get(position)); // Lazy initialize WebView
+                    }
                 }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Handle when no item is selected, if necessary
-            }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    // Handle when no item is selected, if necessary
+                }
+            });
         });
     }
 
-    private void requestLocation() {
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+    private void initializeWebView(String url) {
+        if (webView == null) {
+            webView = binding.webView;
+            webView.getSettings().setJavaScriptEnabled(true);
+            webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
+            webView.setWebViewClient(new WebViewClient());
+            webView.setWebChromeClient(new WebChromeClient());
+            webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
+        }
+        webView.loadUrl(url);
+    }
+
+    private void fetchAndSetLocationData() {
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            setSpinnerData(petEducationTopics, defaultUrls); // Fallback to default
             return;
         }
+
         fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY, new CancellationTokenSource().getToken())
                 .addOnSuccessListener(location -> {
-                    if (isAdded() && getContext() != null) { // Check if fragment is still attached
-                        if (location != null) {
-                            setUrlsBasedOnLocation(getContext(), location);
-                        } else {
-                            // Default URLs if location is unavailable
-                            setSpinnerData(petEducationTopics, defaultUrls);
-                        }
+                    if (location != null) {
+                        updateUrlsBasedOnLocation(location);
+                    } else {
+                        setSpinnerData(petEducationTopics, defaultUrls); // Fallback to default
                     }
                 });
     }
 
-    private void setUrlsBasedOnLocation(Context context, Location location) {
-        if (context == null) {
-            setSpinnerData(petEducationTopics, defaultUrls);
-            return;
-        }
-
-        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+    private void updateUrlsBasedOnLocation(Location location) {
+        Geocoder geocoder = new Geocoder(requireContext(), Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             if (!addresses.isEmpty()) {
                 String countryCode = addresses.get(0).getCountryCode();
-                if ("CA".equals(countryCode)) { // Adjusted for Canada
+                if ("CA".equals(countryCode)) {
                     setSpinnerData(petEducationTopics, canadianUrls);
                 } else {
                     setSpinnerData(petEducationTopics, defaultUrls);
                 }
+            } else {
+                setSpinnerData(petEducationTopics, defaultUrls); // Fallback if no address found
             }
         } catch (IOException e) {
             e.printStackTrace();
-            setSpinnerData(petEducationTopics, defaultUrls); // Load default URLs if there's an error
+            setSpinnerData(petEducationTopics, defaultUrls); // Fallback on error
         }
     }
 
@@ -203,25 +202,17 @@ public class PetEd extends Fragment {
                 .putExtra(CalendarContract.Events.DESCRIPTION, description)
                 .putExtra(CalendarContract.Events.EVENT_LOCATION, "Pet Clinic")
                 .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTimeInMillis)
-                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, startTimeInMillis + 60 * 60 * 1000);  // 1 hour duration
+                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, startTimeInMillis + 60 * 60 * 1000); // 1 hour duration
 
         startActivity(intent);
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            requestLocation();
-        } else {
-            // Load default URLs if permission is denied
-            setSpinnerData(petEducationTopics, defaultUrls);
-        }
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (executor != null) {
+            executor.shutdown(); // Clean up executor
+        }
         binding = null;
     }
 }

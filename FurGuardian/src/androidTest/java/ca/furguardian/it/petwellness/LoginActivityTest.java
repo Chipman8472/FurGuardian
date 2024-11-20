@@ -118,8 +118,8 @@ public class LoginActivityTest {
                 EditText passwordInput = activity.findViewById(R.id.password);
 
                 // Enter valid login credentials
-                emailInput.setText("admin");
-                passwordInput.setText("password123");
+                emailInput.setText("justin@justin.com");
+                passwordInput.setText("Justin99!");
 
                 // Click login button
                 loginButton.performClick();
