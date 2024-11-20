@@ -71,8 +71,8 @@ public class PetEd extends Fragment {
             "https://www.canadian-pet-food.com",
             "https://canada-grooming-tips.com",
             "https://canada-vaccine-schedule.com",
-            "https://www.youtube.com",
-            "https://www.youtube.com"
+            "https://www.youtube.com/playlist?list=PL1wCnaQRu4BG_RhOZaT4UNspBbRnf4IvJ",
+            "https://www.youtube.com/watch?v=PzsrsRRWZYU"
     );
 
     private List<String> currentUrls;
