@@ -4,10 +4,15 @@ import android.content.Context;
 import android.os.Build;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FeedbackModel {
@@ -20,10 +25,9 @@ public class FeedbackModel {
         feedbackRef = database.getReference("feedback");
     }
 
-    // Method to submit feedback
-    public void submitFeedback(String name, String phone, String email, String comment, float rating, Context context) {
+    public void submitFeedback(String name, String phone, String email, String comment, float rating, Context context, FeedbackCallback callback) {
         // Prepare feedback data
-        String deviceModel = Build.MODEL;
+        String deviceModel = android.os.Build.MODEL;
         Map<String, Object> feedback = new HashMap<>();
         feedback.put("name", name);
         feedback.put("phone", phone);
@@ -34,12 +38,25 @@ public class FeedbackModel {
 
         // Add feedback data to Firebase
         feedbackRef.push().setValue(feedback)
-                .addOnSuccessListener(aVoid ->
-                        Toast.makeText(context, "Thank you for your feedback!", Toast.LENGTH_LONG).show()
-                )
-                .addOnFailureListener(e ->
-                        Toast.makeText(context, "Failed to submit feedback. Please try again.", Toast.LENGTH_SHORT).show()
-                );
+                .addOnSuccessListener(aVoid -> {
+                    // Notify success through callback
+                    if (callback != null) {
+                        callback.onSuccess();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // Notify failure through callback
+                    if (callback != null) {
+                        callback.onFailure(e.getMessage());
+                    }
+                });
     }
-}
 
+
+    public interface FeedbackCallback {
+        void onSuccess();
+        void onFailure(String errorMessage);
+    }
+
+
+}
