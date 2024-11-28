@@ -5,7 +5,9 @@ package ca.furguardian.it.petwellness.ui.menu;
 //	     Tevadi Brookes - RCC - N01582563
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import ca.furguardian.it.petwellness.R;
@@ -102,7 +105,7 @@ public class FeedbackFragment extends Fragment {
             @Override
             public void onSuccess() {
                 // Keep the progress bar visible for a short delay
-                new android.os.Handler().postDelayed(() -> {
+                new Handler().postDelayed(() -> {
                     progressBar.setVisibility(View.GONE);
 
                     // Save submission time
@@ -158,7 +161,10 @@ public class FeedbackFragment extends Fragment {
             @Override
             public void onFinish() {
                 submitButton.setEnabled(true);
-                submitButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary)); // Reset button color
+//                submitButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary)); // Reset button color
+                Context context = null;
+                submitButton.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
+
                 counterTextView.setVisibility(View.GONE);
             }
         }.start();
