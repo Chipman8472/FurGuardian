@@ -5,23 +5,25 @@ package ca.furguardian.it.petwellness.model;
 //	     Tevadi Brookes - RCC - N01582563
 public class User {
     private String email;
-    private String password;
+    private String hashedPassword; // Store hashed password, not plain text
+    private String salt; // Salt for hashing
     private String name;
     private String phoneNumber;
 
-    // Default constructor required for calls to DataSnapshot.getValue(User.class)
+    // Default constructor for Firebase
     public User() {
     }
 
     // Constructor with all fields
-    public User(String email, String password, String name, String phoneNumber) {
+    public User(String email, String hashedPassword, String salt, String name, String phoneNumber) {
         this.email = email;
-        this.password = password;
+        this.hashedPassword = hashedPassword;
+        this.salt = salt;
         this.name = name;
         this.phoneNumber = phoneNumber;
     }
 
-    // Getters and Setters
+    // Getters and setters
     public String getEmail() {
         return email;
     }
@@ -30,12 +32,20 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getHashedPassword() {
+        return hashedPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     public String getName() {
@@ -54,3 +64,4 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 }
+

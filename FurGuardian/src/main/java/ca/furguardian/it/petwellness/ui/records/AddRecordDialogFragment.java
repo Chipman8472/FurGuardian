@@ -1,5 +1,8 @@
 package ca.furguardian.it.petwellness.ui.records;
-
+//Justin Chipman - N01598472
+//Imran Zafurallah - N01585098
+//Zane Aransevia - N01351168
+//Tevadi Brookes - N01582563
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,44 +17,42 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import java.util.Locale;
 
 import ca.furguardian.it.petwellness.R;
+import ca.furguardian.it.petwellness.model.PetModel;
 
 public class AddRecordDialogFragment extends DialogFragment {
 
     private DatePicker recordDatePicker;
     private EditText recordTypeEditText, recordDetailsEditText;
-    private Button addRecordButton;
-
-    private DatabaseReference databaseReference;
+    private PetModel databaseHelper;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.add_medical_record_form, container, false);
 
-        // Initialize Firebase reference
-        databaseReference = FirebaseDatabase.getInstance().getReference("pets").child("12334").child("records");
+        // Initialize Firebase helper
+        databaseHelper = new PetModel();
 
         // Initialize UI components
         recordDatePicker = rootView.findViewById(R.id.recordDatePicker);
         recordTypeEditText = rootView.findViewById(R.id.recordTypeEditText);
         recordDetailsEditText = rootView.findViewById(R.id.recordDetailsEditText);
-        addRecordButton = rootView.findViewById(R.id.addRecordButton);
+        Button addRecordButton = rootView.findViewById(R.id.addRecordButton);
 
         addRecordButton.setOnClickListener(view -> {
             int day = recordDatePicker.getDayOfMonth();
             int month = recordDatePicker.getMonth() + 1;
             int year = recordDatePicker.getYear();
 
-            String recordDate = String.format("%04d-%02d-%02d", year, month, day);
+            String recordDate = String.format(String.valueOf(Locale.CANADA), year, month, day);
             String recordType = recordTypeEditText.getText().toString();
             String recordDetails = recordDetailsEditText.getText().toString();
 
             if (TextUtils.isEmpty(recordType) || TextUtils.isEmpty(recordDetails)) {
-                Toast.makeText(getContext(), "All fields are required", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.all_fields_are_required, Toast.LENGTH_SHORT).show();
             } else {
                 uploadRecord(recordDate, recordType, recordDetails);
             }
@@ -62,11 +63,17 @@ public class AddRecordDialogFragment extends DialogFragment {
 
     private void uploadRecord(String date, String type, String details) {
         MedicalRecord record = new MedicalRecord(date, type, details);
-        databaseReference.child(date).setValue(record).addOnSuccessListener(aVoid -> {
-            Toast.makeText(getContext(), "Record added successfully", Toast.LENGTH_SHORT).show();
-            dismiss();
-        }).addOnFailureListener(e -> {
-            Toast.makeText(getContext(), "Failed to add record: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        databaseHelper.addRecord(record, date, new PetModel.OnRecordOperationListener() {
+            @Override
+            public void onSuccess(String message) {
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                dismiss();
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }
