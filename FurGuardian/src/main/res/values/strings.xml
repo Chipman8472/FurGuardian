@@ -207,6 +207,9 @@
     <string name="phone_number">Phone Number</string>
     <string name="full_name">Full Name</string>
     <string name="customer_feedback">Customer Feedback</string>
+    <string name="default_web_client_id">YOUR_CLIENT_ID_HERE</string>
+    <string name="google_sign_in_failed">Google Sign-In failed</string>
+    <string name="google_sign_in_registration_failed">Google Sign-In registration failed</string>
 
 
 </resources>

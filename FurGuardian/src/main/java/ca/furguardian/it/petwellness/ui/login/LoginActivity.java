@@ -15,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -23,6 +24,13 @@ import ca.furguardian.it.petwellness.R;
 import ca.furguardian.it.petwellness.model.User;
 import ca.furguardian.it.petwellness.model.UserModel;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
+
 public class LoginActivity extends AppCompatActivity {
 
     public EditText loginEmail;
@@ -30,6 +38,8 @@ public class LoginActivity extends AppCompatActivity {
     public CheckBox rememberMeCheckbox;
     private Button loginButton, registerButton;
     private UserModel userModel;
+    private static final int RC_SIGN_IN = 100; // Request code for Google Sign-In
+    private GoogleSignInClient googleSignInClient; // Google Sign-In client
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +55,15 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         }
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id)) // Use your web client ID here
+                .requestEmail()
+                .build();
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        // Set up the Google Sign-In button
+        findViewById(R.id.googleSignInButton).setOnClickListener(v -> signInWithGoogle());
 
         userModel = new UserModel();
 
@@ -101,5 +120,55 @@ public class LoginActivity extends AppCompatActivity {
         boolean isOrientationLocked = sharedPreferences.getBoolean("lockOrientation", false);
         setRequestedOrientation(isOrientationLocked ? ActivityInfo.SCREEN_ORIENTATION_LOCKED : ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 
+    }
+
+    private void signInWithGoogle() {
+        Intent signInIntent = googleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleGoogleSignInResult(task);
+        }
+    }
+
+    private void handleGoogleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            if (account != null) {
+                // Pass the Google Sign-In account to UserModel for further processing
+                String email = account.getEmail();
+                String name = account.getDisplayName();
+                String profilePicture = account.getPhotoUrl() != null ? account.getPhotoUrl().toString() : "";
+
+                userModel.handleGoogleSignIn(email, name, profilePicture, LoginActivity.this, new UserModel.LoginCallback() {
+                    @Override
+                    public void onLoginSuccess(User user) {
+                        // Successful login flow
+                        SharedPreferences sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString(getString(R.string.email1), user.getEmail());
+                        editor.putBoolean("loggedIn", true);
+                        editor.apply();
+
+                        Toast.makeText(LoginActivity.this, getString(R.string.login_successful), Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
+                    }
+
+                    @Override
+                    public void onLoginFailed(String errorMessage) {
+                        Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        } catch (ApiException e) {
+            Toast.makeText(this, getString(R.string.google_sign_in_failed), Toast.LENGTH_SHORT).show();
+        }
     }
 }

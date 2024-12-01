@@ -96,6 +96,40 @@ public class UserModel {
         });
     }
 
+    public void handleGoogleSignIn(String email, String name, String profilePictureUrl, Context context, LoginCallback callback) {
+        String formattedEmail = Format.formatEmail(email);
+
+        usersRef.child(formattedEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // User already exists in the database
+                    User user = dataSnapshot.getValue(User.class);
+                    if (user != null) {
+                        callback.onLoginSuccess(user);
+                    } else {
+                        callback.onLoginFailed(context.getString(R.string.user_data_not_found));
+                    }
+                } else {
+                    // Register the user if not already in the database
+                    User newUser = new User(email, "", "", name, ""); // Password and salt are left empty
+                    usersRef.child(formattedEmail).setValue(newUser).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            callback.onLoginSuccess(newUser);
+                        } else {
+                            callback.onLoginFailed(context.getString(R.string.google_sign_in_registration_failed));
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                callback.onLoginFailed(context.getString(R.string.database_error1) + databaseError.getMessage());
+            }
+        });
+    }
+
 
     // Method to retrieve user data by email
     public void getUserData(String email, Context context, UserDataCallback callback) {
