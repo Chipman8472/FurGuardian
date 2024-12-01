@@ -210,6 +210,8 @@
     <string name="default_web_client_id">276746006424-9c17b9lbag8363112kjebk56p5u27a1a.apps.googleusercontent.com</string>
     <string name="google_sign_in_failed">Google Sign-In failed</string>
     <string name="google_sign_in_registration_failed">Google Sign-In registration failed</string>
+    <string name="failed_to_save_user_data">Failed to save user data</string>
+    <string name="user_creation_failed">user creation failed</string>
 
 
 </resources>

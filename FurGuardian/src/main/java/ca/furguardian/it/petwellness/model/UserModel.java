@@ -1,16 +1,12 @@
 package ca.furguardian.it.petwellness.model;
-//       Justin Chipman - RCB – N01598472
-//	     Imran Zafurallah - RCB - N01585098
-//	     Zane Aransevia - RCB- N01351168
-//	     Tevadi Brookes - RCC - N01582563
+
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,71 +14,66 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import ca.furguardian.it.petwellness.R;
-import ca.furguardian.it.petwellness.controller.Format;
-import ca.furguardian.it.petwellness.controller.PasswordUtil;
-import ca.furguardian.it.petwellness.model.User;
-import ca.furguardian.it.petwellness.ui.login.LoginActivity;
 
 public class UserModel {
 
+    private final FirebaseAuth auth;
     private final DatabaseReference usersRef;
-    private static final String TAG = "UserModel";
 
     public UserModel() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        this.usersRef = database.getReference("users");
+        this.auth = FirebaseAuth.getInstance();
+        this.usersRef = FirebaseDatabase.getInstance().getReference("users");
     }
 
-
-
+    // Register a new user
     public void registerUser(String email, String password, String name, String phoneNumber, Context context, RegistrationCallback callback) {
-        String formattedEmail = Format.formatEmail(email);
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                FirebaseUser firebaseUser = auth.getCurrentUser();
+                if (firebaseUser != null) {
+                    String userId = firebaseUser.getUid();
 
-        usersRef.child(formattedEmail).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    callback.onRegistrationFailed(context.getString(R.string.user_already_registered1));
-                } else {
-                    String salt = PasswordUtil.generateSalt();
-                    String hashedPassword = PasswordUtil.hashPassword(password, salt);
-
-                    User newUser = new User(email, hashedPassword, salt, name, phoneNumber);
-                    usersRef.child(formattedEmail).setValue(newUser).addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
+                    // Store user details in Realtime Database
+                    User newUser = new User(email, name, phoneNumber);
+                    usersRef.child(userId).setValue(newUser).addOnCompleteListener(dbTask -> {
+                        if (dbTask.isSuccessful()) {
                             callback.onRegistrationSuccess();
                         } else {
-                            callback.onRegistrationFailed(context.getString(R.string.registration_failed_please_try_again));
+                            callback.onRegistrationFailed(context.getString(R.string.failed_to_save_user_data));
                         }
                     });
                 }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                callback.onRegistrationFailed(context.getString(R.string.database_error1) + databaseError.getMessage());
+            } else {
+                callback.onRegistrationFailed(task.getException().getMessage());
             }
         });
     }
 
-
+    // Login an existing user
     public void loginUser(String email, String password, Context context, LoginCallback callback) {
-        String formattedEmail = Format.formatEmail(email);
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                FirebaseUser firebaseUser = auth.getCurrentUser();
+                if (firebaseUser != null) {
+                    retrieveUserData(firebaseUser.getUid(), context, callback);
+                }
+            } else {
+                callback.onLoginFailed(task.getException().getMessage());
+            }
+        });
+    }
 
-        usersRef.child(formattedEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+    // Retrieve user data
+    public void retrieveUserData(String userId, Context context, LoginCallback callback) {
+        usersRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    User user = dataSnapshot.getValue(User.class);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    User user = snapshot.getValue(User.class);
                     if (user != null) {
-                        boolean isPasswordValid = PasswordUtil.validatePassword(password, user.getHashedPassword(), user.getSalt());
-                        if (isPasswordValid) {
-                            callback.onLoginSuccess(user);
-                        } else {
-                            callback.onLoginFailed(context.getString(R.string.invalid_email_or_password));
-                        }
+                        callback.onLoginSuccess(user);
                     } else {
-                        callback.onLoginFailed(context.getString(R.string.invalid_email_or_password));
+                        callback.onLoginFailed(context.getString(R.string.user_data_not_found));
                     }
                 } else {
                     callback.onLoginFailed(context.getString(R.string.user_not_found_please_register));
@@ -90,20 +81,19 @@ public class UserModel {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                callback.onLoginFailed(context.getString(R.string.database_error1) + databaseError.getMessage());
+            public void onCancelled(@NonNull DatabaseError error) {
+                callback.onLoginFailed(error.getMessage());
             }
         });
     }
 
-    public void handleGoogleSignIn(String email, String name, String profilePictureUrl, Context context, LoginCallback callback) {
-        String formattedEmail = Format.formatEmail(email);
+    public void retrieveOrCreateUser(FirebaseUser firebaseUser, Context context, LoginCallback callback) {
+        String userId = firebaseUser.getUid();
 
-        usersRef.child(formattedEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+        usersRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    // User already exists in the database
                     User user = dataSnapshot.getValue(User.class);
                     if (user != null) {
                         callback.onLoginSuccess(user);
@@ -111,77 +101,46 @@ public class UserModel {
                         callback.onLoginFailed(context.getString(R.string.user_data_not_found));
                     }
                 } else {
-                    // Register the user if not already in the database
-                    User newUser = new User(email, "", "", name, ""); // Password and salt are left empty
-                    usersRef.child(formattedEmail).setValue(newUser).addOnCompleteListener(task -> {
+                    // Create a new user
+                    User newUser = new User(
+                            firebaseUser.getEmail(),
+                            firebaseUser.getDisplayName(),
+                            firebaseUser.getPhoneNumber() != null ? firebaseUser.getPhoneNumber() : ""
+                    );
+                    usersRef.child(userId).setValue(newUser).addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             callback.onLoginSuccess(newUser);
                         } else {
-                            callback.onLoginFailed(context.getString(R.string.google_sign_in_registration_failed));
+                            callback.onLoginFailed(context.getString(R.string.user_creation_failed));
                         }
                     });
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                callback.onLoginFailed(context.getString(R.string.database_error1) + databaseError.getMessage());
-            }
-        });
-    }
-
-
-    // Method to retrieve user data by email
-    public void getUserData(String email, Context context, UserDataCallback callback) {
-        String formattedEmail = Format.formatEmail(email);
-
-        usersRef.child(formattedEmail).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    User user = dataSnapshot.getValue(User.class);
-                    if (user != null) {
-                        callback.onDataRetrieved(user);
-                    } else {
-                        callback.onDataFailed(context.getString(R.string.user_data_not_found));
-                    }
-                } else {
-                    callback.onDataFailed(context.getString(R.string.user_does_not_exist));
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                callback.onDataFailed(context.getString(R.string.database_error1) + databaseError.getMessage());
+            public void onCancelled(@NonNull DatabaseError error) {
+                callback.onLoginFailed(error.getMessage());
             }
         });
     }
 
     // Method to update user data in the database
-    public void updateUserData(String email, User updatedUser, Context context, UpdateDataCallback callback) {
-        String formattedEmail = Format.formatEmail(email);
+    public void updateUserData(String userId, User updatedUser, Context context, UpdateDataCallback callback) {
+        if (userId == null || updatedUser == null) {
+            callback.onUpdateFailed("Failed");
+            return;
+        }
 
-        usersRef.child(formattedEmail).setValue(updatedUser).addOnCompleteListener(task -> {
+        // Update the user's data in the database
+        usersRef.child(userId).setValue(updatedUser).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 callback.onUpdateSuccess();
             } else {
                 callback.onUpdateFailed(context.getString(R.string.failed_to_update_user_data));
             }
+        }).addOnFailureListener(e -> {
+            callback.onUpdateFailed(context.getString(R.string.database_error1) + e.getMessage());
         });
-    }
-
-    // Sign out method
-    public void signOut(Context context) {
-        // Clear stored session data
-        SharedPreferences sharedPreferences = context.getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.clear();  // Clear all data in SharedPreferences
-        editor.apply();
-
-        // Redirect to LoginActivity
-        Intent intent = new Intent(context, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);  // Clear back stack
-        context.startActivity(intent);
     }
 
     // Callback interfaces
@@ -195,13 +154,10 @@ public class UserModel {
         void onLoginFailed(String errorMessage);
     }
 
-    public interface UserDataCallback {
-        void onDataRetrieved(User user);
-        void onDataFailed(String errorMessage);
-    }
-
+    // Callback interface for update user data
     public interface UpdateDataCallback {
         void onUpdateSuccess();
+
         void onUpdateFailed(String errorMessage);
     }
 }

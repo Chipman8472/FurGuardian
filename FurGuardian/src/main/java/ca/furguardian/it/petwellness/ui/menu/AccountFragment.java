@@ -1,12 +1,7 @@
 package ca.furguardian.it.petwellness.ui.menu;
-//       Justin Chipman - RCB – N01598472
-//	     Imran Zafurallah - RCB - N01585098
-//	     Zane Aransevia - RCB- N01351168
-//	     Tevadi Brookes - RCC - N01582563
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,10 +19,12 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import ca.furguardian.it.petwellness.R;
 import ca.furguardian.it.petwellness.model.User;
 import ca.furguardian.it.petwellness.model.UserModel;
-import ca.furguardian.it.petwellness.controller.PasswordUtil;
 
 public class AccountFragment extends Fragment {
 
@@ -37,6 +34,8 @@ public class AccountFragment extends Fragment {
     private TextView textCurrentName, textCurrentPhone;
     private UserModel userModel;
     private User currentUser;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
 
     @Nullable
     @Override
@@ -57,13 +56,14 @@ public class AccountFragment extends Fragment {
         textCurrentPhone = root.findViewById(R.id.textCurrentPhone);
 
         userModel = new UserModel();
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
 
-        // Retrieve user email from SharedPreferences
-        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
-        String userEmail = sharedPreferences.getString("email", "");
-
-        // Load user info using UserModel
-        loadUserInfo(userEmail);
+        if (firebaseUser != null) {
+            loadUserInfo(firebaseUser.getUid());
+        } else {
+            Toast.makeText(getContext(), "not logged in", Toast.LENGTH_SHORT).show();
+        }
 
         // Handle checkbox events to toggle visibility of EditText fields
         checkBoxEditName.setOnCheckedChangeListener((buttonView, isChecked) -> editTextName.setVisibility(isChecked ? View.VISIBLE : View.GONE));
@@ -79,7 +79,7 @@ public class AccountFragment extends Fragment {
             new AlertDialog.Builder(requireContext())
                     .setTitle(R.string.confirm_changes1)
                     .setMessage(R.string.are_you_sure_you_want_to_save_these_changes1)
-                    .setPositiveButton(R.string.yes, (dialog, which) -> saveChanges(userEmail))
+                    .setPositiveButton(R.string.yes, (dialog, which) -> saveChanges())
                     .setNegativeButton(R.string.no, null)
                     .show();
         });
@@ -99,16 +99,17 @@ public class AccountFragment extends Fragment {
         return root;
     }
 
-    private void loadUserInfo(String email) {
-        userModel.getUserData(email, getContext(), new UserModel.UserDataCallback() {
+    private void loadUserInfo(String userId) {
+        userModel.retrieveUserData(userId, getContext(), new UserModel.LoginCallback() {
             @Override
-            public void onDataRetrieved(User user) {
+            public void onLoginSuccess(User user) {
                 currentUser = user;
-                // Set current name and phone to TextViews
+
+                // Display current name and phone
                 textCurrentName.setText(user.getName());
                 textCurrentPhone.setText(user.getPhoneNumber());
 
-                // Populate EditText fields if checkboxes are checked
+                // Prepopulate EditText fields if checkboxes are checked
                 if (checkBoxEditName.isChecked()) {
                     editTextName.setText(user.getName());
                 }
@@ -118,57 +119,57 @@ public class AccountFragment extends Fragment {
             }
 
             @Override
-            public void onDataFailed(String errorMessage) {
+            public void onLoginFailed(String errorMessage) {
                 Toast.makeText(getContext(), getString(R.string.failed_to_load_user_information) + errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void saveChanges(String email) {
+    private void saveChanges() {
+        if (currentUser == null || firebaseUser == null) {
+            Toast.makeText(getContext(), R.string.user_data_not_available, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         boolean isNameUpdated = checkBoxEditName.isChecked();
         boolean isPhoneUpdated = checkBoxEditPhone.isChecked();
         boolean isPasswordUpdated = checkBoxEditPassword.isChecked();
-
-        if (currentUser == null) {
-            Toast.makeText(getContext(), getString(R.string.user_data_not_available), Toast.LENGTH_SHORT).show();
-            return;
-        }
 
         // Update name if checked
         if (isNameUpdated) {
             String newName = editTextName.getText().toString().trim();
             currentUser.setName(newName);
-            textCurrentName.setText(newName); // Update displayed name
+            textCurrentName.setText(newName);
         }
 
         // Update phone if checked
         if (isPhoneUpdated) {
             String newPhone = editTextPhone.getText().toString().trim();
             currentUser.setPhoneNumber(newPhone);
-            textCurrentPhone.setText(newPhone); // Update displayed phone
+            textCurrentPhone.setText(newPhone);
         }
 
-        // Update password if checked and confirmed
+        // Update password using Firebase Authentication
         if (isPasswordUpdated) {
             String newPassword = editTextNewPassword.getText().toString().trim();
             String confirmPassword = editTextConfirmPassword.getText().toString().trim();
 
             if (!newPassword.isEmpty() && newPassword.equals(confirmPassword)) {
-                // Hash the new password with a new salt
-                String newSalt = PasswordUtil.generateSalt();
-                String hashedPassword = PasswordUtil.hashPassword(newPassword, newSalt);
-
-                currentUser.setHashedPassword(hashedPassword); // Store hashed password
-                currentUser.setSalt(newSalt); // Store the new salt
-                Toast.makeText(getContext(), getString(R.string.password_updated), Toast.LENGTH_SHORT).show();
+                firebaseUser.updatePassword(newPassword).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(getContext(), getString(R.string.password_updated), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), "failed to update password", Toast.LENGTH_SHORT).show();
+                    }
+                });
             } else {
                 Toast.makeText(getContext(), getString(R.string.passwords_do_not_match), Toast.LENGTH_SHORT).show();
                 return;
             }
         }
 
-        // Update user data in the database
-        userModel.updateUserData(email, currentUser, getContext(), new UserModel.UpdateDataCallback() {
+        // Update user data in Realtime Database
+        userModel.updateUserData(firebaseUser.getUid(), currentUser, getContext(), new UserModel.UpdateDataCallback() {
             @Override
             public void onUpdateSuccess() {
                 Toast.makeText(getContext(), getString(R.string.changes_saved_successfully), Toast.LENGTH_SHORT).show();
@@ -182,6 +183,8 @@ public class AccountFragment extends Fragment {
     }
 
     private void signOut() {
-        userModel.signOut(requireContext());
+        firebaseAuth.signOut();
+        Toast.makeText(requireContext(), "logged out", Toast.LENGTH_SHORT).show();
+        requireActivity().finish(); // Close the activity and navigate to login screen
     }
 }
