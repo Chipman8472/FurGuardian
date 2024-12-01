@@ -1,8 +1,9 @@
 {
   "project_info": {
     "project_number": "276746006424",
+    "firebase_url": "https://furguardian-9970c-default-rtdb.firebaseio.com",
     "project_id": "furguardian-9970c",
-    "storage_bucket": "furguardian-9970c.appspot.com"
+    "storage_bucket": "furguardian-9970c.firebasestorage.app"
   },
   "client": [
     {
@@ -12,7 +13,20 @@
           "package_name": "ca.furguardian.it.petwellness"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "276746006424-pj8vvbb68v8lvutnffrhvt0bf77mrfu2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.furguardian.it.petwellness",
+            "certificate_hash": "a55444df527778e08644e92a0c7742a918910dc4"
+          }
+        },
+        {
+          "client_id": "276746006424-9c17b9lbag8363112kjebk56p5u27a1a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAis5VXvHQq0F1ZePzUS9Xo_-kDrVVM_Rc"
@@ -20,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "276746006424-41f9hp688ooprurm80l7eic8o0ouveo8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

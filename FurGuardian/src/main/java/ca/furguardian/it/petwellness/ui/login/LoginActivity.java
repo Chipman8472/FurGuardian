@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -40,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     private UserModel userModel;
     private static final int RC_SIGN_IN = 100; // Request code for Google Sign-In
     private GoogleSignInClient googleSignInClient; // Google Sign-In client
+    private static final String GOOGLE_API_KEY = "276746006424-9c17b9lbag8363112kjebk56p5u27a1a.apps.googleusercontent.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,18 +53,20 @@ public class LoginActivity extends AppCompatActivity {
 
         applySettings();
 
+
         if (isRemembered) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         }
 
+        // Configure Google Sign-In with a separate API key
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id)) // Use your web client ID here
+                .requestIdToken(GOOGLE_API_KEY)  // Use the separate API key here
                 .requestEmail()
                 .build();
+
         googleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        // Set up the Google Sign-In button
         findViewById(R.id.googleSignInButton).setOnClickListener(v -> signInWithGoogle());
 
         userModel = new UserModel();
@@ -141,6 +145,7 @@ public class LoginActivity extends AppCompatActivity {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             if (account != null) {
+                Log.d("GoogleSignIn", "Sign-In successful. Email: " + account.getEmail());
                 // Pass the Google Sign-In account to UserModel for further processing
                 String email = account.getEmail();
                 String name = account.getDisplayName();
@@ -168,7 +173,9 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         } catch (ApiException e) {
-            Toast.makeText(this, getString(R.string.google_sign_in_failed), Toast.LENGTH_SHORT).show();
+            Log.e("GoogleSignIn", "Sign-In failed with status code: " + e.getStatusCode());
+            Log.e("GoogleSignIn", "Error message: " + e.getMessage());
+            Toast.makeText(this, "Google Sign-In failed. Error code: " + e.getStatusCode(), Toast.LENGTH_SHORT).show();
         }
     }
 }
