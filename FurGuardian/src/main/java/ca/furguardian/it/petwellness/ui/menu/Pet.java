@@ -8,12 +8,12 @@ package ca.furguardian.it.petwellness.ui.menu;
 import android.net.Uri;
 
 public class Pet {
-    private String name;
-    private String breed;
-    private String type;
-    private int age;
-    private double weight;
-    private Uri profileImageUri;
+    private final String name;
+    private final String breed;
+    private final String type;
+    private final int age;
+    private final double weight;
+    private final Uri profileImageUri;
 
     public Pet(String name, String breed, String type, int age, double weight, Uri profileImageUri) {
         this.name = name;

@@ -5,9 +5,6 @@
       <SelectionState runConfigName="FurGuardian">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="testSharedPreferencesInitialization()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
     </selectionStates>
   </component>
 </project>
