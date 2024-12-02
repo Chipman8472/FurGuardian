@@ -37,8 +37,6 @@ public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 100;
     private EditText loginEmail, loginPassword;
     private CheckBox rememberMeCheckbox;
-    private Button loginButton, registerButton;
-    private SignInButton googleSignInButton;
     private UserModel userModel;
     private FirebaseAuth firebaseAuth;
     private GoogleSignInClient googleSignInClient;
@@ -55,9 +53,9 @@ public class LoginActivity extends AppCompatActivity {
         loginEmail = findViewById(R.id.username);
         loginPassword = findViewById(R.id.password);
         rememberMeCheckbox = findViewById(R.id.rememberMeCheckbox);
-        loginButton = findViewById(R.id.loginButton);
-        registerButton = findViewById(R.id.registerButton);
-        googleSignInButton = findViewById(R.id.googleSignInButton);
+        Button loginButton = findViewById(R.id.loginButton);
+        Button registerButton = findViewById(R.id.registerButton);
+        SignInButton googleSignInButton = findViewById(R.id.googleSignInButton);
 
         // Set up Google Sign-In options
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

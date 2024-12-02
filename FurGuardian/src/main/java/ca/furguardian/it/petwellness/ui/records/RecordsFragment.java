@@ -28,21 +28,19 @@ import ca.furguardian.it.petwellness.R;
 
 public class RecordsFragment extends Fragment {
 
-    private RecyclerView recyclerView;
     private RecordsAdapter adapter;
     private List<Record> records;
     private DatabaseReference databaseReference;
-    private Button addRecordButton;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_records, container, false);
 
-        recyclerView = view.findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        addRecordButton = view.findViewById(R.id.addRecordButton);
+        Button addRecordButton = view.findViewById(R.id.addRecordButton);
         records = new ArrayList<>();
         adapter = new RecordsAdapter(records, getContext());
         recyclerView.setAdapter(adapter);

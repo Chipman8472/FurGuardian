@@ -30,7 +30,6 @@ public class AccountFragment extends Fragment {
 
     private CheckBox checkBoxEditName, checkBoxEditPhone, checkBoxEditPassword;
     private EditText editTextName, editTextPhone, editTextNewPassword, editTextConfirmPassword;
-    private Button buttonSaveChanges, buttonSignOut;
     private TextView textCurrentName, textCurrentPhone;
     private UserModel userModel;
     private User currentUser;
@@ -50,8 +49,8 @@ public class AccountFragment extends Fragment {
         editTextPhone = root.findViewById(R.id.editTextPhone);
         editTextNewPassword = root.findViewById(R.id.editTextNewPassword);
         editTextConfirmPassword = root.findViewById(R.id.editTextConfirmPassword);
-        buttonSaveChanges = root.findViewById(R.id.buttonSaveChanges);
-        buttonSignOut = root.findViewById(R.id.buttonSignOut);
+        Button buttonSaveChanges = root.findViewById(R.id.buttonSaveChanges);
+        Button buttonSignOut = root.findViewById(R.id.buttonSignOut);
         textCurrentName = root.findViewById(R.id.textCurrentName);
         textCurrentPhone = root.findViewById(R.id.textCurrentPhone);
 
