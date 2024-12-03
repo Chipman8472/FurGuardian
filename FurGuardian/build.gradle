@@ -7,6 +7,12 @@ android {
     namespace 'ca.furguardian.it.petwellness'
     compileSdk 34
 
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
+    }
+
     defaultConfig {
         applicationId "ca.furguardian.it.petwellness"
         minSdk 29
@@ -24,13 +30,16 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
     buildFeatures {
         viewBinding true
     }
+
+
 }
+
 
 dependencies {
 
@@ -50,6 +59,7 @@ dependencies {
     implementation libs.play.services.location
     testImplementation libs.junit
     testImplementation libs.core
+    testImplementation libs.junit.jupiter
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
     implementation libs.core.splashscreen
