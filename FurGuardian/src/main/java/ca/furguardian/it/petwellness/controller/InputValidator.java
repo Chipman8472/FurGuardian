@@ -13,8 +13,11 @@ public class InputValidator {
 
     // Validates if the email is in a valid format
     public static boolean isValidEmail(String email) {
-        return email != null && Patterns.EMAIL_ADDRESS.matcher(email).matches();
+        if (email == null) return false;
+        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
+        return email.matches(emailRegex);
     }
+
 
     // Validates if the phone number is exactly 10 digits (for North American numbers)
     public static boolean isValidPhoneNumber(String phoneNumber) {
