@@ -81,5 +81,33 @@ public class LoginActivityTest {
                 actualIntent.getComponent().getClassName().equals(RegistrationActivity.class.getName()));
     }
 
+    @Test
+    public void testLoginButtonClickDoesNotCrash() {
+        Button loginButton = loginActivity.findViewById(R.id.loginButton);
+        loginButton.performClick();
+        assertTrue("Login button click should not crash the app", true);
+    }
+
+
+    @Test
+    public void testEmptyEmailAndPasswordShowsToast() {
+        EditText emailField = loginActivity.findViewById(R.id.username);
+        EditText passwordField = loginActivity.findViewById(R.id.password);
+        Button loginButton = loginActivity.findViewById(R.id.loginButton);
+
+
+        // Leave fields empty and click login
+        emailField.setText("");
+        passwordField.setText("");
+        loginButton.performClick();
+
+
+        // Verify a Toast message is shown
+        String expectedMessage = loginActivity.getString(R.string.please_fill_all_fields);
+        assertEquals("Expected toast message for empty fields",
+                expectedMessage, ShadowToast.getTextOfLatestToast());
+    }
+
+
 
 }
