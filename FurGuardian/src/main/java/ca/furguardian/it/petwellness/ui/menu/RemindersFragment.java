@@ -31,6 +31,8 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.Calendar;
 
 import ca.furguardian.it.petwellness.R;
@@ -130,7 +132,8 @@ public class RemindersFragment extends Fragment {
 
         notificationManager.notify(1, builder.build());
 
-        Toast.makeText(getContext(), getString(R.string.reminder_saved), Toast.LENGTH_SHORT).show();
+        // Show Snackbar
+        Snackbar.make(requireView(), "Thank you! Your reminder has been set!", Snackbar.LENGTH_LONG).show();
     }
 
     private void requestNotificationPermission() {
