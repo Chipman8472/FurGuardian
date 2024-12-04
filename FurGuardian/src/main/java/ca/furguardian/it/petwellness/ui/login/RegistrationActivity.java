@@ -3,6 +3,7 @@ package ca.furguardian.it.petwellness.ui.login;
 //	     Imran Zafurallah - RCB - N01585098
 //	     Zane Aransevia - RCB- N01351168
 //	     Tevadi Brookes - RCC - N01582563
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,20 +11,10 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import ca.furguardian.it.petwellness.MainActivity;
 import ca.furguardian.it.petwellness.R;
-import ca.furguardian.it.petwellness.controller.Format;
 import ca.furguardian.it.petwellness.controller.InputValidator;
-import ca.furguardian.it.petwellness.model.User;
 import ca.furguardian.it.petwellness.model.UserModel;
 
 public class RegistrationActivity extends AppCompatActivity {
