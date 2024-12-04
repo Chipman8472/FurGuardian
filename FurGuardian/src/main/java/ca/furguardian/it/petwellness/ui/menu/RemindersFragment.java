@@ -133,7 +133,7 @@ public class RemindersFragment extends Fragment {
         notificationManager.notify(1, builder.build());
 
         // Show Snackbar
-        Snackbar.make(requireView(), "Thank you! Your reminder has been set!", Snackbar.LENGTH_LONG).show();
+        Snackbar.make(requireView(), R.string.SnackbarText, Snackbar.LENGTH_LONG).show();
     }
 
     private void requestNotificationPermission() {

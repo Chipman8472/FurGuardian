@@ -216,4 +216,5 @@
     <string name="failed_to_add_record">Échec de l\'ajout de l\'enregistrement : </string>
     <string name="record_deleted_successfully">Enregistrement supprimé avec succès</string>
     <string name="failed_to_delete_record">Échec de la suppression de l\'enregistrement : </string>
+    <string name="SnackbarText">Thank you! Your reminder has been set!</string>
 </resources>

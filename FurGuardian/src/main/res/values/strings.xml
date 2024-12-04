@@ -212,6 +212,7 @@
     <string name="google_sign_in_registration_failed">Google Sign-In registration failed</string>
     <string name="failed_to_save_user_data">Failed to save user data</string>
     <string name="user_creation_failed">user creation failed</string>
+    <string name="SnackbarText">Thank you! Your reminder has been set!</string>
 
 
 </resources>
