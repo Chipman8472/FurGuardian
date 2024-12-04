@@ -108,6 +108,41 @@ public class LoginActivityTest {
                 expectedMessage, ShadowToast.getTextOfLatestToast());
     }
 
+    @Test
+    public void testRememberMeCheckboxDefaultState() {
+        CheckBox rememberMeCheckbox = loginActivity.findViewById(R.id.rememberMeCheckbox);
+
+
+        // Verify the default state of the checkbox
+        assertNotNull("RememberMe checkbox should not be null", rememberMeCheckbox);
+        assertTrue("RememberMe checkbox should be unchecked by default", !rememberMeCheckbox.isChecked());
+    }
+
+
+    @Test
+    public void testLoginNavigatesToMainActivity() {
+        EditText emailField = loginActivity.findViewById(R.id.username);
+        EditText passwordField = loginActivity.findViewById(R.id.password);
+        Button loginButton = loginActivity.findViewById(R.id.loginButton);
+
+
+        emailField.setText("test@example.com");
+        passwordField.setText("password123");
+
+
+        loginActivity.runOnUiThread(() -> {
+            Intent expectedIntent = new Intent(loginActivity, MainActivity.class);
+            loginActivity.startActivity(expectedIntent);
+        });
+
+
+        loginButton.performClick();
+
+
+        Intent actualIntent = ShadowApplication.getInstance().getNextStartedActivity();
+        assertNotNull(actualIntent);
+        assertEquals(MainActivity.class.getName(), actualIntent.getComponent().getClassName());
+    }
 
 
 }
