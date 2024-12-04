@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import ca.furguardian.it.petwellness.R;
 import ca.furguardian.it.petwellness.databinding.FragmentHealthBinding;
@@ -127,12 +128,12 @@ public class HealthFragment extends Fragment {
 
     public void updateUIWithHealthData(Map<String, Object> data) {
         // Safely retrieve and cast data from the map
-        int heartRate = ((Number) data.get("heartRate")).intValue();
-        int respiratoryRate = ((Number) data.get("respiratoryRate")).intValue();
-        int steps = ((Number) data.get("steps")).intValue();
-        double distance = ((Number) data.get("distance")).doubleValue();
-        int sleepHours = ((Number) data.get("sleepHours")).intValue();
-        double weight = ((Number) data.get("weight")).doubleValue();
+        int heartRate = ((Number) Objects.requireNonNull(data.get("heartRate"))).intValue();
+        int respiratoryRate = ((Number) Objects.requireNonNull(data.get("respiratoryRate"))).intValue();
+        int steps = ((Number) Objects.requireNonNull(data.get("steps"))).intValue();
+        double distance = ((Number) Objects.requireNonNull(data.get("distance"))).doubleValue();
+        int sleepHours = ((Number) Objects.requireNonNull(data.get("sleepHours"))).intValue();
+        double weight = ((Number) Objects.requireNonNull(data.get("weight"))).doubleValue();
 
         // Update UI elements with the retrieved values
         binding.textHeartRate.setText(getString(R.string.heart_rate) + heartRate + getString(R.string.bpm));
