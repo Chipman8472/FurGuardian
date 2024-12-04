@@ -144,5 +144,41 @@ public class LoginActivityTest {
         assertEquals(MainActivity.class.getName(), actualIntent.getComponent().getClassName());
     }
 
+    @Test
+    public void testGoogleSignInButtonExists() {
+        com.google.android.gms.common.SignInButton googleSignInButton = loginActivity.findViewById(R.id.googleSignInButton);
+        assertNotNull(googleSignInButton);
+    }
+
+
+    @Test
+    public void testEmailValidationLogic() {
+        EditText emailField = loginActivity.findViewById(R.id.username);
+
+
+        // Set a valid email and verify
+        emailField.setText("valid@example.com");
+        boolean isValid = android.util.Patterns.EMAIL_ADDRESS.matcher(emailField.getText().toString()).matches();
+        assertTrue("Valid email should pass validation", isValid);
+
+
+        // Set an invalid email and verify
+        emailField.setText("invalid-email");
+        boolean isInvalid = android.util.Patterns.EMAIL_ADDRESS.matcher(emailField.getText().toString()).matches();
+        assertTrue("Invalid email should fail validation", !isInvalid);
+    }
+
+
+    @Test
+    public void testPasswordFieldIsPasswordType() {
+        EditText passwordField = loginActivity.findViewById(R.id.password);
+
+
+        // Verify the input type for the password field is correct
+        int inputType = passwordField.getInputType();
+        assertEquals("Password field should be of type password",
+                android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD, inputType);
+    }
+
 
 }
