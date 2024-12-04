@@ -129,7 +129,7 @@ public class PetEd extends Fragment {
         requireActivity().runOnUiThread(() -> {
             try {
                 // Initialize spinner with topics
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, topics);
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, topics);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner.setAdapter(adapter);
 
