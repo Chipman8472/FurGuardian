@@ -2,6 +2,8 @@ package ca.furguardian.it.petwellness.ui.menu;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import ca.furguardian.it.petwellness.R;
 import ca.furguardian.it.petwellness.model.User;
 import ca.furguardian.it.petwellness.model.UserModel;
+import ca.furguardian.it.petwellness.ui.login.LoginActivity;
 
 public class AccountFragment extends Fragment {
 
@@ -182,8 +185,23 @@ public class AccountFragment extends Fragment {
     }
 
     private void signOut() {
+        // Clear the "Remember Me" preference
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("remember_me"); // Or editor.clear() if you want to clear all preferences
+        editor.apply();
+
+        // Sign out from Firebase
         firebaseAuth.signOut();
-        Toast.makeText(requireContext(), "logged out", Toast.LENGTH_SHORT).show();
-        requireActivity().finish(); // Close the activity and navigate to login screen
+
+        // Show a toast message
+        Toast.makeText(requireContext(), "Logged out", Toast.LENGTH_SHORT).show();
+
+        // Navigate to LoginActivity
+        Intent intent = new Intent(requireContext(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Clear the back stack
+        startActivity(intent);
+        requireActivity().finish(); // Close the current activity
     }
+
 }
