@@ -51,6 +51,35 @@ public class LoginActivityTest {
     public void testActivityInitialization() {
         assertNotNull("LoginActivity should not be null", loginActivity);
     }
+    @Test
+    public void testUIElementsAreInitialized() {
+        EditText emailField = loginActivity.findViewById(R.id.username);
+        EditText passwordField = loginActivity.findViewById(R.id.password);
+        Button loginButton = loginActivity.findViewById(R.id.loginButton);
+        Button registerButton = loginActivity.findViewById(R.id.registerButton);
+
+
+        assertNotNull("Email field should not be null", emailField);
+        assertNotNull("Password field should not be null", passwordField);
+        assertNotNull("Login button should not be null", loginButton);
+        assertNotNull("Register button should not be null", registerButton);
+    }
+
+
+    @Test
+    public void testRegisterButtonNavigatesToRegistrationActivity() {
+        Button registerButton = loginActivity.findViewById(R.id.registerButton);
+        registerButton.performClick();
+
+
+        ShadowApplication shadowApplication = ShadowApplication.getInstance();
+        Intent actualIntent = shadowApplication.getNextStartedActivity();
+
+
+        assertNotNull("Intent to RegistrationActivity should not be null", actualIntent);
+        assertTrue("Expected intent component should match actual",
+                actualIntent.getComponent().getClassName().equals(RegistrationActivity.class.getName()));
+    }
 
 
 }
