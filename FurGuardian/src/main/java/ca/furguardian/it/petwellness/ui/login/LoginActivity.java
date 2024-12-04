@@ -10,7 +10,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -30,7 +30,6 @@ import ca.furguardian.it.petwellness.MainActivity;
 import ca.furguardian.it.petwellness.R;
 import ca.furguardian.it.petwellness.model.User;
 import ca.furguardian.it.petwellness.model.UserModel;
-import ca.furguardian.it.petwellness.ui.login.RegistrationActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
