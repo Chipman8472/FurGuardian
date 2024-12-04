@@ -5,7 +5,6 @@ package ca.furguardian.it.petwellness.ui.peted;
 //	     Tevadi Brookes - RCC - N01582563
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -24,7 +23,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -38,12 +36,10 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.CancellationTokenSource;
 
-import java.io.IOException;
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -58,11 +54,11 @@ public class PetEd extends Fragment {
     private FusedLocationProviderClient fusedLocationClient;
     private ExecutorService executor;
 
-    private List<String> petEducationTopics = Arrays.asList(
+    private final List<String> petEducationTopics = Arrays.asList(
             "Pet Nutrition", "Grooming Tips", "Vaccination Schedule", "Training and Obedience", "Exercise Needs"
     );
 
-    private List<String> defaultUrls = Arrays.asList(
+    private final List<String> defaultUrls = Arrays.asList(
             "https://www.chewy.com",
             "https://hastingsvet.com",
             "https://example.com/vaccination_schedule",
@@ -70,7 +66,7 @@ public class PetEd extends Fragment {
             "https://www.youtube.com/watch?v=PzsrsRRWZYU"
     );
 
-    private List<String> canadianUrls = Arrays.asList(
+    private final List<String> canadianUrls = Arrays.asList(
             "https://www.canadian-pet-food.com",
             "https://canada-grooming-tips.com",
             "https://canada-vaccine-schedule.com",
@@ -133,7 +129,7 @@ public class PetEd extends Fragment {
         requireActivity().runOnUiThread(() -> {
             try {
                 // Initialize spinner with topics
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, topics);
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, topics);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner.setAdapter(adapter);
 
