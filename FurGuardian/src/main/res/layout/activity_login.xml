@@ -128,7 +128,7 @@
         android:id="@+id/registerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Register"
+        android:text="@string/register1"
         android:textColor="@color/text_color"
         android:background="@drawable/rounded_button_background"
         android:textSize="14sp"

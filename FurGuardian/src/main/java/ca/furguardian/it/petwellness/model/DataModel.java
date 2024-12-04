@@ -29,19 +29,19 @@ public class DataModel {
 
     // Method to simulate more realistic health data
     public Map<String, Object> simulateData() {
-        // Heart rate (bpm): Normal resting heart rate for adults is between 60 and 100
+        // Heart rate (bpm): Normal resting heart rate is between 60 and 100
         int heartRate = generateHeartRate();
 
-        // Respiratory rate (breaths per minute): Normal is between 12 and 20 for an adult
+        // Respiratory rate (breaths per minute): Normal is between 12 and 20
         int respiratoryRate = generateRespiratoryRate();
 
-        // Steps: Average steps per day for an adult can range between 4000 and 12000, depending on activity
+        // Steps: Average steps per day can range between 4000 and 12000, depending on activity
         int steps = generateStepCount();
 
         // Distance (km): Daily distance walked based on steps, average stride length is 0.762 meters
         double distance = steps * 0.000762; // Convert steps to km (0.762m per step)
 
-        // Sleep hours: Adults need 7-9 hours, but it can vary slightly for shorter or longer sleepers
+        // Sleep hours:  7-9 hours, but it can vary slightly for shorter or longer sleepers
         double sleepHours = generateSleepHours();
 
         // Weight (kg): Slight fluctuations based on meals, hydration, and activity
