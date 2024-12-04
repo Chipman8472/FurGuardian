@@ -73,7 +73,7 @@ public class HealthFragment extends Fragment {
         return root;
     }
 
-    private void initializeHealthMetrics() {
+    public void initializeHealthMetrics() {
         // Retrieve data from Firebase on initialization
         dataModel.retrieveDataFromDatabase(new ValueEventListener() {
             @Override
@@ -93,7 +93,7 @@ public class HealthFragment extends Fragment {
         });
     }
 
-    private void startRealTimeUpdates() {
+    public void startRealTimeUpdates() {
         updateMetricsRunnable = new Runnable() {
             @Override
             public void run() {
@@ -125,7 +125,7 @@ public class HealthFragment extends Fragment {
         handler.post(updateMetricsRunnable);
     }
 
-    private void updateUIWithHealthData(Map<String, Object> data) {
+    public void updateUIWithHealthData(Map<String, Object> data) {
         // Safely retrieve and cast data from the map
         int heartRate = ((Number) data.get("heartRate")).intValue();
         int respiratoryRate = ((Number) data.get("respiratoryRate")).intValue();
@@ -147,7 +147,7 @@ public class HealthFragment extends Fragment {
     }
 
 
-    private void updateHealthTips(int heartRate, int steps, int sleepHours) {
+    public void updateHealthTips(int heartRate, int steps, int sleepHours) {
         List<String> healthTips = new ArrayList<>();
 
         if (heartRate > 90) {
@@ -167,7 +167,7 @@ public class HealthFragment extends Fragment {
         binding.textHealthTips.setText("• " + TextUtils.join("\n• ", healthTips));
     }
 
-    private void showAddWeightDialog() {
+    public void showAddWeightDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(getString(R.string.add_weight_record));
 
