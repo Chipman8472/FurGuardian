@@ -1,10 +1,5 @@
-// Justin Chipman - RCB – N01598472
-// Imran Zafurallah - RCB - N01585098
-// Zane Aransevia - RCB- N01351168
-// Tevadi Brookes - RCC - N01582563
 package ca.furguardian.it.petwellness.ui.home;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -23,6 +18,7 @@ import ca.furguardian.it.petwellness.databinding.FragmentHomeBinding;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
+    private final Handler handler = new Handler();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,29 +36,11 @@ public class HomeFragment extends Fragment {
         binding.textPetTip.setText(getString(R.string.tip_keep_your_pet_hydrated));
 
         // Set up placeholders for Camera, Microphone, and Speaker
-        binding.imageCamera.setOnClickListener(v -> {
-            Toast.makeText(getContext(), getString(R.string.camera_connecting), Toast.LENGTH_SHORT).show();
+        binding.imageCamera.setOnClickListener(v -> handleCameraClick());
+        binding.imageMicrophone.setOnClickListener(v -> handleMicrophoneClick());
+        binding.imageSpeaker.setOnClickListener(v -> handleSpeakerClick());
 
-            // Use Handler to create a delay
-            new Handler().postDelayed(() -> {
-                Toast.makeText(getContext(), getString(R.string.camera_connected), Toast.LENGTH_SHORT).show();
-            }, 3000); // Delay
-        });
-
-        binding.imageMicrophone.setOnClickListener(v -> {
-            Toast.makeText(getContext(), getString(R.string.microphone_start_speaking), Toast.LENGTH_SHORT).show();
-
-            // Use Handler to create a delay
-            new Handler().postDelayed(() -> {
-                Toast.makeText(getContext(), getString(R.string.microphone_sent), Toast.LENGTH_SHORT).show();
-            }, 3000); // Delay
-        });
-
-        binding.imageSpeaker.setOnClickListener(v -> {
-            Toast.makeText(getContext(), getString(R.string.speaker_playing_audio), Toast.LENGTH_SHORT).show();
-        });
-
-        // Override back button functionality for RemindersFragment
+        // Override back button functionality for HomeFragment
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -70,18 +48,8 @@ public class HomeFragment extends Fragment {
                         .setIcon(R.mipmap.logo)
                         .setTitle(R.string.exit_app)
                         .setMessage(R.string.are_you_sure_you_want_to_exit)
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                requireActivity().finish();
-                            }
-                        })
-                        .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
+                        .setPositiveButton(R.string.exit, (dialog, which) -> requireActivity().moveTaskToBack(true))
+                        .setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss())
                         .show();
             }
         });
@@ -89,9 +57,26 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
+    private void handleCameraClick() {
+        Toast.makeText(requireContext(), getString(R.string.camera_connecting), Toast.LENGTH_SHORT).show();
+        handler.postDelayed(() ->
+                Toast.makeText(requireContext(), getString(R.string.camera_connected), Toast.LENGTH_SHORT).show(), 3000);
+    }
+
+    private void handleMicrophoneClick() {
+        Toast.makeText(requireContext(), getString(R.string.microphone_start_speaking), Toast.LENGTH_SHORT).show();
+        handler.postDelayed(() ->
+                Toast.makeText(requireContext(), getString(R.string.microphone_sent), Toast.LENGTH_SHORT).show(), 3000);
+    }
+
+    private void handleSpeakerClick() {
+        Toast.makeText(requireContext(), getString(R.string.speaker_playing_audio), Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        handler.removeCallbacksAndMessages(null); // Clear all handler callbacks
         binding = null;
     }
 }

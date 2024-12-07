@@ -55,7 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="Age: 0"
+        android:text="@string/age_01"
         android:textColor="@color/text_color"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -67,7 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="Weight: 0"
+        android:text="@string/weight_01"
         android:textColor="@color/text_color"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -96,7 +96,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="140dp"
         android:layout_weight="1"
-        android:text="Next"
+        android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -109,7 +109,7 @@
         android:layout_marginEnd="40dp"
         android:layout_marginBottom="141dp"
         android:layout_weight="1"
-        android:text="Add Pet"
+        android:text="@string/add_pet1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonNextPet"
         app:layout_constraintHorizontal_bias="1.0"
@@ -124,7 +124,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginBottom="140dp"
         android:layout_weight="1"
-        android:text="Previous"
+        android:text="@string/previous"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -136,7 +136,7 @@
         android:layout_marginEnd="161dp"
         android:layout_marginBottom="76dp"
         android:layout_weight="1"
-        android:text="Delete"
+        android:text="@string/delete1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

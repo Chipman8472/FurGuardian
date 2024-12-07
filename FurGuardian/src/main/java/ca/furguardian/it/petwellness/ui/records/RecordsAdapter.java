@@ -71,7 +71,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
                 new AlertDialog.Builder(context)
                         .setTitle(R.string.delete_record)
                         .setMessage(R.string.are_you_sure_delete)
-                        .setPositiveButton("Yes", (dialog, which) -> {
+                        .setPositiveButton(R.string.yes2, (dialog, which) -> {
                             PetModel databaseHelper = new PetModel();
                             databaseHelper.deleteRecord(currentRecord.getDate(), new PetModel.OnRecordOperationListener() {
                                 @Override

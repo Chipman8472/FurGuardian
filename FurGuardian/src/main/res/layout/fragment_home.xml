@@ -94,7 +94,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Today's Steps"
+                    android:text="@string/today_s_steps"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -102,7 +102,7 @@
                     android:id="@+id/textStepsToday"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Steps: 0"
+                    android:text="@string/steps_0"
                     android:textSize="16sp" />
 
                 <ProgressBar
@@ -133,7 +133,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Device Records"
+                    android:text="@string/device_records"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -141,7 +141,7 @@
                     android:id="@+id/textFoodDispenserUsage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Last Feeding: --:--"
+                    android:text="@string/last_feeding"
                     android:textSize="16sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -164,7 +164,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Pet Education"
+                    android:text="@string/pet_education1"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -172,7 +172,7 @@
                     android:id="@+id/textPetTip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tip: Regular training helps maintain behavior."
+                    android:text="@string/tip_regular_training_helps_maintain_behavior"
                     android:textSize="16sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>

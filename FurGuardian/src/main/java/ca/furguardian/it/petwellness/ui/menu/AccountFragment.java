@@ -64,7 +64,7 @@ public class AccountFragment extends Fragment {
         if (firebaseUser != null) {
             loadUserInfo(firebaseUser.getUid());
         } else {
-            Toast.makeText(getContext(), "not logged in", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.not_logged_in), Toast.LENGTH_SHORT).show();
         }
 
         // Handle checkbox events to toggle visibility of EditText fields
@@ -161,7 +161,7 @@ public class AccountFragment extends Fragment {
                     if (task.isSuccessful()) {
                         Toast.makeText(getContext(), getString(R.string.password_updated), Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(getContext(), "failed to update password", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getString(R.string.failed_to_update_password), Toast.LENGTH_SHORT).show();
                     }
                 });
             } else {
@@ -195,7 +195,7 @@ public class AccountFragment extends Fragment {
         firebaseAuth.signOut();
 
         // Show a toast message
-        Toast.makeText(requireContext(), "Logged out", Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireContext(), getString(R.string.logged_out), Toast.LENGTH_SHORT).show();
 
         // Navigate to LoginActivity
         Intent intent = new Intent(requireContext(), LoginActivity.class);

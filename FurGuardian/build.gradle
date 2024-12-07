@@ -102,7 +102,9 @@ dependencies {
     testImplementation libs.mockito.core
     testImplementation libs.mockito.inline
     testImplementation libs.mockito.android
+    implementation libs.androidx.work.runtime.ktx
 
-    testImplementation 'org.junit.vintage:junit-vintage-engine:5.10.0'
+
+    testImplementation libs.junit.vintage.engine
 
 }

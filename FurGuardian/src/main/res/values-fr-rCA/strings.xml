@@ -165,33 +165,6 @@
     <string name="failed_to_load_health_data">Échec du chargement des données de santé.</string>
     <string name="failed_to_load_health_data1">Échec du chargement des données de santé.</string>
 
-    <!-- Month Array -->
-    <string-array name="months">
-        <item>Sélectionner le mois</item>
-        <item>Janvier</item>
-        <item>Février</item>
-        <item>Mars</item>
-        <item>Avril</item>
-        <item>Mai</item>
-        <item>Juin</item>
-        <item>Juillet</item>
-        <item>Août</item>
-        <item>Septembre</item>
-        <item>Octobre</item>
-        <item>Novembre</item>
-        <item>Décembre</item>
-    </string-array>
-
-    <!-- Year Array -->
-    <string-array name="years">
-        <item>Sélectionner l\'année</item>
-        <item>2022</item>
-        <item>2023</item>
-        <item>2024</item>
-        <item>2025</item>
-        <item>2026</item>
-    </string-array>
-
     <!-- Spinner Prompt for Month -->
     <string name="select_month">Sélectionner le mois</string>
 
@@ -216,5 +189,54 @@
     <string name="failed_to_add_record">Échec de l\'ajout de l\'enregistrement : </string>
     <string name="record_deleted_successfully">Enregistrement supprimé avec succès</string>
     <string name="failed_to_delete_record">Échec de la suppression de l\'enregistrement : </string>
-    <string name="SnackbarText">Thank you! Your reminder has been set!</string>
+
+    <string name="failed_to_submit_feedback">Échec de l\'envoi des commentaires : </string>
+    <string name="your_feedback_has_been_submitted_successfully">Vos commentaires ont été soumis avec succès!</string>
+    <string name="ok">OK</string>
+    <string name="thank_you">Merci!</string>
+    <string name="please_enter_a_valid_phone_number">Veuillez entrer un numéro de téléphone valide.</string>
+    <string name="please_enter_a_valid_email_address">Veuillez entrer une adresse e-mail valide.</string>
+    <string name="please_provide_comments">Veuillez fournir des commentaires.</string>
+    <string name="add_record">Ajouter un enregistrement</string>
+    <string name="pet_name12">Nom de l\'animal</string>
+    <string name="breed_unknown1">Race : Inconnue</string>
+    <string name="submit1">Soumettre</string>
+    <string name="comments1">Commentaires</string>
+    <string name="email12">E-mail</string>
+    <string name="phone_number">Numéro de téléphone</string>
+    <string name="full_name">Nom complet</string>
+    <string name="customer_feedback">Commentaires des clients</string>
+    <string name="default_web_client_id">276746006424-9c17b9lbag8363112kjebk56p5u27a1a.apps.googleusercontent.com</string>
+    <string name="google_sign_in_failed">Échec de la connexion Google</string>
+    <string name="google_sign_in_registration_failed">Échec de l\'enregistrement via Google</string>
+    <string name="failed_to_save_user_data">Échec de l\'enregistrement des données utilisateur</string>
+    <string name="user_creation_failed">Échec de la création de l\'utilisateur</string>
+    <string name="SnackbarText">Merci! Votre rappel a été défini!</string>
+    <string name="register1">S\'inscrire</string>
+    <string name="create_account">Créer un compte</string>
+    <string name="name1">Nom</string>
+    <string name="phone_number1">Numéro de téléphone</string>
+    <string name="email2">E-mail</string>
+    <string name="password3">Mot de passe</string>
+    <string name="confirm_password">Confirmer le mot de passe</string>
+    <string name="sign_up">S\'inscrire</string>
+    <string name="already_have_an_account_log_in">Vous avez déjà un compte? Connexion</string>
+    <string name="record_type_e_g_vaccination">Type d\'enregistrement (par ex., Vaccination)</string>
+    <string name="details_e_g_rabies_booster_administered">Détails (par ex., Rappel de rage administré)</string>
+    <string name="add_record1">Ajouter un enregistrement</string>
+    <string name="current_name_john_doe">Nom actuel : John Doe</string>
+    <string name="current_phone_123_456_7890">Téléphone actuel: 123–456-7890</string>
+    <string name="enter_new_name">Entrez un nouveau nom</string>
+    <string name="enter_new_phone_number">Entrez un nouveau numéro de téléphone</string>
+    <string name="confirm_new_password">Confirmer le nouveau mot de passe</string>
+    <string name="edit_phone_number">Modifier le numéro de téléphone</string>
+    <string name="edit_password">Modifier le mot de passe</string>
+    <string name="edit_name">Modifier le nom</string>
+    <string name="save_changes">Enregistrer les modifications</string>
+    <string name="sign_out">Déconnexion</string>
+    <string name="not_logged_in">non connecté</string>
+    <string name="failed_to_update_password">Échec de la mise à jour du mot de passe</string>
+    <string name="logged_out">Déconnecté</string>
+    <string name="yes2">Oui</string>
+
 </resources>

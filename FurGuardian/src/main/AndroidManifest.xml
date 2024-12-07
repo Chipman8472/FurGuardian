@@ -18,6 +18,7 @@
     <!-- Fine location for precise location access -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+
     <!-- Coarse location for approximate location access (optional if you only need precise location) -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 

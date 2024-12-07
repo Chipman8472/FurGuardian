@@ -13,6 +13,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
 import ca.furguardian.it.petwellness.R;
 
 public class UserModel {
@@ -44,7 +46,7 @@ public class UserModel {
                     });
                 }
             } else {
-                callback.onRegistrationFailed(task.getException().getMessage());
+                callback.onRegistrationFailed(Objects.requireNonNull(task.getException()).getMessage());
             }
         });
     }
@@ -58,7 +60,7 @@ public class UserModel {
                     retrieveUserData(firebaseUser.getUid(), context, callback);
                 }
             } else {
-                callback.onLoginFailed(task.getException().getMessage());
+                callback.onLoginFailed(Objects.requireNonNull(task.getException()).getMessage());
             }
         });
     }

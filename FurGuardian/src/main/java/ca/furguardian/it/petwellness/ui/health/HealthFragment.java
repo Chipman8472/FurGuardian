@@ -1,12 +1,10 @@
 package ca.furguardian.it.petwellness.ui.health;
-//       Justin Chipman - RCB – N01598472
-//	     Imran Zafurallah - RCB - N01585098
-//	     Zane Aransevia - RCB- N01351168
-//	     Tevadi Brookes - RCC - N01582563
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,13 +23,19 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import ca.furguardian.it.petwellness.R;
 import ca.furguardian.it.petwellness.databinding.FragmentHealthBinding;
 import ca.furguardian.it.petwellness.model.DataModel;
 
 public class HealthFragment extends Fragment {
+
+    private static final String KEY_HEART_RATE = "heartRate";
+    private static final String KEY_RESPIRATORY_RATE = "respiratoryRate";
+    private static final String KEY_STEPS = "steps";
+    private static final String KEY_DISTANCE = "distance";
+    private static final String KEY_SLEEP_HOURS = "sleepHours";
+    private static final String KEY_WEIGHT = "weight";
 
     private FragmentHealthBinding binding;
     private final Handler handler = new Handler(Looper.getMainLooper());
@@ -56,7 +60,6 @@ public class HealthFragment extends Fragment {
         // Set click listener for adding manual weight entry
         binding.buttonAddWeight.setOnClickListener(v -> showAddWeightDialog());
 
-
         // Override back button functionality for HealthFragment
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
@@ -65,8 +68,8 @@ public class HealthFragment extends Fragment {
                         .setIcon(R.mipmap.logo)
                         .setTitle(R.string.exit_app)
                         .setMessage(R.string.are_you_sure_you_want_to_exit)
-                        .setPositiveButton(R.string.yes, (dialog, which) -> requireActivity().finish())
-                        .setNegativeButton(getString(R.string.no), (dialog, which) -> dialog.dismiss())
+                        .setPositiveButton(R.string.exit, (dialog, which) -> requireActivity().moveTaskToBack(true))
+                        .setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss())
                         .show();
             }
         });
@@ -82,13 +85,14 @@ public class HealthFragment extends Fragment {
                 if (snapshot.exists()) {
                     Map<String, Object> data = (Map<String, Object>) snapshot.getValue();
                     if (data != null) {
-                        updateUIWithHealthData(data);
+                        handler.post(() -> updateUIWithHealthData(data));
                     }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("HealthFragment", "Firebase error: " + error.getMessage());
                 Toast.makeText(getContext(), getString(R.string.failed_to_load_health_data), Toast.LENGTH_SHORT).show();
             }
         });
@@ -108,13 +112,14 @@ public class HealthFragment extends Fragment {
                         if (snapshot.exists()) {
                             Map<String, Object> data = (Map<String, Object>) snapshot.getValue();
                             if (data != null) {
-                                updateUIWithHealthData(data);
+                                handler.post(() -> updateUIWithHealthData(data));
                             }
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("HealthFragment", "Firebase error: " + error.getMessage());
                         Toast.makeText(getContext(), getString(R.string.failed_to_load_health_data1), Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -128,12 +133,12 @@ public class HealthFragment extends Fragment {
 
     public void updateUIWithHealthData(Map<String, Object> data) {
         // Safely retrieve and cast data from the map
-        int heartRate = ((Number) Objects.requireNonNull(data.get("heartRate"))).intValue();
-        int respiratoryRate = ((Number) Objects.requireNonNull(data.get("respiratoryRate"))).intValue();
-        int steps = ((Number) Objects.requireNonNull(data.get("steps"))).intValue();
-        double distance = ((Number) Objects.requireNonNull(data.get("distance"))).doubleValue();
-        int sleepHours = ((Number) Objects.requireNonNull(data.get("sleepHours"))).intValue();
-        double weight = ((Number) Objects.requireNonNull(data.get("weight"))).doubleValue();
+        int heartRate = data.containsKey(KEY_HEART_RATE) ? ((Number) data.get(KEY_HEART_RATE)).intValue() : 0;
+        int respiratoryRate = data.containsKey(KEY_RESPIRATORY_RATE) ? ((Number) data.get(KEY_RESPIRATORY_RATE)).intValue() : 0;
+        int steps = data.containsKey(KEY_STEPS) ? ((Number) data.get(KEY_STEPS)).intValue() : 0;
+        double distance = data.containsKey(KEY_DISTANCE) ? ((Number) data.get(KEY_DISTANCE)).doubleValue() : 0.0;
+        int sleepHours = data.containsKey(KEY_SLEEP_HOURS) ? ((Number) data.get(KEY_SLEEP_HOURS)).intValue() : 0;
+        double weight = data.containsKey(KEY_WEIGHT) ? ((Number) data.get(KEY_WEIGHT)).doubleValue() : 0.0;
 
         // Update UI elements with the retrieved values
         binding.textHeartRate.setText(getString(R.string.heart_rate) + heartRate + getString(R.string.bpm));
@@ -146,7 +151,6 @@ public class HealthFragment extends Fragment {
         // Update health tips
         updateHealthTips(heartRate, steps, sleepHours);
     }
-
 
     public void updateHealthTips(int heartRate, int steps, int sleepHours) {
         List<String> healthTips = new ArrayList<>();
@@ -165,7 +169,7 @@ public class HealthFragment extends Fragment {
             healthTips.add(getString(R.string.great_job_keep_up_the_healthy_habits));
         }
 
-        binding.textHealthTips.setText("• " + TextUtils.join("\n• ", healthTips));
+        binding.textHealthTips.setText(getString(R.string.bullet_point) + TextUtils.join(getString(R.string.newline_bullet_point), healthTips));
     }
 
     public void showAddWeightDialog() {
@@ -177,12 +181,12 @@ public class HealthFragment extends Fragment {
         builder.setView(input);
 
         builder.setPositiveButton(getString(R.string.add), (dialog, which) -> {
-            String weight = input.getText().toString();
-            if (!weight.isEmpty()) {
+            String weight = input.getText().toString().trim();
+            if (!weight.isEmpty() && weight.matches("\\d+(\\.\\d+)?")) {
                 binding.textCurrentWeight.setText(getString(R.string.current_weight) + weight + getString(R.string.kg));
                 Toast.makeText(getContext(), getString(R.string.weight_record_updated), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(getContext(), getString(R.string.weight_cannot_be_empty), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.invalid_weight), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -192,8 +196,9 @@ public class HealthFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         handler.removeCallbacks(updateMetricsRunnable);
+        binding = null;
     }
 }

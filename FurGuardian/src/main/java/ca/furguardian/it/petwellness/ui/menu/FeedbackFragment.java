@@ -57,7 +57,8 @@ public class FeedbackFragment extends Fragment {
         submitButton = view.findViewById(R.id.submitButton);
         progressBar = view.findViewById(R.id.progressBar);
         counterTextView = view.findViewById(R.id.counterTextView);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        sharedPreferences = requireContext().getSharedPreferences("feedback_preferences", Context.MODE_PRIVATE);
+
 
         // Check if feedback was recently submitted
         long lastSubmittedTime = sharedPreferences.getLong("lastSubmittedTime", 0);
@@ -161,7 +162,6 @@ public class FeedbackFragment extends Fragment {
             @Override
             public void onFinish() {
                 submitButton.setEnabled(true);
-//                submitButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary)); // Reset button color
                 Context context = null;
                 submitButton.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
 

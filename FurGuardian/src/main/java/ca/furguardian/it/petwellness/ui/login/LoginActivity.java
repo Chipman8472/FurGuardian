@@ -3,13 +3,14 @@ package ca.furguardian.it.petwellness.ui.login;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
-
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,12 +29,15 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import ca.furguardian.it.petwellness.MainActivity;
 import ca.furguardian.it.petwellness.R;
+import ca.furguardian.it.petwellness.controller.InputValidator;
 import ca.furguardian.it.petwellness.model.User;
 import ca.furguardian.it.petwellness.model.UserModel;
 
 public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 100;
+    private static final String TAG = "LoginActivity";
+
     private EditText loginEmail, loginPassword;
     private CheckBox rememberMeCheckbox;
     private UserModel userModel;
@@ -66,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         // Check if user is already signed in
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser != null) {
-            navigateToMainActivity();
+            validateUserSession(currentUser);
         }
 
         // Login with email and password
@@ -74,25 +78,30 @@ public class LoginActivity extends AppCompatActivity {
             String email = loginEmail.getText().toString().trim();
             String password = loginPassword.getText().toString().trim();
 
-            if (!email.isEmpty() && !password.isEmpty()) {
-                userModel.loginUser(email, password, this, new UserModel.LoginCallback() {
-                    @Override
-                    public void onLoginSuccess(User user) {
-                        // Save login state if Remember Me is checked
-                        if (rememberMeCheckbox.isChecked()) {
-                            saveLoginState(email);
-                        }
-                        navigateToMainActivity();
-                    }
-
-                    @Override
-                    public void onLoginFailed(String errorMessage) {
-                        Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_LONG).show();
-                    }
-                });
-            } else {
-                Toast.makeText(LoginActivity.this, getString(R.string.please_fill_all_fields), Toast.LENGTH_SHORT).show();
+            if (!isInputValid(email, password)) {
+                Toast.makeText(LoginActivity.this, getString(R.string.invalid_email_or_password), Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            if (!isConnectedToInternet()) {
+                Toast.makeText(LoginActivity.this, getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            userModel.loginUser(email, password, this, new UserModel.LoginCallback() {
+                @Override
+                public void onLoginSuccess(User user) {
+                    if (rememberMeCheckbox.isChecked()) {
+                        saveLoginState(email);
+                    }
+                    navigateToMainActivity();
+                }
+
+                @Override
+                public void onLoginFailed(String errorMessage) {
+                    Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+                }
+            });
         });
 
         // Register button
@@ -102,6 +111,41 @@ public class LoginActivity extends AppCompatActivity {
         googleSignInButton.setOnClickListener(v -> {
             Intent signInIntent = googleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, RC_SIGN_IN);
+        });
+    }
+
+    private boolean isInputValid(String email, String password) {
+        return InputValidator.isValidEmail(email) && InputValidator.isValidPassword(password);
+    }
+
+    private boolean isConnectedToInternet() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm != null) {
+            android.net.Network activeNetwork = cm.getActiveNetwork();
+            if (activeNetwork != null) {
+                android.net.NetworkCapabilities capabilities = cm.getNetworkCapabilities(activeNetwork);
+                return capabilities != null &&
+                        (capabilities.hasTransport(android.net.NetworkCapabilities.TRANSPORT_WIFI) ||
+                                capabilities.hasTransport(android.net.NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                                capabilities.hasTransport(android.net.NetworkCapabilities.TRANSPORT_ETHERNET));
+            }
+        }
+        return false;
+    }
+
+
+    private void validateUserSession(FirebaseUser user) {
+        userModel.retrieveOrCreateUser(user, this, new UserModel.LoginCallback() {
+            @Override
+            public void onLoginSuccess(User user) {
+                navigateToMainActivity();
+            }
+
+            @Override
+            public void onLoginFailed(String errorMessage) {
+                firebaseAuth.signOut();
+                Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+            }
         });
     }
 
@@ -117,8 +161,8 @@ public class LoginActivity extends AppCompatActivity {
                     firebaseAuthWithGoogle(account);
                 }
             } catch (ApiException e) {
-                Log.e("GoogleSignIn", "Google sign-in failed", e);
-                Toast.makeText(this, "Google Sign-In failed.", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Google sign-in failed", e);
+                Toast.makeText(this, getString(R.string.google_sign_in_failed), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -130,20 +174,11 @@ public class LoginActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                         if (firebaseUser != null) {
-                            userModel.retrieveOrCreateUser(firebaseUser, this, new UserModel.LoginCallback() {
-                                @Override
-                                public void onLoginSuccess(User user) {
-                                    navigateToMainActivity();
-                                }
-
-                                @Override
-                                public void onLoginFailed(String errorMessage) {
-                                    Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_LONG).show();
-                                }
-                            });
+                            validateUserSession(firebaseUser);
                         }
                     } else {
-                        Toast.makeText(LoginActivity.this, "Google Sign-In failed.", Toast.LENGTH_LONG).show();
+                        Log.e(TAG, "Google Sign-In failed: ", task.getException());
+                        Toast.makeText(LoginActivity.this, getString(R.string.google_sign_in_failed), Toast.LENGTH_LONG).show();
                     }
                 });
     }

@@ -35,8 +35,4 @@ public class InputValidator {
 
         return matcher.matches();
     }
-
-    public static boolean validateFeedbackInputs(String name, String phone, String email) {
-        return !name.isEmpty() && !phone.isEmpty() && !email.isEmpty();
-    }
 }
