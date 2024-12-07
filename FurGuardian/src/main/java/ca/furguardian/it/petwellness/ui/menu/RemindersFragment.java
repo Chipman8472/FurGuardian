@@ -1,12 +1,7 @@
 package ca.furguardian.it.petwellness.ui.menu;
-//       Justin Chipman - RCB – N01598472
-//	     Imran Zafurallah - RCB - N01585098
-//	     Zane Aransevia - RCB- N01351168
-//	     Tevadi Brookes - RCC - N01582563
 
 import android.Manifest;
 import android.app.DatePickerDialog;
-
 import android.app.TimePickerDialog;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -23,24 +18,23 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
-import com.google.android.material.snackbar.Snackbar;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 import ca.furguardian.it.petwellness.R;
 
 public class RemindersFragment extends Fragment {
 
     private EditText reminderNameEditText;
-    private Button pickDateTimeButton, saveReminderButton;
+    private Button saveReminderButton;
     private TextView selectedDateTimeTextView;
-    private NotificationManagerCompat notificationManager;
     private Calendar reminderCalendar;
 
     private static final int REQUEST_NOTIFICATION_PERMISSION = 1;
@@ -51,16 +45,14 @@ public class RemindersFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_reminders, container, false);
 
         reminderNameEditText = view.findViewById(R.id.reminder_name);
-        pickDateTimeButton = view.findViewById(R.id.pick_datetime_button);
+        Button pickDateTimeButton = view.findViewById(R.id.pick_datetime_button);
         saveReminderButton = view.findViewById(R.id.save_reminder_button);
         selectedDateTimeTextView = view.findViewById(R.id.selected_datetime);
 
-        notificationManager = NotificationManagerCompat.from(requireContext());
         reminderCalendar = Calendar.getInstance();
 
         pickDateTimeButton.setOnClickListener(v -> openDateTimePicker());
         saveReminderButton.setOnClickListener(v -> saveReminder());
-
 
         // Override back button functionality for RemindersFragment
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
@@ -121,17 +113,34 @@ public class RemindersFragment extends Fragment {
             }
         }
 
-        // Save reminder and trigger notification
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(requireContext(), "reminder_channel")
-                .setSmallIcon(R.drawable.cat_silhouette)
-                .setContentTitle(getString(R.string.reminder))
-                .setContentText(reminderName + getString(R.string.at) + reminderCalendar.getTime().toString())
-                .setPriority(NotificationCompat.PRIORITY_HIGH);
+        // Schedule the notification
+        scheduleNotification(reminderName);
 
-        notificationManager.notify(1, builder.build());
+        // Show confirmation
+        Toast.makeText(getContext(), getString(R.string.reminder_saved), Toast.LENGTH_SHORT).show();
+    }
 
-        // Show Snackbar
-        Snackbar.make(requireView(), R.string.SnackbarText, Snackbar.LENGTH_LONG).show();
+    private void scheduleNotification(String reminderName) {
+        // Prepare input data for the Worker
+        Data inputData = new Data.Builder()
+                .putString("reminderName", reminderName)
+                .build();
+
+        // Calculate the delay until the notification should trigger
+        long delay = reminderCalendar.getTimeInMillis() - System.currentTimeMillis();
+        if (delay <= 0) {
+            Toast.makeText(getContext(), getString(R.string.invalid_time), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Create a WorkRequest
+        OneTimeWorkRequest notificationWork = new OneTimeWorkRequest.Builder(ca.furguardian.it.petwellness.workers.NotificationWorker.class)
+                .setInputData(inputData)
+                .setInitialDelay(delay, TimeUnit.MILLISECONDS)
+                .build();
+
+        // Enqueue the WorkRequest
+        WorkManager.getInstance(requireContext()).enqueue(notificationWork);
     }
 
     private void requestNotificationPermission() {
