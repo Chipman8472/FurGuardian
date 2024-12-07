@@ -55,7 +55,7 @@ public class PetEd extends Fragment {
     private ExecutorService executor;
 
     private final List<String> petEducationTopics = Arrays.asList(
-            "Pet Nutrition", "Grooming Tips", "Vaccination Schedule", "Training and Obedience", "Exercise Needs"
+            "Pet Nutrition", "Grooming Tips", "Vaccination Schedule", "Training and Obedience", "Exercise Needs", "Adoption"
     );
 
     private final List<String> defaultUrls = Arrays.asList(
@@ -63,7 +63,8 @@ public class PetEd extends Fragment {
             "https://hastingsvet.com",
             "https://example.com/vaccination_schedule",
             "https://www.youtube.com/playlist?list=PL1wCnaQRu4BG_RhOZaT4UNspBbRnf4IvJ",
-            "https://www.youtube.com/watch?v=PzsrsRRWZYU"
+            "https://www.youtube.com/watch?v=PzsrsRRWZYU",
+            "https://pawsandtailsadoptions.weebly.com/"
     );
 
     private final List<String> canadianUrls = Arrays.asList(
@@ -71,7 +72,8 @@ public class PetEd extends Fragment {
             "https://canada-grooming-tips.com",
             "https://canada-vaccine-schedule.com",
             "https://www.youtube.com/playlist?list=PL1wCnaQRu4BG_RhOZaT4UNspBbRnf4IvJ",
-            "https://www.youtube.com/watch?v=PzsrsRRWZYU"
+            "https://www.youtube.com/watch?v=PzsrsRRWZYU",
+            "https://pawsandtailsadoptions.weebly.com/"
     );
 
     private List<String> currentUrls;
