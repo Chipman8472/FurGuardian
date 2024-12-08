@@ -1,19 +1,22 @@
 package ca.furguardian.it.petwellness.ui.records;
-//Justin Chipman - N01598472
-//Imran Zafurallah - N01585098
-//Zane Aransevia - N01351168
-//Tevadi Brookes - N01582563
+
 public class Record {
+    private String id;
     private String date;
     private String summary;
     private String details;
     private boolean isExpanded;
 
-    public Record(String Date, String summary, String details) {
-        this.date = Date;
+    public Record(String id, String date, String summary, String details) {
+        this.id = id;
+        this.date = date;
         this.summary = summary;
         this.details = details;
         this.isExpanded = false;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getDate() {

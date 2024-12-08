@@ -1,8 +1,5 @@
 package ca.furguardian.it.petwellness.ui.records;
-//Justin Chipman - N01598472
-//Imran Zafurallah - N01585098
-//Zane Aransevia - N01351168
-//Tevadi Brookes - N01582563
+
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,21 +14,49 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Locale;
+import java.util.UUID;
 
 import ca.furguardian.it.petwellness.R;
 import ca.furguardian.it.petwellness.model.PetModel;
 
 public class AddRecordDialogFragment extends DialogFragment {
 
+    private static final String ARG_PET_ID = "petId";
     private DatePicker recordDatePicker;
     private EditText recordTypeEditText, recordDetailsEditText;
     private PetModel databaseHelper;
+    private String petId;
+
+    // Static factory method to create a new instance of the dialog with arguments
+    public static AddRecordDialogFragment newInstance(String petId) {
+        AddRecordDialogFragment fragment = new AddRecordDialogFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PET_ID, petId);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.add_medical_record_form, container, false);
+
+        // Get petId from arguments
+        if (getArguments() != null) {
+            petId = getArguments().getString(ARG_PET_ID);
+        }
+
+        if (petId == null || petId.isEmpty()) {
+            Toast.makeText(getContext(), "Pet ID is missing. Cannot add record.", Toast.LENGTH_SHORT).show();
+            dismiss();
+            return rootView;
+        }
 
         // Initialize Firebase helper
         databaseHelper = new PetModel();
@@ -58,13 +83,18 @@ public class AddRecordDialogFragment extends DialogFragment {
             }
         });
 
-
         return rootView;
     }
 
     private void uploadRecord(String date, String type, String details) {
-        MedicalRecord record = new MedicalRecord(date, type, details);
-        databaseHelper.addRecord(record, date, new PetModel.OnRecordOperationListener() {
+        // Generate a unique ID for the record
+        String uid = UUID.randomUUID().toString();
+
+        // Create a MedicalRecord object with the UID
+        MedicalRecord record = new MedicalRecord(uid, date, type, details);
+
+        // Add the record to the database
+        databaseHelper.addRecord(record, petId, new PetModel.OnRecordOperationListener() {
             @Override
             public void onSuccess(String message) {
                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
@@ -77,4 +107,6 @@ public class AddRecordDialogFragment extends DialogFragment {
             }
         });
     }
+
 }
+

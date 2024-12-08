@@ -12,19 +12,25 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.List;
 
 import ca.furguardian.it.petwellness.R;
-import ca.furguardian.it.petwellness.model.PetModel;
 
 public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHolder> {
 
     private final List<Record> records;
     private final Context context;
+    private final String petId;
 
-    public RecordsAdapter(List<Record> records, Context context) {
+    public RecordsAdapter(List<Record> records, Context context, String petId) {
         this.records = records;
         this.context = context;
+        this.petId = petId;
     }
 
     @NonNull
@@ -37,58 +43,47 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Record record = records.get(position); // Get the current record
+        Record record = records.get(position);
         holder.textTitle.setText(record.getSummary());
         holder.textDate.setText(record.getDate());
         holder.textDetails.setText(record.getDetails());
 
-        // Handle expansion toggle
         boolean isExpanded = record.isExpanded();
         holder.textDetails.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
         holder.buttonDelete.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
         holder.buttonToggle.setText(isExpanded ? context.getString(R.string.view_less) : context.getString(R.string.view_more));
 
-        // Set up the toggle button
         holder.buttonToggle.setOnClickListener(v -> {
             int currentPosition = holder.getBindingAdapterPosition();
             if (currentPosition != RecyclerView.NO_POSITION) {
                 Record currentRecord = records.get(currentPosition);
                 currentRecord.setExpanded(!currentRecord.isExpanded());
-                notifyItemChanged(currentPosition); // Notify adapter about the change
+                notifyItemChanged(currentPosition);
             }
         });
 
-        // Set up the delete button
         holder.buttonDelete.setOnClickListener(v -> {
             int currentPosition = holder.getBindingAdapterPosition();
             if (currentPosition != RecyclerView.NO_POSITION) {
                 Record currentRecord = records.get(currentPosition);
-
-                // Show a confirmation dialog
                 new AlertDialog.Builder(context)
                         .setTitle(R.string.delete_record)
                         .setMessage(R.string.are_you_sure_delete)
                         .setPositiveButton(R.string.yes2, (dialog, which) -> {
-                            PetModel databaseHelper = new PetModel();
-                            databaseHelper.deleteRecord(currentRecord.getDate(), new PetModel.OnRecordOperationListener() {
-                                @Override
-                                public void onSuccess(String message) {
-                                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-                                    // Ensure the index is valid before removing the item
-                                    if (currentPosition >= 0 && currentPosition < records.size()) {
-                                        records.remove(currentPosition);
-                                        notifyItemRemoved(currentPosition);
-                                        notifyItemRangeChanged(currentPosition, records.size()); // Update positions of remaining items
-                                    } else {
-                                        Toast.makeText(context, R.string.invalid_record_index, Toast.LENGTH_SHORT).show();
-                                    }
-                                }
+                            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                            if (currentUser != null) {
+                                String userId = currentUser.getUid();
+                                DatabaseReference recordRef = FirebaseDatabase.getInstance()
+                                        .getReference("users").child(userId).child("pets").child(petId).child("records").child(currentRecord.getId());
 
-                                @Override
-                                public void onFailure(String errorMessage) {
-                                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                                recordRef.removeValue()
+                                        .addOnSuccessListener(aVoid -> {
+                                            records.remove(currentPosition);
+                                            notifyItemRemoved(currentPosition);
+                                            Toast.makeText(context, "Record deleted!", Toast.LENGTH_SHORT).show();
+                                        })
+                                        .addOnFailureListener(e -> Toast.makeText(context, "Failed to delete record.", Toast.LENGTH_SHORT).show());
+                            }
                         })
                         .setNegativeButton(R.string.no, (dialog, which) -> dialog.dismiss())
                         .show();

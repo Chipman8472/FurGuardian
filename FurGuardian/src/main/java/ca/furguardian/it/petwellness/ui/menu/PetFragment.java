@@ -1,23 +1,12 @@
 package ca.furguardian.it.petwellness.ui.menu;
 
-//       Justin Chipman - RCB – N01598472
-//	     Imran Zafurallah - RCB - N01585098
-//	     Zane Aransevia - RCB- N01351168
-//	     Tevadi Brookes - RCC - N01582563
-
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -31,19 +20,29 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import ca.furguardian.it.petwellness.R;
 import ca.furguardian.it.petwellness.databinding.FragmentPetprofileBinding;
+import ca.furguardian.it.petwellness.model.Pet;
 
 public class PetFragment extends Fragment {
-    private static final int PICK_IMAGE_REQUEST_CODE = 1234;
     private FragmentPetprofileBinding binding;
     private List<Pet> pets = new ArrayList<>();
     private int currentPetIndex = 0;
-    private Uri selectedImageUri; // Keep track of the selected image URI
-    private ImageView petImagePreview; // Declare petImagePreview as a class member
+
+    private FirebaseAuth auth;
+    private DatabaseReference userPetsRef;
 
     @Nullable
     @Override
@@ -51,7 +50,14 @@ public class PetFragment extends Fragment {
         binding = FragmentPetprofileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // Next and Previous Pet buttons
+        auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            userPetsRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("pets");
+            loadPetsFromFirebase();
+        }
+
         binding.buttonNextPet.setOnClickListener(v -> {
             if (!pets.isEmpty()) {
                 currentPetIndex = (currentPetIndex + 1) % pets.size();
@@ -66,84 +72,85 @@ public class PetFragment extends Fragment {
             }
         });
 
-        // Add Pet Button
         binding.buttonAddPet.setOnClickListener(v -> showAddPetDialog());
-
-        // Delete Pet Button
         binding.buttonDelete.setOnClickListener(v -> deleteCurrentPet());
 
-        // Override back button functionality for RemindersFragment
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                // Navigate back to the home page instead of exiting the app
                 NavController navController = Navigation.findNavController(root);
-                navController.navigate(R.id.navigation_home);  // Navigate directly to the home page
+                navController.navigate(R.id.navigation_home);
             }
         });
 
         return root;
     }
 
-    // Display the current pet details on screen
+    private void loadPetsFromFirebase() {
+        userPetsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                pets.clear();
+                for (DataSnapshot petSnapshot : snapshot.getChildren()) {
+                    Pet pet = petSnapshot.getValue(Pet.class);
+                    if (pet != null) {
+                        pets.add(pet);
+                    }
+                }
+                if (!pets.isEmpty()) {
+                    currentPetIndex = 0;
+                    displayCurrentPet();
+                } else {
+                    clearPetDisplay();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(requireContext(), getString(R.string.failed_to_load_pets), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void displayCurrentPet() {
         if (pets.isEmpty()) return;
 
         Pet currentPet = pets.get(currentPetIndex);
         binding.textPetInfo.setText(currentPet.getName());
         binding.petAgeText.setText(getString(R.string.age) + currentPet.getAge() + getString(R.string.years));
-        binding.petWeightText.setText(getString(R.string.weight) + currentPet.getWeight() + getString(R.string.kg));
         binding.petBreedText.setText(getString(R.string.breed) + currentPet.getBreed());
-        binding.imagePet.setImageURI(currentPet.getProfileImageUri());
     }
 
-    // Open Add Pet dialog
     private void showAddPetDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle(R.string.add_a_new_pet);
 
-        // Create a LinearLayout to hold the dialog contents
         LinearLayout layout = new LinearLayout(requireContext());
         layout.setOrientation(LinearLayout.VERTICAL);
 
-        // Create EditText for Pet Name
         EditText petNameInput = new EditText(requireContext());
         petNameInput.setHint(R.string.pet_name);
         layout.addView(petNameInput);
 
-        // Create EditText for Pet Age
         EditText petAgeInput = new EditText(requireContext());
         petAgeInput.setHint(R.string.pet_age_years);
         layout.addView(petAgeInput);
 
-        // Create EditText for Pet Weight
-        EditText petWeightInput = new EditText(requireContext());
-        petWeightInput.setHint(R.string.pet_weight_lbs);
-        layout.addView(petWeightInput);
-
-        // Create RadioGroup for Pet Type
         RadioGroup petTypeRadioGroup = new RadioGroup(requireContext());
-
         RadioButton dogRadioButton = new RadioButton(requireContext());
         dogRadioButton.setText(R.string.dog);
         petTypeRadioGroup.addView(dogRadioButton);
-
         RadioButton catRadioButton = new RadioButton(requireContext());
         catRadioButton.setText(R.string.cat);
         petTypeRadioGroup.addView(catRadioButton);
-
         layout.addView(petTypeRadioGroup);
 
-        // Create Spinner for Pet Breed
         Spinner petBreedSpinner = new Spinner(requireContext());
         layout.addView(petBreedSpinner);
-
-        // Set up adapter for the breed spinner
         ArrayAdapter<String> breedAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, new ArrayList<>());
         breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         petBreedSpinner.setAdapter(breedAdapter);
 
-        // Update Spinner based on selected RadioButton
         petTypeRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             String[] breeds;
             if (checkedId == dogRadioButton.getId()) {
@@ -151,34 +158,18 @@ public class PetFragment extends Fragment {
             } else if (checkedId == catRadioButton.getId()) {
                 breeds = getResources().getStringArray(R.array.cat_breeds);
             } else {
-                breeds = new String[0]; // No selection
+                breeds = new String[0];
             }
             breedAdapter.clear();
             breedAdapter.addAll(breeds);
             breedAdapter.notifyDataSetChanged();
         });
 
-        // Create ImageView for Pet Image Preview
-        petImagePreview = new ImageView(requireContext()); // Initialize the class member
-        petImagePreview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 200));
-        petImagePreview.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        layout.addView(petImagePreview);
-
-        // Button to select image
-        Button selectImageButton = new Button(requireContext());
-        selectImageButton.setText(R.string.select_image);
-        selectImageButton.setOnClickListener(v -> openGallery());
-        layout.addView(selectImageButton);
-
-        // Set the layout to the dialog
         builder.setView(layout);
 
-        // Positive button to add pet
         builder.setPositiveButton(R.string.add_pet, (dialog, which) -> {
             String petName = petNameInput.getText().toString();
             String petBreed = petBreedSpinner.getSelectedItem() != null ? petBreedSpinner.getSelectedItem().toString() : "";
-
-            // Get selected pet type
             String petType = "";
             int selectedId = petTypeRadioGroup.getCheckedRadioButtonId();
             if (selectedId != -1) {
@@ -186,83 +177,80 @@ public class PetFragment extends Fragment {
                 petType = selectedRadioButton.getText().toString();
             }
 
-            // Parse pet age and weight with safe defaults
             int petAge = 0;
-            double petWeight = 0.0;
             try {
                 petAge = Integer.parseInt(petAgeInput.getText().toString());
-            } catch (NumberFormatException ignored) { }
-
-            try {
-                petWeight = Double.parseDouble(petWeightInput.getText().toString());
-            } catch (NumberFormatException ignored) { }
-
-            // Check if required fields are filled
-            if (petName.isEmpty() || petBreed.isEmpty() || petType.isEmpty()) {
-                Toast.makeText(requireContext(), getString(R.string.please_fill_in_all_fields), Toast.LENGTH_SHORT).show();
-                return; // Do not dismiss dialog
+            } catch (NumberFormatException ignored) {
             }
 
-            // Add pet and display current pet
-            Uri petImageUri = selectedImageUri != null ? selectedImageUri : Uri.parse(getString(R.string.android_resource_ca_furguardian_it_petwellness) + R.drawable.dog_silhouette);
-            addPetToList(petName, petBreed, petType, petAge, petWeight, petImageUri);
-            displayCurrentPet();
+            if (petName.isEmpty() || petBreed.isEmpty() || petType.isEmpty()) {
+                Toast.makeText(requireContext(), getString(R.string.please_fill_in_all_fields), Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-            dialog.dismiss(); // Dismiss dialog only after adding pet
+            Pet newPet = new Pet(UUID.randomUUID().toString(), petName, petBreed, petType, petAge);
+            userPetsRef.child(newPet.getPetId()).setValue(newPet).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    pets.add(newPet);
+                    currentPetIndex = pets.size() - 1;
+                    displayCurrentPet();
+                    Toast.makeText(requireContext(), R.string.pet_added_successfully, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(requireContext(), R.string.failed_to_add_pet, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            dialog.dismiss();
         });
 
-        // Negative button to cancel
         builder.setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
-
         builder.show();
     }
 
-
-    // Method to open the gallery and update the ImageView with the selected image
-    private void openGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, PICK_IMAGE_REQUEST_CODE);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
-            selectedImageUri = data.getData(); // Store selected image URI
-            petImagePreview.setImageURI(selectedImageUri); // Update preview
-        }
-    }
-
-    // Add a pet to the list
-    private void addPetToList(String name, String breed, String type, int age, double weight, Uri imageUri) {
-        Pet newPet = new Pet(name, breed, type, age, weight, imageUri);
-        pets.add(newPet);
-        currentPetIndex = pets.size() - 1; // Set the new pet as the current pet
-    }
-
     private void deleteCurrentPet() {
-        if (!pets.isEmpty()) {
-            pets.remove(currentPetIndex); // Remove the pet at the current index
-
-            if (pets.isEmpty()) {
-                clearPetDisplay(); // Clear display if no pets are left
-            } else {
-                // Update currentPetIndex to stay within bounds
-                currentPetIndex = currentPetIndex % pets.size();
-                displayCurrentPet(); // Display the next pet after deletion
-            }
-        } else {
+        if (pets.isEmpty() || currentPetIndex < 0 || currentPetIndex >= pets.size()) {
             Toast.makeText(requireContext(), getString(R.string.no_pet_to_delete), Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        Pet petToDelete = pets.get(currentPetIndex);
+
+        // Show confirmation dialog
+        new AlertDialog.Builder(requireContext())
+                .setTitle(R.string.delete_pet)
+                .setMessage(getString(R.string.are_you_sure_delete_pet) + " " + petToDelete.getName()) // Assuming the pet's name is shown in the message
+                .setPositiveButton(R.string.yes2, (dialog, which) -> {
+                    // Proceed to delete the pet
+                    userPetsRef.child(petToDelete.getPetId()).removeValue().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            if (!pets.isEmpty() && currentPetIndex >= 0 && currentPetIndex < pets.size()) {
+                                pets.remove(currentPetIndex);
+
+                                if (!pets.isEmpty()) {
+                                    currentPetIndex = Math.max(0, Math.min(currentPetIndex, pets.size() - 1));
+                                    displayCurrentPet();
+                                } else {
+                                    clearPetDisplay();
+                                }
+
+                                Toast.makeText(requireContext(), R.string.pet_deleted_successfully, Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(requireContext(), R.string.failed_to_delete_pet, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                })
+                .setNegativeButton(R.string.no, (dialog, which) -> dialog.dismiss()) // Dismiss dialog on "No"
+                .show();
     }
 
-    // Method to clear pet information from the screen
+
+
+
     private void clearPetDisplay() {
         binding.textPetInfo.setText(R.string.pet_name1);
         binding.petAgeText.setText(R.string.age_0);
-        binding.petWeightText.setText(R.string.weight_0);
         binding.petBreedText.setText(R.string.breed_unknown);
-        binding.imagePet.setImageResource(R.drawable.dog_silhouette);
     }
 
     @Override

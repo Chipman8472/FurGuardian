@@ -13,9 +13,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import ca.furguardian.it.petwellness.R;
+import ca.furguardian.it.petwellness.model.Pet;
 
 public class UserModel {
 
@@ -145,6 +148,43 @@ public class UserModel {
         });
     }
 
+    public void addPet(String userId, String petId, Pet pet, Context context, UpdateDataCallback callback) {
+        DatabaseReference petRef = usersRef.child(userId).child("pets").child(petId);
+        petRef.setValue(pet).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                callback.onUpdateSuccess();
+            } else {
+                callback.onUpdateFailed(context.getString(R.string.failed_to_add_pet));
+            }
+        }).addOnFailureListener(e -> {
+            callback.onUpdateFailed(context.getString(R.string.database_error1) + e.getMessage());
+        });
+    }
+
+    public void getPets(String userId, Context context, PetsCallback callback) {
+        DatabaseReference petsRef = usersRef.child(userId).child("pets");
+        petsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Map<String, Pet> pets = new HashMap<>();
+                for (DataSnapshot petSnapshot : snapshot.getChildren()) {
+                    Pet pet = petSnapshot.getValue(Pet.class);
+                    if (pet != null) {
+                        pets.put(petSnapshot.getKey(), pet);
+                    }
+                }
+                callback.onPetsRetrieved(pets);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                callback.onPetsRetrievalFailed(error.getMessage());
+            }
+        });
+    }
+
+
+
     // Callback interfaces
     public interface RegistrationCallback {
         void onRegistrationSuccess();
@@ -162,4 +202,10 @@ public class UserModel {
 
         void onUpdateFailed(String errorMessage);
     }
+
+    public interface PetsCallback {
+        void onPetsRetrieved(Map<String, Pet> pets);
+        void onPetsRetrievalFailed(String errorMessage);
+    }
+
 }

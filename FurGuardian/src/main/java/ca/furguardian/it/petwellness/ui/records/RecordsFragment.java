@@ -1,8 +1,5 @@
 package ca.furguardian.it.petwellness.ui.records;
-//Justin Chipman - N01598472
-//Imran Zafurallah - N01585098
-//Zane Aransevia - N01351168
-//Tevadi Brookes - N01582563
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,9 +28,32 @@ import ca.furguardian.it.petwellness.R;
 
 public class RecordsFragment extends Fragment {
 
+    private static final String ARG_PET_ID = "pet_id";
+
     private RecordsAdapter adapter;
     private List<Record> records;
     private DatabaseReference databaseReference;
+    private String petId;
+
+    public RecordsFragment() {
+        // Required empty constructor
+    }
+
+    public static RecordsFragment newInstance(String petId) {
+        RecordsFragment fragment = new RecordsFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PET_ID, petId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            petId = getArguments().getString(ARG_PET_ID);
+        }
+    }
 
     @Nullable
     @Override
@@ -43,46 +65,69 @@ public class RecordsFragment extends Fragment {
 
         Button addRecordButton = view.findViewById(R.id.addRecordButton);
         records = new ArrayList<>();
-        adapter = new RecordsAdapter(records, getContext());
+        adapter = new RecordsAdapter(records, getContext(), petId);
         recyclerView.setAdapter(adapter);
 
-        // Firebase reference
-        databaseReference = FirebaseDatabase.getInstance().getReference("pets").child("12334").child("records");
+        // Validate petId
+        if (petId == null || petId.isEmpty()) {
+            Toast.makeText(getContext(), "Pet ID is missing. Cannot load records.", Toast.LENGTH_SHORT).show();
+            return view;
+        }
 
-        // Load existing records from Firebase
+        // Initialize Firebase reference
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            databaseReference = FirebaseDatabase.getInstance()
+                    .getReference("users")
+                    .child(userId)
+                    .child("pets")
+                    .child(petId)
+                    .child("records");
+        }
+
         loadRecordsFromFirebase();
 
-        // Open Add Record dialog
         addRecordButton.setOnClickListener(v -> {
-            AddRecordDialogFragment dialog = new AddRecordDialogFragment();
+            if (petId == null || petId.isEmpty()) {
+                Toast.makeText(getContext(), "Pet ID is missing. Cannot add record.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            AddRecordDialogFragment dialog = AddRecordDialogFragment.newInstance(petId);
             dialog.show(getParentFragmentManager(), "AddRecordDialogFragment");
         });
+
 
         return view;
     }
 
-    private void loadRecordsFromFirebase() {
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                records.clear(); // Clear the list to avoid duplication
-                for (DataSnapshot recordSnapshot : snapshot.getChildren()) {
-                    MedicalRecord medicalRecord = recordSnapshot.getValue(MedicalRecord.class);
-                    if (medicalRecord != null) {
-                        records.add(new Record(
-                                medicalRecord.getDate(),
-                                medicalRecord.getType(),
-                                medicalRecord.getDetails()
-                        ));
-                    }
-                }
-                adapter.notifyDataSetChanged(); // Notify adapter of data change
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), R.string.couldn_t_get_records_from_db,Toast.LENGTH_SHORT).show();
-            }
-        });
+    private void loadRecordsFromFirebase() {
+        if (databaseReference != null) {
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    records.clear();
+                    for (DataSnapshot recordSnapshot : snapshot.getChildren()) {
+                        MedicalRecord medicalRecord = recordSnapshot.getValue(MedicalRecord.class);
+                        if (medicalRecord != null) {
+                            records.add(new Record(
+                                    medicalRecord.getUid(),
+                                    medicalRecord.getDate(),
+                                    medicalRecord.getType(),
+                                    medicalRecord.getDetails()
+                            ));
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(getContext(), "Failed to load records.", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 }

@@ -283,6 +283,13 @@
     <string name="invalid_time">invalid time</string>
     <string name="invalid_record_index">invalid record index</string>
     <string name="couldn_t_get_records_from_db">Couldn\'t get records from DB</string>
+    <string name="failed_to_add_pet">failed to add pet</string>
+    <string name="failed_to_load_pets">failed to load pets</string>
+    <string name="pet_added_successfully">pet added succesfully\n</string>
+    <string name="pet_deleted_successfully">pet deleted successfully\n</string>
+    <string name="failed_to_delete_pet">failed to delete pet\n</string>
+    <string name="are_you_sure_delete_pet">Are you sure you want to delete </string>
+    <string name="delete_pet">Delete Pet</string>
 
 
 </resources>

@@ -15,22 +15,24 @@ public class PetModel {
 
     public PetModel() {
         // Initialize Firebase reference to the pet records node
-        this.databaseReference = FirebaseDatabase.getInstance().getReference("pets").child("12334").child("records");
+        this.databaseReference = FirebaseDatabase.getInstance().getReference("users").child("pets").child("records");
     }
 
-    // Method to add a record
-    public void addRecord(MedicalRecord record, String date, OnRecordOperationListener listener) {
-        databaseReference.child(date).setValue(record)
-                .addOnSuccessListener(aVoid -> listener.onSuccess(String.valueOf(R.string.record_added_successfully)))
-                .addOnFailureListener(e -> listener.onFailure((R.string.failed_to_add_record) + e.getMessage()));
+    public void addRecord(MedicalRecord record, String recordId, OnRecordOperationListener listener) {
+
+
+        databaseReference.setValue(record)
+                .addOnSuccessListener(aVoid -> listener.onSuccess("Record added successfully!"))
+                .addOnFailureListener(e -> listener.onFailure("Failed to add record: " + e.getMessage()));
     }
 
-    // Method to delete a record
-    public void deleteRecord(String date, OnRecordOperationListener listener) {
-        databaseReference.child(date).removeValue()
-                .addOnSuccessListener(aVoid -> listener.onSuccess(String.valueOf(R.string.record_deleted_successfully)))
-                .addOnFailureListener(e -> listener.onFailure((R.string.failed_to_delete_record) + e.getMessage()));
+    public void deleteRecord(String recordId, OnRecordOperationListener listener) {
+
+        databaseReference.removeValue()
+                .addOnSuccessListener(aVoid -> listener.onSuccess("Record deleted successfully!"))
+                .addOnFailureListener(e -> listener.onFailure("Failed to delete record: " + e.getMessage()));
     }
+
 
     // Interface for success and failure callbacks
     public interface OnRecordOperationListener {
