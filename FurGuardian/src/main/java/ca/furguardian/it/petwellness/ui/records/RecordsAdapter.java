@@ -1,8 +1,5 @@
 package ca.furguardian.it.petwellness.ui.records;
-//Justin Chipman - N01598472
-//Imran Zafurallah - N01585098
-//Zane Aransevia - N01351168
-//Tevadi Brookes - N01582563
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -77,9 +74,14 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
                                 @Override
                                 public void onSuccess(String message) {
                                     Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-                                    // Remove the record from the list to reflect the deletion in the UI
-                                    records.remove(currentPosition);
-                                    notifyItemRemoved(currentPosition);
+                                    // Ensure the index is valid before removing the item
+                                    if (currentPosition >= 0 && currentPosition < records.size()) {
+                                        records.remove(currentPosition);
+                                        notifyItemRemoved(currentPosition);
+                                        notifyItemRangeChanged(currentPosition, records.size()); // Update positions of remaining items
+                                    } else {
+                                        Toast.makeText(context, R.string.invalid_record_index, Toast.LENGTH_SHORT).show();
+                                    }
                                 }
 
                                 @Override
@@ -93,7 +95,6 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
             }
         });
     }
-
 
     @Override
     public int getItemCount() {

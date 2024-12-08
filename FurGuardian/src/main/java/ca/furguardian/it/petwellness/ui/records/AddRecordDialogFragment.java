@@ -47,7 +47,7 @@ public class AddRecordDialogFragment extends DialogFragment {
             int month = recordDatePicker.getMonth() + 1;
             int year = recordDatePicker.getYear();
 
-            String recordDate = String.format(String.valueOf(Locale.CANADA), year, month, day);
+            String recordDate = String.format(Locale.CANADA, "%04d-%02d-%02d", year, month, day);
             String recordType = recordTypeEditText.getText().toString();
             String recordDetails = recordDetailsEditText.getText().toString();
 
@@ -57,6 +57,7 @@ public class AddRecordDialogFragment extends DialogFragment {
                 uploadRecord(recordDate, recordType, recordDetails);
             }
         });
+
 
         return rootView;
     }

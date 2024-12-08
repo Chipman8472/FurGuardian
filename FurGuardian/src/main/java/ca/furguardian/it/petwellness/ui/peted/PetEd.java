@@ -4,12 +4,7 @@ package ca.furguardian.it.petwellness.ui.peted;
 //	     Zane Aransevia - RCB- N01351168
 //	     Tevadi Brookes - RCC - N01582563
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.view.LayoutInflater;
@@ -27,21 +22,11 @@ import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.CancellationTokenSource;
-
-
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import ca.furguardian.it.petwellness.R;
 import ca.furguardian.it.petwellness.databinding.FragmentPetedBinding;
@@ -51,8 +36,6 @@ public class PetEd extends Fragment {
     private FragmentPetedBinding binding;
     private Spinner spinner;
     private WebView webView;
-    private FusedLocationProviderClient fusedLocationClient;
-    private ExecutorService executor;
 
     private final List<String> petEducationTopics = Arrays.asList(
             "Pet Nutrition", "Grooming Tips", "Vaccination Schedule", "Training and Obedience", "Exercise Needs", "Adoption"
@@ -67,15 +50,6 @@ public class PetEd extends Fragment {
             "https://pawsandtailsadoptions.weebly.com/"
     );
 
-    private final List<String> canadianUrls = Arrays.asList(
-            "https://www.canadian-pet-food.com",
-            "https://canada-grooming-tips.com",
-            "https://canada-vaccine-schedule.com",
-            "https://www.youtube.com/playlist?list=PL1wCnaQRu4BG_RhOZaT4UNspBbRnf4IvJ",
-            "https://www.youtube.com/watch?v=PzsrsRRWZYU",
-            "https://pawsandtailsadoptions.weebly.com/"
-    );
-
     private List<String> currentUrls;
 
     @Override
@@ -84,12 +58,6 @@ public class PetEd extends Fragment {
 
         binding = FragmentPetedBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        // Initialize ExecutorService for background tasks
-        executor = Executors.newSingleThreadExecutor();
-
-        // Initialize FusedLocationProviderClient
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
 
         // Set the text from ViewModel
         final TextView textView = binding.textPeted;
@@ -111,10 +79,7 @@ public class PetEd extends Fragment {
 
         // Initialize Spinner
         spinner = binding.spinner;
-        setSpinnerData(petEducationTopics, defaultUrls); // Use default data for initial setup
-
-        // Fetch location and update URLs in the background
-        executor.execute(this::fetchAndSetLocationData);
+        setSpinnerData(petEducationTopics, defaultUrls); // Use default data
 
         return root;
     }
@@ -165,7 +130,6 @@ public class PetEd extends Fragment {
         });
     }
 
-
     private void initializeWebView(String url) {
         if (webView == null) {
             webView = binding.webView;
@@ -176,43 +140,6 @@ public class PetEd extends Fragment {
             webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
         }
         webView.loadUrl(url);
-    }
-
-    private void fetchAndSetLocationData() {
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            setSpinnerData(petEducationTopics, defaultUrls); // Fallback to default
-            return;
-        }
-
-        fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY, new CancellationTokenSource().getToken())
-                .addOnSuccessListener(location -> {
-                    if (location != null) {
-                        updateUrlsBasedOnLocation(location);
-                    } else {
-                        setSpinnerData(petEducationTopics, defaultUrls); // Fallback to default
-                    }
-                });
-    }
-
-    private void updateUrlsBasedOnLocation(Location location) {
-        try {
-            Geocoder geocoder = new Geocoder(requireContext(), Locale.getDefault());
-            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            if (!addresses.isEmpty()) {
-                String countryCode = addresses.get(0).getCountryCode();
-                if ("CA".equals(countryCode)) {
-                    setSpinnerData(petEducationTopics, canadianUrls);
-                } else {
-                    setSpinnerData(petEducationTopics, defaultUrls);
-                }
-            } else {
-                setSpinnerData(petEducationTopics, defaultUrls); // Fallback if no address found
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            setSpinnerData(petEducationTopics, defaultUrls); // Fallback on error
-        }
     }
 
     private void addEventToCalendar(String title, String description, long startTimeInMillis) {
@@ -230,9 +157,6 @@ public class PetEd extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (executor != null) {
-            executor.shutdown(); // Clean up executor
-        }
         binding = null;
     }
 }

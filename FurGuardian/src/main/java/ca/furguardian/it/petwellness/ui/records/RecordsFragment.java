@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -80,7 +81,7 @@ public class RecordsFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // Handle error
+                Toast.makeText(getContext(), R.string.couldn_t_get_records_from_db,Toast.LENGTH_SHORT).show();
             }
         });
     }
