@@ -113,12 +113,12 @@ public class PetFragment extends Fragment {
     }
 
     private void displayCurrentPet() {
-        if (pets.isEmpty()) return;
+        if (binding == null || pets.isEmpty()) return;
 
         Pet currentPet = pets.get(currentPetIndex);
         binding.textPetInfo.setText(currentPet.getName());
-        binding.petAgeText.setText(getString(R.string.age) + currentPet.getAge() + getString(R.string.years));
-        binding.petBreedText.setText(getString(R.string.breed) + currentPet.getBreed());
+        binding.petAgeText.setText(getString(R.string.age) + " " + currentPet.getAge() + " " + getString(R.string.years));
+        binding.petBreedText.setText(getString(R.string.breed) + " " + currentPet.getBreed());
     }
 
     private void showAddPetDialog() {
@@ -215,37 +215,28 @@ public class PetFragment extends Fragment {
 
         Pet petToDelete = pets.get(currentPetIndex);
 
-        // Show confirmation dialog
         new AlertDialog.Builder(requireContext())
                 .setTitle(R.string.delete_pet)
-                .setMessage(getString(R.string.are_you_sure_delete_pet) + " " + petToDelete.getName()) // Assuming the pet's name is shown in the message
+                .setMessage(getString(R.string.are_you_sure_delete_pet) + " " + petToDelete.getName())
                 .setPositiveButton(R.string.yes2, (dialog, which) -> {
-                    // Proceed to delete the pet
                     userPetsRef.child(petToDelete.getPetId()).removeValue().addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            if (!pets.isEmpty() && currentPetIndex >= 0 && currentPetIndex < pets.size()) {
-                                pets.remove(currentPetIndex);
-
-                                if (!pets.isEmpty()) {
-                                    currentPetIndex = Math.max(0, Math.min(currentPetIndex, pets.size() - 1));
-                                    displayCurrentPet();
-                                } else {
-                                    clearPetDisplay();
-                                }
-
-                                Toast.makeText(requireContext(), R.string.pet_deleted_successfully, Toast.LENGTH_SHORT).show();
+                            pets.remove(currentPetIndex);
+                            if (!pets.isEmpty()) {
+                                currentPetIndex = Math.max(0, Math.min(currentPetIndex, pets.size() - 1));
+                                displayCurrentPet();
+                            } else {
+                                clearPetDisplay();
                             }
+                            Toast.makeText(requireContext(), R.string.pet_deleted_successfully, Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(requireContext(), R.string.failed_to_delete_pet, Toast.LENGTH_SHORT).show();
                         }
                     });
                 })
-                .setNegativeButton(R.string.no, (dialog, which) -> dialog.dismiss()) // Dismiss dialog on "No"
+                .setNegativeButton(R.string.no, (dialog, which) -> dialog.dismiss())
                 .show();
     }
-
-
-
 
     private void clearPetDisplay() {
         binding.textPetInfo.setText(R.string.pet_name1);
