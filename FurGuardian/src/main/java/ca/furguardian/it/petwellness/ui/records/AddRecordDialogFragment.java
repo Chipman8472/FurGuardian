@@ -59,7 +59,7 @@ public class AddRecordDialogFragment extends DialogFragment {
         }
 
         // Initialize Firebase helper
-        databaseHelper = new PetModel();
+        databaseHelper = new PetModel(getContext());
 
         // Initialize UI components
         recordDatePicker = rootView.findViewById(R.id.recordDatePicker);
@@ -94,7 +94,7 @@ public class AddRecordDialogFragment extends DialogFragment {
         MedicalRecord record = new MedicalRecord(uid, date, type, details);
 
         // Add the record to the database
-        databaseHelper.addRecord(record, petId, new PetModel.OnRecordOperationListener() {
+        databaseHelper.addRecord(record, uid, new PetModel.OnRecordOperationListener() {
             @Override
             public void onSuccess(String message) {
                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();

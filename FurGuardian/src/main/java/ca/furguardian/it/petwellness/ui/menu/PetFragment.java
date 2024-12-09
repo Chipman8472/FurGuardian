@@ -1,6 +1,8 @@
 package ca.furguardian.it.petwellness.ui.menu;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -116,6 +118,10 @@ public class PetFragment extends Fragment {
         if (binding == null || pets.isEmpty()) return;
 
         Pet currentPet = pets.get(currentPetIndex);
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("currentpet", currentPet.getPetId());
+        editor.apply();
         binding.textPetInfo.setText(currentPet.getName());
         binding.petAgeText.setText(getString(R.string.age) + " " + currentPet.getAge() + " " + getString(R.string.years));
         binding.petBreedText.setText(getString(R.string.breed) + " " + currentPet.getBreed());

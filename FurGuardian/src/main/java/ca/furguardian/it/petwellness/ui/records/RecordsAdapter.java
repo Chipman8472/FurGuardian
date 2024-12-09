@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.List;
 
 import ca.furguardian.it.petwellness.R;
+import ca.furguardian.it.petwellness.model.PetModel;
 
 public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHolder> {
 
@@ -66,29 +67,32 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
             int currentPosition = holder.getBindingAdapterPosition();
             if (currentPosition != RecyclerView.NO_POSITION) {
                 Record currentRecord = records.get(currentPosition);
+
                 new AlertDialog.Builder(context)
                         .setTitle(R.string.delete_record)
                         .setMessage(R.string.are_you_sure_delete)
                         .setPositiveButton(R.string.yes2, (dialog, which) -> {
-                            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                            if (currentUser != null) {
-                                String userId = currentUser.getUid();
-                                DatabaseReference recordRef = FirebaseDatabase.getInstance()
-                                        .getReference("users").child(userId).child("pets").child(petId).child("records").child(currentRecord.getId());
+                            // Call delete from PetModel
+                            PetModel petModel = new PetModel(context);
+                            petModel.deleteRecord(currentRecord.getId(), new PetModel.OnRecordOperationListener() {
+                                @Override
+                                public void onSuccess(String message) {
+                                    // Do not manually remove the item from 'records' here.
+                                    // The ValueEventListener in the fragment will update the list.
+                                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                                }
 
-                                recordRef.removeValue()
-                                        .addOnSuccessListener(aVoid -> {
-                                            records.remove(currentPosition);
-                                            notifyItemRemoved(currentPosition);
-                                            Toast.makeText(context, "Record deleted!", Toast.LENGTH_SHORT).show();
-                                        })
-                                        .addOnFailureListener(e -> Toast.makeText(context, "Failed to delete record.", Toast.LENGTH_SHORT).show());
-                            }
+                                @Override
+                                public void onFailure(String errorMessage) {
+                                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         })
                         .setNegativeButton(R.string.no, (dialog, which) -> dialog.dismiss())
                         .show();
             }
         });
+
     }
 
     @Override

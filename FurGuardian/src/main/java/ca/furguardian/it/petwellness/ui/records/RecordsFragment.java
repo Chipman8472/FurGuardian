@@ -1,5 +1,7 @@
 package ca.furguardian.it.petwellness.ui.records;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,20 +41,12 @@ public class RecordsFragment extends Fragment {
         // Required empty constructor
     }
 
-    public static RecordsFragment newInstance(String petId) {
-        RecordsFragment fragment = new RecordsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PET_ID, petId);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            petId = getArguments().getString(ARG_PET_ID);
-        }
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        petId = sharedPreferences.getString("currentpet", null);
     }
 
     @Nullable
@@ -130,4 +124,5 @@ public class RecordsFragment extends Fragment {
             });
         }
     }
+
 }
