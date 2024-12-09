@@ -280,5 +280,13 @@
     <string name="exit">sortie</string>
     <string name="no_internet_connection">Pas de connexion Internet</string>
     <string name="invalid_time">Temps invalide</string>
-
+    <string name="invalid_record_index">index d\'enregistrement invalide</string>
+    <string name="couldn_t_get_records_from_db">Impossible d\'obtenir les enregistrements de la base de données</string>
+    <string name="failed_to_add_pet">Échec de l\'ajout de l\'animal</string>
+    <string name="failed_to_load_pets">Échec du chargement des animaux</string>
+    <string name="pet_added_successfully">animal ajouté avec succès\n</string>
+    <string name="pet_deleted_successfully">animal supprimé avec succès\n</string>
+    <string name="failed_to_delete_pet">échec de la suppression de l\'animal\n</string>
+    <string name="are_you_sure_delete_pet">Êtes-vous sûr de vouloir supprimer </string>
+    <string name="delete_pet">Supprimer l\'animal</string>
 </resources>
