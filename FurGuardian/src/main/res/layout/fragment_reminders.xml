@@ -16,7 +16,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/enter_reminder_name"
-        android:textColor="@color/black"
+        android:textColor="@color/text_color"
         android:background="@drawable/rounded_edittext_background"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -67,12 +67,6 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
         googleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        // Check if user is already signed in
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if (currentUser != null) {
-            validateUserSession(currentUser);
-        }
-
         // Login with email and password
         loginButton.setOnClickListener(v -> {
             String email = loginEmail.getText().toString().trim();

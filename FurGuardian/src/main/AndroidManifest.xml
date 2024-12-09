@@ -7,24 +7,11 @@
         android:name="android.hardware.telephony"
         android:required="false" />
 
-
-
-
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.SEND_SMS"/>
-    <!-- Fine location for precise location access -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
-
-    <!-- Coarse location for approximate location access (optional if you only need precise location) -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
     <uses-permission android:name="android.permission.INTERNET" />
-
-
 
     <application
         android:allowBackup="true"
@@ -41,7 +28,7 @@
             android:name=".ui.login.RegistrationActivity"
             android:exported="false"
             android:label="@string/title_activity_registration" />
-        <!-- Make LoginActivity the launcher activity -->
+
         <activity
             android:name=".ui.splash.SplashScreenActivity"
             android:exported="true"

@@ -69,19 +69,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"/>
-
-    <!-- Toggle Button for Location -->
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/toggleLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="false"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        android:text="@string/location"
-        android:textColor="@color/text_color"
-        app:layout_constraintTop_toBottomOf="@id/toggleNotifications"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
