@@ -14,6 +14,7 @@ import androidx.core.splashscreen.SplashScreen;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import ca.furguardian.it.petwellness.R;
 import ca.furguardian.it.petwellness.ui.login.LoginActivity;
 import ca.furguardian.it.petwellness.MainActivity;
 

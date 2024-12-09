@@ -3,4 +3,5 @@
     <color name="fragment_background">#3B2F2F</color>
     <color name="text_color">#FFFFFF</color>
     <color name="edit_background">#FFBB86FC</color>
+    <color name="edit_text_background">#808080</color>
 </resources>

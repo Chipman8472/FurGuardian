@@ -32,7 +32,8 @@
         <activity
             android:name=".ui.splash.SplashScreenActivity"
             android:exported="true"
-            android:label="FurGuardian">
+            android:label="FurGuardian"
+            android:theme="@style/Theme.FurGuardian.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
