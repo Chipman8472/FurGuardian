@@ -16,6 +16,11 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import ca.furguardian.it.petwellness.databinding.ActivityMainBinding;
 
@@ -30,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
         // Initialize view binding
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
 
         // Initialize BottomNavigationView and NavController
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -62,6 +66,26 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
             return false;
+        });
+
+        // *** NEW: Listen for WebRTC connection status changes ***
+        DatabaseReference webrtcStatusRef = FirebaseDatabase.getInstance().getReference("webrtc/connectionStatus");
+        webrtcStatusRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String status = snapshot.getValue(String.class);
+                if ("connected".equalsIgnoreCase(status)) {
+                    // Navigate to the WebRTC fragment when connection is established.
+                    navController.navigate(R.id.navigation_health, null, new NavOptions.Builder()
+                            .setPopUpTo(R.id.mobile_navigation, false)
+                            .build());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Log error if needed
+            }
         });
     }
 
@@ -103,16 +127,14 @@ public class MainActivity extends AppCompatActivity {
     private void navigateToTopMenuFragment(int fragmentId) {
         // Clear back stack when navigating to a new fragment from the top menu
         navController.navigate(fragmentId, null, new NavOptions.Builder()
-                .setPopUpTo(R.id.mobile_navigation, false) // Clear the back stack
+                .setPopUpTo(R.id.mobile_navigation, false)
                 .build());
     }
 
     private void navigateToBottomNavFragment(int fragmentId) {
         // Ensure proper navigation when switching between bottom navigation items
         navController.navigate(fragmentId, null, new NavOptions.Builder()
-                .setPopUpTo(R.id.mobile_navigation, false) // Clear the back stack to avoid interference
+                .setPopUpTo(R.id.mobile_navigation, false)
                 .build());
     }
-
-
 }

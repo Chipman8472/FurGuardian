@@ -4,6 +4,7 @@ androidxJunit = "1.1.5"
 coreSplashscreen = "1.0.1"
 espressoCoreVersion = "3.5.1"
 firebaseAuthVersion = "23.1.0"
+googleWebrtc = "1.0.32006"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -44,6 +45,7 @@ core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = 
 espresso-core-v351 = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCoreVersion" }
 espresso-intents = { module = "androidx.test.espresso:espresso-intents", version.ref = "espressoCoreVersion" }
 firebase-auth-v2200 = { module = "com.google.firebase:firebase-auth", version.ref = "firebaseAuthVersion" }
+google-webrtc = { module = "org.webrtc:google-webrtc", version.ref = "googleWebrtc" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

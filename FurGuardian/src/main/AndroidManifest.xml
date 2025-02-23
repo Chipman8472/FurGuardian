@@ -19,6 +19,7 @@
         android:roundIcon="@mipmap/logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FurGuardian"
+        android:usesCleartextTraffic="true"
         tools:targetApi="34">
         <uses-library android:name="android.test.runner" android:required="false"/>
         <activity
