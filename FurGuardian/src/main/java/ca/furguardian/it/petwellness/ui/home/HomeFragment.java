@@ -1,5 +1,9 @@
 package ca.furguardian.it.petwellness.ui.home;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -14,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,6 +38,15 @@ public class HomeFragment extends Fragment {
     private DatabaseReference streamRef;
     private final Handler handler = new Handler();
 
+    private final BroadcastReceiver streamRefreshReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Refresh the stream when the broadcast is received
+            startStream();
+            Toast.makeText(context, "Stream refreshed", Toast.LENGTH_SHORT).show();
+        }
+    };
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
@@ -47,6 +61,10 @@ public class HomeFragment extends Fragment {
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
+
+        // Register the local broadcast receiver
+        LocalBroadcastManager.getInstance(requireContext())
+                .registerReceiver(streamRefreshReceiver, new IntentFilter("STREAM_READY_NOTIFICATION"));
 
         // Initialize Firebase Database reference for the camera stream
         streamRef = FirebaseDatabase.getInstance().getReference("cameraStream");
@@ -97,6 +115,7 @@ public class HomeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         handler.removeCallbacksAndMessages(null);
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(streamRefreshReceiver);
         binding = null;
     }
 }

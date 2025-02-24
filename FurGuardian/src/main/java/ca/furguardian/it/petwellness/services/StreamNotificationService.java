@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -63,6 +64,9 @@ public class StreamNotificationService extends FirebaseMessagingService {
 
         // 6. Show the notification
         notificationManager.notify(NOTIFICATION_ID, builder.build());
+
+        Intent intent1 = new Intent("STREAM_READY_NOTIFICATION");
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent1);
     }
 
     @Override
