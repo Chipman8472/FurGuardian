@@ -103,7 +103,7 @@ dependencies {
     testImplementation libs.mockito.android
     implementation "androidx.work:work-runtime-ktx:2.8.1"
 
-
+    implementation 'com.google.firebase:firebase-messaging:23.1.2'
 
 
     testImplementation libs.junit.vintage.engine

@@ -3,6 +3,7 @@ package ca.furguardian.it.petwellness;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import ca.furguardian.it.petwellness.databinding.ActivityMainBinding;
 
@@ -31,6 +33,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FirebaseMessaging.getInstance().subscribeToTopic("streamReady")
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d("FCM", "Successfully subscribed to streamReady topic!");
+                    } else {
+                        Log.e("FCM", "Subscription to streamReady failed: ", task.getException());
+                    }
+                });
+
 
         // Initialize view binding
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
