@@ -5,6 +5,9 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
@@ -12,10 +15,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import ca.furguardian.it.petwellness.R;
 import ca.furguardian.it.petwellness.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment {
+    private WebView webView;
+    private DatabaseReference streamUrlRef;
 
     private FragmentHomeBinding binding;
     private final Handler handler = new Handler();
@@ -25,9 +35,19 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        webView = root.findViewById(R.id.webView);
+
         // Simulate data for Steps
         binding.textStepsToday.setText(getString(R.string.steps_4500));
         binding.progressStepsGoal.setProgress(4500);  // Update with the real-time step count
+
+        // Configure the WebView
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webView.setWebViewClient(new WebViewClient());
+
+        // Initialize Firebase Database references
+        streamUrlRef = FirebaseDatabase.getInstance().getReference("cameraStream/url");
 
         // Simulate data for Device Records
         binding.textFoodDispenserUsage.setText(getString(R.string.last_feeding_08_30_am));
@@ -54,6 +74,8 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        startStream();
+
         return root;
     }
 
@@ -78,5 +100,29 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         handler.removeCallbacksAndMessages(null); // Clear all handler callbacks
         binding = null;
+    }
+
+    @Override
+    public void onResume() {
+        startStream();
+        super.onResume();
+    }
+
+    public void startStream(){
+        // Listen for changes to the stream URL
+        streamUrlRef.addValueEventListener(new com.google.firebase.database.ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String streamUrl = snapshot.getValue(String.class);
+                if (streamUrl != null && !streamUrl.isEmpty()) {
+                    webView.loadUrl(streamUrl);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle possible errors here (e.g., log them)
+            }
+        });
     }
 }
