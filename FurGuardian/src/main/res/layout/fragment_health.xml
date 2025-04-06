@@ -13,7 +13,7 @@
         android:id="@+id/tvMealLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select meal time:"
+        android:text="Select time slot:"
         android:textSize="16sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
@@ -91,41 +91,67 @@
     <!-- 24-Hour Time Picker -->
     <TimePicker
         android:id="@+id/timePicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/tvMeal3Time"
+        android:layout_width="322dp"
+        android:layout_height="359dp"
+        android:layout_marginTop="14dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/tvMeal3Time" />
 
-    <!-- Set Current Meal Time Button -->
-    <Button
-        android:id="@+id/btnSetTime"
+    <!-- Button Layout -->
+    <LinearLayout
+        android:id="@+id/buttonLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Set Selected Time"
-        android:background="@drawable/rounded_button_background"
-        android:textColor="@android:color/white"
-        android:padding="12dp"
+        android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/timePicker"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.8"
-        android:layout_marginTop="16dp"/>
+        app:layout_constraintWidth_percent="0.9"
+        android:layout_marginTop="16dp">
+
+        <!-- Set Time Button -->
+        <Button
+            android:id="@+id/btnSetTime"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="Set"
+            android:textSize="12sp"
+            android:background="@drawable/rounded_button_background"
+            android:textColor="@android:color/white"
+            android:padding="4dp"
+            android:layout_marginEnd="4dp"/>
+
+        <!-- Clear Time Button -->
+        <Button
+            android:id="@+id/btnClearTime"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="Clear"
+            android:textSize="12sp"
+            android:background="@drawable/rounded_button_background"
+            android:textColor="@android:color/white"
+            android:padding="4dp"
+            android:layout_marginEnd="4dp"/>
+
+    </LinearLayout>
 
     <!-- Save All Times Button -->
     <Button
         android:id="@+id/btnSaveAllTimes"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:text="Save All Times"
+        android:textSize="12sp"
         android:background="@drawable/rounded_button_background"
         android:textColor="@android:color/white"
-        android:padding="12dp"
-        app:layout_constraintTop_toBottomOf="@id/btnSetTime"
+        android:padding="4dp"
+        app:layout_constraintTop_toBottomOf="@id/buttonLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintWidth_percent="0.9"
         android:layout_marginTop="16dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

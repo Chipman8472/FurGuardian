@@ -30,7 +30,7 @@ public class HealthFragment extends Fragment {
     private RadioGroup radioGroupMeals;
     private RadioButton rbMeal1, rbMeal2, rbMeal3;
     private TextView tvMeal1Time, tvMeal2Time, tvMeal3Time;
-    private Button btnSetTime, btnSaveAllTimes;
+    private Button btnSetTime, btnSaveAllTimes, btnClearTime;
     private DatabaseReference mDatabase;
 
     // Store meal times locally
@@ -58,6 +58,7 @@ public class HealthFragment extends Fragment {
         tvMeal2Time = view.findViewById(R.id.tvMeal2Time);
         tvMeal3Time = view.findViewById(R.id.tvMeal3Time);
         btnSetTime = view.findViewById(R.id.btnSetTime);
+        btnClearTime = view.findViewById(R.id.btnClearTime);
         btnSaveAllTimes = view.findViewById(R.id.btnSaveAllTimes);
 
         // Ensure TimePicker is in 24-hour mode
@@ -74,6 +75,14 @@ public class HealthFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 setSelectedMealTime();
+            }
+        });
+
+        // Set up the clear time button listener
+        btnClearTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearSelectedMealTime();
             }
         });
 
@@ -97,17 +106,27 @@ public class HealthFragment extends Fragment {
                     if (dataSnapshot.hasChild("time1")) {
                         time1 = dataSnapshot.child("time1").getValue(String.class);
                         tvMeal1Time.setText("Time 1: " + time1);
+                    } else {
+                        tvMeal1Time.setText("Time 1: Not set");
                     }
 
                     if (dataSnapshot.hasChild("time2")) {
                         time2 = dataSnapshot.child("time2").getValue(String.class);
                         tvMeal2Time.setText("Time 2: " + time2);
+                    } else {
+                        tvMeal2Time.setText("Time 2: Not set");
                     }
 
                     if (dataSnapshot.hasChild("time3")) {
                         time3 = dataSnapshot.child("time3").getValue(String.class);
                         tvMeal3Time.setText("Time 3: " + time3);
+                    } else {
+                        tvMeal3Time.setText("Time 3: Not set");
                     }
+                } else {
+                    tvMeal1Time.setText("Time 1: Not set");
+                    tvMeal2Time.setText("Time 2: Not set");
+                    tvMeal3Time.setText("Time 3: Not set");
                 }
             }
 
@@ -143,6 +162,24 @@ public class HealthFragment extends Fragment {
         Toast.makeText(getContext(), "Time set! Click 'Save All Times' to save to database.", Toast.LENGTH_SHORT).show();
     }
 
+    private void clearSelectedMealTime() {
+        // Find which meal is selected
+        int selectedId = radioGroupMeals.getCheckedRadioButtonId();
+
+        if (selectedId == R.id.rbMeal1) {
+            time1 = "";
+            tvMeal1Time.setText("Time 1: Not set");
+        } else if (selectedId == R.id.rbMeal2) {
+            time2 = "";
+            tvMeal2Time.setText("Time 2: Not set");
+        } else if (selectedId == R.id.rbMeal3) {
+            time3 = "";
+            tvMeal3Time.setText("Time 3: Not set");
+        }
+
+        Toast.makeText(getContext(), "Time cleared! Click 'Save All Times' to update database.", Toast.LENGTH_SHORT).show();
+    }
+
     private void saveAllTimes() {
         // Create a map for all meal times
         HashMap<String, Object> mealTimes = new HashMap<>();
@@ -150,25 +187,37 @@ public class HealthFragment extends Fragment {
         // Only add times that have been set
         if (!time1.isEmpty()) {
             mealTimes.put("time1", time1);
+        } else {
+            // If time is empty, remove it from Firebase if it exists
+            mDatabase.child("mealTimes").child("time1").removeValue();
         }
 
         if (!time2.isEmpty()) {
             mealTimes.put("time2", time2);
+        } else {
+            mDatabase.child("mealTimes").child("time2").removeValue();
         }
 
         if (!time3.isEmpty()) {
             mealTimes.put("time3", time3);
+        } else {
+            mDatabase.child("mealTimes").child("time3").removeValue();
         }
 
-        // Save all meal times to Firebase under "mealTimes" node
-        mDatabase.child("mealTimes")
-                .setValue(mealTimes)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(getContext(), "All times saved successfully!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getContext(), "Failed to save times.", Toast.LENGTH_SHORT).show();
-                    }
-                });
+        // If there's at least one time set, update Firebase
+        if (!mealTimes.isEmpty()) {
+            mDatabase.child("mealTimes")
+                    .updateChildren(mealTimes)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getContext(), "Times saved successfully!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "Failed to save times.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        } else {
+            // If all times were cleared, show a message
+            Toast.makeText(getContext(), "All times cleared from database.", Toast.LENGTH_SHORT).show();
+        }
     }
 }
