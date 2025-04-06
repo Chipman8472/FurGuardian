@@ -35,7 +35,10 @@ public class HomeFragment extends Fragment {
     private WebView webView;
     private ImageView fallbackImage;
     private Button refreshButton;
+    private Button dispenseButton;
+    private Button treatButton;
     private DatabaseReference streamRef;
+    private DatabaseReference dispenseRef;
     private final Handler handler = new Handler();
 
     private final BroadcastReceiver streamRefreshReceiver = new BroadcastReceiver() {
@@ -56,6 +59,8 @@ public class HomeFragment extends Fragment {
         webView = root.findViewById(R.id.webView);
         fallbackImage = root.findViewById(R.id.fallbackImage);
         refreshButton = root.findViewById(R.id.buttonRefresh);
+        dispenseButton = root.findViewById(R.id.dispense);
+        treatButton = root.findViewById(R.id.treat);
 
         // Configure the WebView
         WebSettings webSettings = webView.getSettings();
@@ -68,14 +73,59 @@ public class HomeFragment extends Fragment {
 
         // Initialize Firebase Database reference for the camera stream
         streamRef = FirebaseDatabase.getInstance().getReference("cameraStream");
+        dispenseRef = FirebaseDatabase.getInstance().getReference("dispense");
 
         // Set up the refresh button to try and reload the stream
         refreshButton.setOnClickListener(v -> startStream());
+
+        setupButtonListeners();
 
         // Start listening for stream changes
         startStream();
 
         return root;
+    }
+
+    private void setupButtonListeners() {
+        // Set up the refresh button to try and reload the stream
+        refreshButton.setOnClickListener(v -> startStream());
+
+        // Set up the normal dispense button
+        dispenseButton.setOnClickListener(v -> {
+            // Set the "normal" value under "dispense" to true
+            dispenseRef.child("normal").setValue(true)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(getContext(), "Dispense command sent", Toast.LENGTH_SHORT).show();
+
+                        // Reset value to false after a delay
+                        resetDispenseValueAfterDelay("normal");
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        });
+
+        // Set up the treat dispense button
+        treatButton.setOnClickListener(v -> {
+            // Set the "treat" value under "dispense" to true
+            dispenseRef.child("treat").setValue(true)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(getContext(), "Treat dispense command sent", Toast.LENGTH_SHORT).show();
+
+                        // Reset value to false after a delay
+                        resetDispenseValueAfterDelay("treat");
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        });
+    }
+
+    // Reset the value back to false after a short delay
+    private void resetDispenseValueAfterDelay(String type) {
+        handler.postDelayed(() -> {
+            dispenseRef.child(type).setValue(false);
+        }, 3000); // Reset after 3 seconds
     }
 
     private void startStream() {
