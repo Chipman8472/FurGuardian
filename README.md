@@ -8,6 +8,7 @@ Justin Chipman – N01598472
 Imran Zafurallah - N01585098
 Zane Aransevia - N01351168
 Tevadi Brookes - N01582563
+Mathew Anderson-Saavedra - N01436706
 
 ### Project Overview
 The FurGuardian app is a comprehensive pet wellness platform designed for Android. 
